@@ -1,11 +1,11 @@
 # abap-harness-engineering
 
-[![라이선스: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](./LICENSE)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](./LICENSE)
 
 SAP ABAP 개발을 위한 완전한 **AI 하네스 엔지니어링** 프레임워크를 제공하는 Claude Code 플러그인입니다. 15개의 전문 에이전트, 8개의 스킬, 7개의 커맨드, 그리고 `vsp` 서버를 통한 MCP 연동을 포함합니다.
 
 > **하네스 엔지니어링이란?**
-> 전문화된 AI 에이전트들이 구조화된 환경 안에서 협업하는 방법론으로, AI 기반 SAP 개발을 예측 가능하고 거버넌스가 적용된 방식으로 수행할 수 있게 합니다. PM 주도의 거버넌스 모델은 실제 소프트웨어 엔지니어링 팀을 모방합니다. 비즈니스 애널리스트가 요구사항을 정의하고, 아키텍트가 설계하며, 개발자가 구현하고, QA가 검증합니다. [참조 구현체 →](#참조-구현체-abap_vibe_coding)
+> 전문화된 AI 에이전트들이 구조화된 환경 안에서 협업하는 방법론으로, AI 기반 SAP 개발을 예측 가능하고 거버넌스가 적용된 방식으로 수행할 수 있게 합니다. PM 주도의 거버넌스 모델은 실제 소프트웨어 엔지니어링 팀을 모방합니다. 비즈니스 애널리스트가 요구사항을 정의하고, 아키텍트가 설계하며, 개발자가 구현하고, QA가 검증합니다. [참조 구현체 ->](#참조-구현체-abap_vibe_coding)
 
 ---
 
@@ -69,13 +69,13 @@ export SAP_CLIENT=100
 cc --plugin-dir /path/to/abap-harness-engineering
 ```
 
-**마켓플레이스에서 설치:** Claude Code 설정 → 플러그인 → "abap-harness-engineering" 검색
+**마켓플레이스에서 설치:** Claude Code 설정 -> 플러그인 -> "abap-harness-engineering" 검색
 
 ---
 
 ## 사용법
 
-### 빠른 시작 — 태스크 트리아지
+### 빠른 시작 - 태스크 트리아지
 
 ```
 /triage Fix the SD billing report for customer 1000
@@ -115,28 +115,28 @@ cc --plugin-dir /path/to/abap-harness-engineering
 
 ```
 Phase 1 (병렬): sap-investigator + read-only-analyst + schema-inspector
-        ↓
-Phase 2 (직렬): architect → code-writer
-        ↓
+        |
+Phase 2 (직렬): architect -> code-writer
+        |
 Phase 3 (직렬): test-runner
-        ↓
-Phase 4:        /post-write → /transport release → /sync
+        |
+Phase 4:        /post-write -> /transport release -> /sync
 ```
 
 ### 에이전트 역할
 
 | 에이전트 | 단계 | 병렬 실행 |
 |---------|------|:---------:|
-| sap-investigator | 1 | ✅ |
-| read-only-analyst | 1 | ✅ |
-| schema-inspector | 1 | ✅ |
-| sd/mm/fi/co/pp/le-analyst | 1 | ✅ |
-| architect | 2 | ❌ |
-| code-writer | 2 | ❌ |
-| fiori-developer | 2 | ❌ (쓰기 작업) |
-| form-expert | 2 | ❌ (쓰기 작업) |
-| gui-scripter | 2 | ❌ |
-| test-runner | 3 | ❌ |
+| sap-investigator | 1 | [x] |
+| read-only-analyst | 1 | [x] |
+| schema-inspector | 1 | [x] |
+| sd/mm/fi/co/pp/le-analyst | 1 | [x] |
+| architect | 2 | [ ] |
+| code-writer | 2 | [ ] |
+| fiori-developer | 2 | [ ] (쓰기 작업) |
+| form-expert | 2 | [ ] (쓰기 작업) |
+| gui-scripter | 2 | [ ] |
+| test-runner | 3 | [ ] |
 
 ---
 
@@ -145,14 +145,14 @@ Phase 4:        /post-write → /transport release → /sync
 플러그인은 `vsp` MCP 서버를 자동으로 구성합니다. 서버는 `hyperfocused` 모드로 실행되며 `Z*`, `$TMP`, `$ZADT_VSP`, `$VSP_ADT` 패키지에 접근할 수 있습니다.
 
 지원 기능:
-- `VSP_FEATURE_ABAPGIT=on` — abapGit 연동
-- `VSP_FEATURE_TRANSPORT=on` — CTS 트랜스포트 관리
-- `VSP_FEATURE_UI5=on` — Fiori/UI5 지원
-- `VSP_FEATURE_RAP=on` — ABAP RESTful Application Programming
+- `VSP_FEATURE_ABAPGIT=on` - abapGit 연동
+- `VSP_FEATURE_TRANSPORT=on` - CTS 트랜스포트 관리
+- `VSP_FEATURE_UI5=on` - Fiori/UI5 지원
+- `VSP_FEATURE_RAP=on` - ABAP RESTful Application Programming
 
 `vsp` 서버 외에 두 개의 문서 MCP 서버도 등록됩니다:
-- `abap-docs` — [mcp-abap.marianzeis.de](https://mcp-abap.marianzeis.de)를 통한 ABAP 언어 레퍼런스 및 오브젝트 검색
-- `sap-docs` — [mcp-sap-docs.marianzeis.de](https://mcp-sap-docs.marianzeis.de)를 통한 SAP Help Portal 검색
+- `abap-docs` - [mcp-abap.marianzeis.de](https://mcp-abap.marianzeis.de)를 통한 ABAP 언어 레퍼런스 및 오브젝트 검색
+- `sap-docs` - [mcp-sap-docs.marianzeis.de](https://mcp-sap-docs.marianzeis.de)를 통한 SAP Help Portal 검색
 
 ---
 
@@ -160,7 +160,7 @@ Phase 4:        /post-write → /transport release → /sync
 
 Write/Edit 툴 호출 이후 `PostToolUse` 훅이 실행되어 `scripts/sync-md.sh`로 문서 감사를 수행합니다.
 
-> **참고**: Claude Code Desktop App에서는 훅이 실행되지 않습니다. Desktop 세션에서 ABAP 쓰기 작업 후에는 `/post-write`를 수동으로 실행하세요.
+> **참고**: Claude Code Desktop App에서는 훅이 실행되지 않습니다. Desktop 세션에서 ABAP 쓰기 작업 후에는 `/post-write`를 수동으로 실행하세요. 또한 자동 훅은 플러그인 런타임에서 로드하는 `CLAUDE_PLUGIN_ROOT` 환경 변수에 의존하므로, 훅 라이프사이클 외부에서 직접 수동 테스트하거나 호출하려면 작업 디렉토리 루트에서 `scripts/sync-md.sh` 또는 `scripts/sync-md.ps1`을 직접 실행하십시오.
 
 ---
 
@@ -175,11 +175,12 @@ Write/Edit 툴 호출 이후 `PostToolUse` 훅이 실행되어 `scripts/sync-md.
 | [AGENTS.md](https://github.com/5throck/abap_vibe_coding/blob/main/AGENTS.md) | 전체 에이전트 역할 정의, 핸드오프 프로토콜, 거버넌스 모델 |
 | [docs/context.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md) | 공유 프로젝트 컨텍스트: 코드베이스 맵, 빌드 커맨드, ABAP 개발 규칙 |
 | [docs/setup-guide.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/setup-guide.md) | 단계별 환경 구성 가이드 (MCP, SAP ADT, abapGit, AI 에이전트) |
-| [docs/task-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/task-template.md) | 전체 태스크 핸드오프 템플릿 (§0 트리아지 → §5 최종화) |
+| [docs/task-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/task-template.md) | 전체 태스크 핸드오프 템플릿 (§0 트리아지 -> §5 최종화) |
 | [docs/testing-guidelines.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/testing-guidelines.md) | ABAP 단위 테스트 표준 및 ATC 우선순위 기준 |
 | [docs/prd-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/prd-template.md) | 비즈니스 분석을 위한 PRD / 인수 조건 템플릿 |
 | [docs/security.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/security.md) | 추적 문서 보안 정책 및 pre-commit 스캔 규칙 |
 | [memory/MEMORY.md](https://github.com/5throck/abap_vibe_coding/blob/main/memory/MEMORY.md) | 개발 이력 및 아키텍처 결정 사항 인덱스 |
+| [docs/plugin-setup.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/plugin-setup.md) | 클로드 코드 플러그인을 위한 전용 설정 가이드 |
 
 > 참조 프로젝트는 이 플러그인과 동일한 에이전트, 스킬, 커맨드를 포함하며, 실제 개발 작업의 스크래치 파일, 메모리 로그, 세션 이력도 함께 포함합니다.
 
@@ -187,7 +188,7 @@ Write/Edit 툴 호출 이후 `PostToolUse` 훅이 실행되어 `scripts/sync-md.
 
 ## 라이선스
 
-AGPL v3 — 자세한 내용은 [LICENSE](./LICENSE)를 참고하세요.
+AGPL v3 - 자세한 내용은 [LICENSE](./LICENSE)를 참고하세요.
 
 ---
 

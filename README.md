@@ -5,7 +5,7 @@
 A Claude Code plugin providing a complete **AI Harness Engineering** framework for SAP ABAP development. Includes 15 specialized agents, 8 skills, 7 commands, and MCP integration via the `vsp` server.
 
 > **What is Harness Engineering?**
-> A methodology where specialized AI agents collaborate within a structured environment — ensuring AI-driven SAP development is predictable, governed, and auditable. The PM-led governance model mirrors a real software engineering team: business analysts define requirements, architects design the solution, developers implement it, and QA verifies it. See the [reference implementation →](#reference-implementation-abap_vibe_coding)
+> A methodology where specialized AI agents collaborate within a structured environment - ensuring AI-driven SAP development is predictable, governed, and auditable. The PM-led governance model mirrors a real software engineering team: business analysts define requirements, architects design the solution, developers implement it, and QA verifies it. See the [reference implementation ->](#reference-implementation-abap_vibe_coding)
 
 ---
 
@@ -69,13 +69,13 @@ Or set them in your shell profile / Claude Code environment.
 cc --plugin-dir /path/to/abap-harness-engineering
 ```
 
-**From Marketplace:** Install via Claude Code settings → Plugins → Search "abap-harness-engineering"
+**From Marketplace:** Install via Claude Code settings -> Plugins -> Search "abap-harness-engineering"
 
 ---
 
 ## Usage
 
-### Quick Start — Triage a Task
+### Quick Start - Triage a Task
 
 ```
 /triage Fix the SD billing report for customer 1000
@@ -115,12 +115,12 @@ This will:
 
 ```
 Phase 1 (Parallel): sap-investigator + read-only-analyst + schema-inspector
-        ↓
-Phase 2 (Serial):   architect → code-writer
-        ↓
+        |
+Phase 2 (Serial):   architect -> code-writer
+        |
 Phase 3 (Serial):   test-runner
-        ↓
-Phase 4:            /post-write → /transport release → /sync
+        |
+Phase 4:            /post-write -> /transport release -> /sync
 ```
 
 ### Agent Roles
@@ -145,14 +145,14 @@ Phase 4:            /post-write → /transport release → /sync
 The plugin provides MCP configuration assets and integration. Note that the consumer project still needs `.mcp.json` or target environment variables configured in its root directory to initialize the connection. The server runs in `hyperfocused` mode with access to `Z*`, `$TMP`, `$ZADT_VSP`, and `$VSP_ADT` packages.
 
 Supported features:
-- `VSP_FEATURE_ABAPGIT=on` — abapGit integration
-- `VSP_FEATURE_TRANSPORT=on` — CTS transport management
-- `VSP_FEATURE_UI5=on` — Fiori/UI5 support
-- `VSP_FEATURE_RAP=on` — ABAP RESTful Application Programming
+- `VSP_FEATURE_ABAPGIT=on` - abapGit integration
+- `VSP_FEATURE_TRANSPORT=on` - CTS transport management
+- `VSP_FEATURE_UI5=on` - Fiori/UI5 support
+- `VSP_FEATURE_RAP=on` - ABAP RESTful Application Programming
 
 In addition to the `vsp` server, the provided MCP configuration sample includes two documentation MCP servers:
-- `abap-docs` — ABAP language reference and object search via [mcp-abap.marianzeis.de](https://mcp-abap.marianzeis.de)
-- `sap-docs` — SAP Help Portal search via [mcp-sap-docs.marianzeis.de](https://mcp-sap-docs.marianzeis.de)
+- `abap-docs` - ABAP language reference and object search via [mcp-abap.marianzeis.de](https://mcp-abap.marianzeis.de)
+- `sap-docs` - SAP Help Portal search via [mcp-sap-docs.marianzeis.de](https://mcp-sap-docs.marianzeis.de)
 
 ---
 
@@ -177,11 +177,12 @@ The reference project provides the complete operational context not included in 
 | [AGENTS.md](https://github.com/5throck/abap_vibe_coding/blob/main/AGENTS.md) | Full agent role definitions, handoff protocols, and governance model |
 | [docs/context.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md) | Shared project context: codebase map, build commands, ABAP dev rules |
 | [docs/setup-guide.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/setup-guide.md) | Step-by-step environment setup (MCP, SAP ADT, abapGit, AI agents) |
-| [docs/task-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/task-template.md) | Full task handoff template (§0 Triage → §5 Finalization) |
+| [docs/task-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/task-template.md) | Full task handoff template (§0 Triage -> §5 Finalization) |
 | [docs/testing-guidelines.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/testing-guidelines.md) | ABAP Unit test standards and ATC priority thresholds |
 | [docs/prd-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/prd-template.md) | PRD / Acceptance Criteria template for business analysis |
 | [docs/security.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/security.md) | Sanitization policy for tracked docs and pre-commit scan rules |
 | [memory/MEMORY.md](https://github.com/5throck/abap_vibe_coding/blob/main/memory/MEMORY.md) | Index of development history and architectural decisions |
+| [docs/plugin-setup.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/plugin-setup.md) | Setup guide for the Claude Code plugin |
 
 > The reference project contains the same agents, skills, and commands as this plugin, plus live scratch files, memory logs, and session history from real development work.
 
@@ -189,7 +190,7 @@ The reference project provides the complete operational context not included in 
 
 ## License
 
-AGPL v3 — see [LICENSE](./LICENSE) for details.
+AGPL v3 - see [LICENSE](./LICENSE) for details.
 
 ---
 
