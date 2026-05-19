@@ -41,7 +41,7 @@ See [testing-guidelines.md](testing-guidelines.md) for ATC priority thresholds a
 
 ```
 1. Initialize task
-   → copy docs/task-template.md to scratch/task-YYYY-MM-DD-NNN.md
+   → copy docs/task-template.md to scratch/tasks/task-YYYY-MM-DD-NNN.md
 
 2. Phase 1 — Research (parallel, read-only)
    → dispatch sap-investigator, read-only-analyst, schema-inspector in one message
@@ -69,9 +69,8 @@ See [testing-guidelines.md](testing-guidelines.md) for ATC priority thresholds a
 
 ## Conventions
 
-- Reports: `reports/YYYY-MM-DD-NNN-title.md`
+- Task Handoffs: `scratch/tasks/task-YYYY-MM-DD-NNN.md`
 - SAP objects for plugin development: `ZADT_<nn>_<name>`, `ZCL_ADT_<name>`, packages `$ZADT*`
-- Scratch files: `scratch/task-YYYY-MM-DD-NNN.md`
 - Memory logs: `memory/YYYY-MM-DD.md`
 
 ---

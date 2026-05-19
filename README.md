@@ -28,6 +28,10 @@ A Claude Code plugin providing a complete **AI Harness Engineering** framework f
 
 ## Installation
 
+For a step-by-step walk-through on installing, registering the plugin hooks, and connecting your first consumer repository, please see:
+
+👉 **[docs/plugin-setup.md](./docs/plugin-setup.md)**
+
 ### 1. Install the vsp Binary
 
 **Unix/macOS:**
