@@ -1,4 +1,4 @@
-# abap-harness-engineering
+﻿# abap-harness-engineering
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](./LICENSE)
 
@@ -30,7 +30,7 @@ A Claude Code plugin providing a complete **AI Harness Engineering** framework f
 
 For a step-by-step walk-through on installing, registering the plugin hooks, and connecting your first consumer repository, please see:
 
-👉 **[docs/plugin-setup.md](./docs/plugin-setup.md)**
+* **[docs/plugin-setup.md](./docs/plugin-setup.md)**
 
 ### 1. Install the vsp Binary
 
@@ -83,7 +83,7 @@ cc --plugin-dir /path/to/abap-harness-engineering
 
 This will:
 1. Detect the SD module
-2. Create a task file in `scratch/`
+2. Create a task file in `scratch/tasks/`
 3. Generate parallel dispatch blocks for 3 read-only agents
 
 ### Transport Management
@@ -127,16 +127,16 @@ Phase 4:            /post-write -> /transport release -> /sync
 
 | Agent | Phase | Parallelizable |
 |-------|-------|:--------------:|
-| sap-investigator | 1 | ✅ |
-| read-only-analyst | 1 | ✅ |
-| schema-inspector | 1 | ✅ |
-| sd/mm/fi/co/pp/le-analyst | 1 | ✅ |
-| architect | 2 | ❌ |
-| code-writer | 2 | ❌ |
-| fiori-developer | 2 | ❌ (writes) |
-| form-expert | 2 | ❌ (writes) |
-| gui-scripter | 2 | ❌ |
-| test-runner | 3 | ❌ |
+| sap-investigator | 1 | Yes |
+| read-only-analyst | 1 | Yes |
+| schema-inspector | 1 | Yes |
+| sd/mm/fi/co/pp/le-analyst | 1 | Yes |
+| architect | 2 | No |
+| code-writer | 2 | No |
+| fiori-developer | 2 | No (writes) |
+| form-expert | 2 | No (writes) |
+| gui-scripter | 2 | No |
+| test-runner | 3 | No |
 
 ---
 
@@ -151,8 +151,8 @@ Supported features:
 - `VSP_FEATURE_RAP=on` - ABAP RESTful Application Programming
 
 In addition to the `vsp` server, the provided MCP configuration sample includes two documentation MCP servers:
-- `abap-docs` - ABAP language reference and object search via [mcp-abap.marianzeis.de](https://mcp-abap.marianzeis.de)
-- `sap-docs` - SAP Help Portal search via [mcp-sap-docs.marianzeis.de](https://mcp-sap-docs.marianzeis.de)
+- `abap-docs` - ABAP language reference and object search via [mcp.abap.help](https://mcp.abap.help)
+- `sap-docs` - SAP Help Portal search via [mcp.sap.help](https://mcp.sap.help)
 
 ---
 
