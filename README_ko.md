@@ -151,8 +151,8 @@ Phase 4:        /post-write -> /transport release -> /sync
 - `VSP_FEATURE_RAP=on` - ABAP RESTful Application Programming
 
 `vsp` 서버 외에 두 개의 문서 MCP 서버도 등록됩니다:
-- `abap-docs` - [mcp.abap.help](https://mcp.abap.help)를 통한 ABAP 언어 레퍼런스 및 오브젝트 검색
-- `sap-docs` - [mcp.sap.help](https://mcp.sap.help)를 통한 SAP Help Portal 검색
+- `abap-docs` - [mcp-abap.marianzeis.de](https://mcp-abap.marianzeis.de)를 통한 ABAP 언어 레퍼런스 및 오브젝트 검색
+- `sap-docs` - [mcp-sap-docs.marianzeis.de](https://mcp-sap-docs.marianzeis.de)를 통한 SAP Help Portal 검색
 
 ---
 
