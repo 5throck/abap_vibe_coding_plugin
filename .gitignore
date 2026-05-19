@@ -3,6 +3,7 @@ memory/*.md
 vsp
 vsp.exe
 .env
+.mcp.json
 .mcp.json.local
 .local/
 .DS_Store

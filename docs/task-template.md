@@ -35,7 +35,7 @@ Agent 1 — sap-investigator  (prompt: agents/sap-investigator.md)
 
 Agent 2 — read-only-analyst  (prompt: agents/read-only-analyst.md)
   Task: Query SAP tables for AS-IS data
-  Input: module=<SD|MM|FI|...>, context_file=docs/task-template.md
+  Input: module=<SD|MM|FI|...>, context_file=skills/sap-<module>/SKILL.md
   Queries to run:
     - <!-- AS-IS query 1 -->
     - <!-- AS-IS query 2 -->
@@ -285,4 +285,4 @@ git commit -m "<type>: <summary>"
 - Notes: <!-- anything the user should know -->
 
 ---
-*Template version: 1.1 — 2026-05-05*
+*Template version: 1.1 — 2026-05-19*
