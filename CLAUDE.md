@@ -8,18 +8,18 @@ Parent project: https://github.com/5throck/abap_vibe_coding
 
 ## Setup
 
-1. **Install the vsp binary**
+1. **Install the vsp binary** (in the consumer project root)
    ```bash
    bash scripts/install-vsp.sh
    ```
 
-2. **Configure SAP credentials**
+2. **Configure SAP credentials** (in the consumer project root)
    ```bash
    cp .mcp.json.sample .mcp.json
    ```
    Edit `.mcp.json` and fill in your SAP system URL, username, and password. This file is gitignored — never commit it.
 
-3. **Enable the MCP server** in `.claude/settings.local.json`:
+3. **Enable the MCP server** in `.claude/settings.local.json` (in the consumer project root):
    ```json
    { "enableAllProjectMcpServers": true }
    ```
@@ -28,7 +28,7 @@ Parent project: https://github.com/5throck/abap_vibe_coding
 
 When this plugin is installed in a consumer project:
 - **`.mcp.json` / `.env`**: The configuration is read from the **consumer project's root directory**, not the plugin directory. Make sure `.mcp.json` or `.env` is placed in your target project.
-- **Hooks**: The plugin's `hooks/hooks.json` will automatically fire in the consumer project's CLI sessions. (CLI sessions only; Desktop App users must run `/post-write` manually.) The underlying hook scripts execute with a cross-platform fallback sequence (`bash` → `pwsh` → `powershell`) to ensure seamless execution on Windows environments.
+- **Hooks**: The plugin's `hooks/hooks.json` will automatically fire in the consumer project's CLI sessions. (CLI sessions only; Desktop App users must run `/post-write` manually.) The underlying hook scripts execute with a cross-platform fallback sequence (`bash` → `pwsh` → `powershell`) to ensure seamless execution on Windows environments. (Note: These automatic hooks rely on the `CLAUDE_PLUGIN_ROOT` environment variable being populated by the plugin runtime. For direct manual testing or execution outside the hook lifecycle, execute `scripts/sync-md.sh` or `scripts/sync-md.ps1` directly from your workspace root.)
 
 ---
 

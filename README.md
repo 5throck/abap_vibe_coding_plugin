@@ -146,7 +146,7 @@ Supported features:
 - `VSP_FEATURE_UI5=on` — Fiori/UI5 support
 - `VSP_FEATURE_RAP=on` — ABAP RESTful Application Programming
 
-In addition to the `vsp` server, the plugin registers two documentation MCP servers:
+In addition to the `vsp` server, the provided MCP configuration sample includes two documentation MCP servers:
 - `abap-docs` — ABAP language reference and object search via [mcp-abap.marianzeis.de](https://mcp-abap.marianzeis.de)
 - `sap-docs` — SAP Help Portal search via [mcp-sap-docs.marianzeis.de](https://mcp-sap-docs.marianzeis.de)
 
@@ -156,7 +156,7 @@ In addition to the `vsp` server, the plugin registers two documentation MCP serv
 
 In Claude Code CLI sessions, a `PostToolUse` hook fires after every Write/Edit tool call and runs `scripts/sync-md.sh` for documentation audit.
 
-> **Note**: Hooks do not fire in Claude Code Desktop App. Run `/post-write` manually after each ABAP write in Desktop sessions.
+> **Note**: Hooks do not fire in Claude Code Desktop App. Run `/post-write` manually after each ABAP write in Desktop sessions. Also, note that automatic hooks rely on the `CLAUDE_PLUGIN_ROOT` environment variable being populated by the plugin runtime. For direct manual testing or execution outside the hook lifecycle, execute `scripts/sync-md.sh` or `scripts/sync-md.ps1` directly from your workspace root.
 
 ---
 
