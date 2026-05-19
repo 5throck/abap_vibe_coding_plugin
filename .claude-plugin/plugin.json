@@ -1,0 +1,11 @@
+{
+  "name": "abap-harness-engineering",
+  "version": "0.1.0",
+  "description": "AI Harness Engineering framework for SAP ABAP development — agents, skills, commands, and MCP integration for the full ABAP lifecycle.",
+  "author": {
+    "name": "5throck",
+    "url": "https://github.com/5throck/abap-harness-engineering"
+  },
+  "license": "AGPL-3.0",
+  "keywords": ["sap", "abap", "harness", "mcp", "erp", "vsp"]
+}
