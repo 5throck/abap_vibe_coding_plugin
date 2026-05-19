@@ -1,14 +1,27 @@
 {
-  "PostToolUse": [
-    {
-      "matcher": "Write|Edit",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "bash \"$CLAUDE_PLUGIN_ROOT/scripts/sync-md.sh\" 2>/dev/null || pwsh -NonInteractive -File \"$CLAUDE_PLUGIN_ROOT/scripts/sync-md.ps1\" 2>/dev/null || powershell -NonInteractive -File \"$CLAUDE_PLUGIN_ROOT/scripts/sync-md.ps1\"",
-          "timeout": 30
-        }
-      ]
-    }
-  ]
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v vsp >/dev/null 2>&1 || (echo '[abap-harness] vsp not found in PATH. Run the install script: bash \"${CLAUDE_PLUGIN_ROOT}/scripts/install-vsp.sh\" or see https://github.com/5throck/abap_vibe_coding_plugin#readme' >&2)",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/sync-md.sh\" 2>/dev/null || pwsh -NonInteractive -File \"${CLAUDE_PLUGIN_ROOT}/scripts/sync-md.ps1\" 2>/dev/null || powershell -NonInteractive -File \"${CLAUDE_PLUGIN_ROOT}/scripts/sync-md.ps1\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
 }

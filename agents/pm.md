@@ -1,7 +1,7 @@
 ---
 name: pm
 model: inherit
-color: gold
+color: yellow
 description: 'Global Project Manager (PM) — handles overall project governance, initial request triage, subagent dispatch, quality gates, and finalization commits. Use when: "triage user request", "dispatch subagents", "run quality gate checks", "finalize task", "prepare memory logs".'
 
 examples:
