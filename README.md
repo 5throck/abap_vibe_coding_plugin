@@ -184,3 +184,7 @@ The reference project provides additional context not included in this plugin:
 ## License
 
 AGPL v3 — see [LICENSE](./LICENSE) for details.
+
+---
+
+*Last Updated: 2026-05-19*

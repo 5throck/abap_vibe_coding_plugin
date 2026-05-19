@@ -184,3 +184,7 @@ Write/Edit 툴 호출 이후 `PostToolUse` 훅이 실행되어 `scripts/sync-md.
 ## 라이선스
 
 AGPL v3 — 자세한 내용은 [LICENSE](./LICENSE)를 참고하세요.
+
+---
+
+*Last Updated: 2026-05-19*
