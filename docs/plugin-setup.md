@@ -83,7 +83,7 @@ Create a `.claude/settings.json` file in the root of your consumer repository to
 Create a `.env` file at the root of your consumer repository to define SAP connection credentials:
 
 ```bash
-SAP_URL=http://vhcalnplci:50000
+SAP_URL=https://vhcalnplci:44300
 SAP_USER=DEVELOPER
 SAP_PASSWORD=your-sap-password
 SAP_CLIENT=001

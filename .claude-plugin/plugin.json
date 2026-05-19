@@ -1,52 +1,70 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "abap-harness-engineering",
+  "displayName": "ABAP Harness Engineering",
   "version": "0.1.0",
-  "description": "AI Harness Engineering framework for SAP ABAP development with agents, skills, commands, and MCP integration for the full ABAP lifecycle.",
+  "description": "AI Harness Engineering framework for SAP ABAP development — 19 agents, 8 skills, 7 commands, and MCP integration for the full ABAP lifecycle.",
   "author": {
     "name": "5throck",
     "url": "https://github.com/5throck/abap_vibe_coding_plugin"
   },
-  "license": "AGPL-3.0",
-  "keywords": ["sap", "abap", "harness", "mcp", "erp", "vsp"],
-  "commands": [
-    {"name": "celebrate", "path": "commands/celebrate.md"},
-    {"name": "memlog", "path": "commands/memlog.md"},
-    {"name": "new-task", "path": "commands/new-task.md"},
-    {"name": "post-write", "path": "commands/post-write.md"},
-    {"name": "sync", "path": "commands/sync.md"},
-    {"name": "transport", "path": "commands/transport.md"},
-    {"name": "triage", "path": "commands/triage.md"}
-  ],
-  "agents": [
-    {"name": "architect", "path": "agents/architect.md"},
-    {"name": "co-analyst", "path": "agents/co-analyst.md"},
-    {"name": "code-writer", "path": "agents/code-writer.md"},
-    {"name": "dba", "path": "agents/dba.md"},
-    {"name": "devops-admin", "path": "agents/devops-admin.md"},
-    {"name": "fi-analyst", "path": "agents/fi-analyst.md"},
-    {"name": "fiori-developer", "path": "agents/fiori-developer.md"},
-    {"name": "form-expert", "path": "agents/form-expert.md"},
-    {"name": "gui-scripter", "path": "agents/gui-scripter.md"},
-    {"name": "interface-expert", "path": "agents/interface-expert.md"},
-    {"name": "le-analyst", "path": "agents/le-analyst.md"},
-    {"name": "mm-analyst", "path": "agents/mm-analyst.md"},
-    {"name": "pm", "path": "agents/pm.md"},
-    {"name": "pp-analyst", "path": "agents/pp-analyst.md"},
-    {"name": "read-only-analyst", "path": "agents/read-only-analyst.md"},
-    {"name": "sap-investigator", "path": "agents/sap-investigator.md"},
-    {"name": "schema-inspector", "path": "agents/schema-inspector.md"},
-    {"name": "sd-analyst", "path": "agents/sd-analyst.md"},
-    {"name": "test-runner", "path": "agents/test-runner.md"}
-  ],
-  "skills": [
-    {"name": "abap-dev", "path": "skills/abap-dev/SKILL.md"},
-    {"name": "post-write-chain", "path": "skills/post-write-chain/SKILL.md"},
-    {"name": "sap-co", "path": "skills/sap-co/SKILL.md"},
-    {"name": "sap-fi", "path": "skills/sap-fi/SKILL.md"},
-    {"name": "sap-le", "path": "skills/sap-le/SKILL.md"},
-    {"name": "sap-mm", "path": "skills/sap-mm/SKILL.md"},
-    {"name": "sap-pp", "path": "skills/sap-pp/SKILL.md"},
-    {"name": "sap-sd", "path": "skills/sap-sd/SKILL.md"}
-  ],
-  "hooks": "hooks/hooks.json"
+  "homepage": "https://github.com/5throck/abap_vibe_coding_plugin#readme",
+  "repository": "https://github.com/5throck/abap_vibe_coding_plugin",
+  "license": "AGPL-3.0-only",
+  "keywords": ["sap", "abap", "harness", "mcp", "erp", "vsp", "abap-dev", "s4hana"],
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": {
+    "abap": {
+      "command": "vsp",
+      "args": ["--mode", "hyperfocused"],
+      "env": {
+        "SAP_URL": "${user_config.sap_url}",
+        "SAP_USER": "${user_config.sap_user}",
+        "SAP_PASSWORD": "${user_config.sap_password}",
+        "SAP_CLIENT": "${user_config.sap_client}",
+        "SAP_LANGUAGE": "EN",
+        "SAP_MODE": "hyperfocused",
+        "SAP_ALLOWED_PACKAGES": "Z*,$TMP,$ZADT_VSP,$VSP_ADT",
+        "SAP_FEATURE_ABAPGIT": "on",
+        "SAP_FEATURE_TRANSPORT": "on",
+        "SAP_FEATURE_UI5": "on",
+        "SAP_FEATURE_RAP": "on"
+      }
+    },
+    "abap-docs": {
+      "type": "http",
+      "url": "https://mcp-abap.marianzeis.de/mcp"
+    },
+    "sap-docs": {
+      "type": "http",
+      "url": "https://mcp-sap-docs.marianzeis.de/mcp"
+    }
+  },
+  "userConfig": {
+    "sap_url": {
+      "type": "string",
+      "title": "SAP System URL",
+      "description": "Your SAP system URL including port (e.g. https://your-host:44300)",
+      "required": true
+    },
+    "sap_user": {
+      "type": "string",
+      "title": "SAP User",
+      "description": "Your SAP user ID (e.g. DEVELOPER)",
+      "required": true
+    },
+    "sap_password": {
+      "type": "string",
+      "title": "SAP Password",
+      "description": "Your SAP password — stored securely in the system keychain",
+      "sensitive": true,
+      "required": true
+    },
+    "sap_client": {
+      "type": "string",
+      "title": "SAP Client",
+      "description": "SAP client number (e.g. 100)",
+      "default": "100"
+    }
+  }
 }
