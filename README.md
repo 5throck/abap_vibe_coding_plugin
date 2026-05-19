@@ -1,6 +1,6 @@
 # abap-harness-engineering
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](./LICENSE)
 
 A Claude Code plugin providing a complete AI Harness Engineering framework for SAP ABAP development. Includes 15 specialized agents, 8 skills, 7 commands, and MCP integration via the `vsp` server.
 
@@ -28,9 +28,10 @@ bash $CLAUDE_PLUGIN_ROOT/scripts/install-vsp.sh
 
 **Option B: Build from source**
 ```bash
-go install github.com/5throck/vsp/cmd/vsp@latest
-# Then copy to plugin root:
-cp $(go env GOPATH)/bin/vsp $CLAUDE_PLUGIN_ROOT/vsp
+git clone https://github.com/oisee/vibing-steampunk
+cd vibing-steampunk
+go build -o vsp ./cmd/vsp   # Windows: go build -o vsp.exe ./cmd/vsp
+cp vsp $CLAUDE_PLUGIN_ROOT/vsp
 ```
 
 ### 2. Configure SAP Connection
@@ -135,4 +136,4 @@ A `PostToolUse` hook fires after every Write/Edit tool call and runs `scripts/sy
 
 ## License
 
-AGPL v3 — see [LICENSE](https://www.gnu.org/licenses/agpl-3.0) for details.
+AGPL v3 — see [LICENSE](./LICENSE) for details.

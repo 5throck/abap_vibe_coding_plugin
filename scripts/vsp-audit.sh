@@ -14,7 +14,7 @@ if [ -n "$ABS_PATHS" ]; then
 fi
 
 # 2. Link Integrity & Path Style Check
-find . -name "*.md" -not -path "*/node_modules/*" -not -path "*/.git/*" | while read -r file; do
+while read -r file; do
     # Check for backslashes in markdown links (Windows-only style)
     if grep -q '\[.*\](.*\\.*)' "$file"; then
         echo "  [!] Cross-Platform: Backslash found in link in $file. Use forward slashes (/) for compatibility."
@@ -31,7 +31,7 @@ find . -name "*.md" -not -path "*/node_modules/*" -not -path "*/.git/*" | while 
             FAILED=1
         fi
     done
-done
+done < <(find . -name "*.md" -not -path "*/node_modules/*" -not -path "*/.git/*")
 
 # 3. Script Pairing Check
 for script in scripts/*; do

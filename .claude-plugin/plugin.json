@@ -4,7 +4,7 @@
   "description": "AI Harness Engineering framework for SAP ABAP development — agents, skills, commands, and MCP integration for the full ABAP lifecycle.",
   "author": {
     "name": "5throck",
-    "url": "https://github.com/5throck/abap-harness-engineering"
+    "url": "https://github.com/5throck/abap_vibe_coding_plugin"
   },
   "license": "AGPL-3.0",
   "keywords": ["sap", "abap", "harness", "mcp", "erp", "vsp"]

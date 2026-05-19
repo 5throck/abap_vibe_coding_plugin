@@ -1,0 +1,9 @@
+scratch/*.md
+memory/*.md
+vsp
+vsp.exe
+.env
+.mcp.json.local
+.local/
+.DS_Store
+Thumbs.db

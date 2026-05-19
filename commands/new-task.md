@@ -9,11 +9,24 @@ allowed-tools: ["Bash"]
 
 Create a new task file in scratch/ from the task template.
 
-Run the following command, where $ARGUMENTS is used as the task name:
+Run the appropriate command for the current platform, where $ARGUMENTS is used as the task name:
 
+**Windows (Git Bash / MSYS):**
 ```bash
 bash $CLAUDE_PLUGIN_ROOT/scripts/vsp-task.sh "$ARGUMENTS"
 ```
+
+**Windows (PowerShell):**
+```powershell
+powershell -ExecutionPolicy Bypass -File "$env:CLAUDE_PLUGIN_ROOT\scripts\vsp-task.ps1" -Name "$ARGUMENTS"
+```
+
+**macOS / Linux:**
+```bash
+bash $CLAUDE_PLUGIN_ROOT/scripts/vsp-task.sh "$ARGUMENTS"
+```
+
+Detect the platform automatically using `$OSTYPE` and run the correct script.
 
 If $ARGUMENTS is empty, use "new-task" as the default name.
 
