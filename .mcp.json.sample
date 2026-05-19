@@ -5,6 +5,10 @@
       "args": ["--mode", "hyperfocused"],
       "env": {
         "VSP_MODE": "hyperfocused",
+        "VSP_HOST": "https://your-sap-host:44300",
+        "VSP_USER": "YOURUSER",
+        "VSP_PASSWORD": "yourpassword",
+        "VSP_CLIENT": "100",
         "VSP_ALLOWED_PACKAGES": "Z*,$TMP,$ZADT_VSP,$VSP_ADT",
         "VSP_FEATURE_ABAPGIT": "on",
         "VSP_FEATURE_TRANSPORT": "on",

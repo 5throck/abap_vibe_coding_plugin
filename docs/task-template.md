@@ -28,20 +28,20 @@
 > Wait for all 3 results before proceeding to §1 Business Analysis.
 
 ```
-Agent 1 — sap-investigator
+Agent 1 — sap-investigator  (prompt: agents/sap-investigator.md)
   Task: Scan existing codebase for related objects
   Input: package=$TMP, keywords=["<keyword1>", "<keyword2>"]
   Expected output: matching object list + source snippets
 
-Agent 2 — read-only-analyst
+Agent 2 — read-only-analyst  (prompt: agents/read-only-analyst.md)
   Task: Query SAP tables for AS-IS data
-  Input: module=<SD|MM|FI|...>
+  Input: module=<SD|MM|FI|...>, context_file=docs/task-template.md
   Queries to run:
     - <!-- AS-IS query 1 -->
     - <!-- AS-IS query 2 -->
   Expected output: PRD draft with AS-IS findings and AC candidates
 
-Agent 3 — schema-inspector
+Agent 3 — schema-inspector  (prompt: agents/schema-inspector.md)
   Task: Inspect table structures and CDS dependencies
   Input: tables=["<TABLE1>", "<TABLE2>"], cds_views=["<VIEW1>"]
   Expected output: field lists, key fields, CDS dependency tree
