@@ -9,23 +9,6 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-### Changed
-- `plugin.json`: rewritten to full marketplace schema (added `$schema`, `displayName`, `repository`, `homepage`, `mcpServers`, `userConfig`; removed explicit component arrays in favour of auto-discovery)
-- `plugin.json`: license identifier updated from `AGPL-3.0` to `AGPL-3.0-only` (current SPDX 3.x standard)
-- `hooks/hooks.json`: added missing top-level `"hooks"` wrapper; removed invalid `SessionStart` event (not a supported Claude Code hook); replaced `$CLAUDE_PLUGIN_ROOT` with `${CLAUDE_PLUGIN_ROOT}`
-- `CLAUDE.md`: clarified difference between marketplace `userConfig` and standalone `.mcp.json` credential flows
-- `docs/plugin-setup.md`: corrected example SAP URL from `http://vhcalnplci:50000` to `https://vhcalnplci:44300` (HTTPS ADT port)
-
-### Fixed
-- Agent `color` values corrected to allowed set (`blue`, `cyan`, `green`, `yellow`, `magenta`, `red`):
-  - `pm`: `gold` → `yellow`
-  - `devops-admin`: `orange` → `yellow`
-  - `dba`, `read-only-analyst`, `sap-investigator`, `schema-inspector`: `purple` → `magenta`
-- `agents/pm.md`: removed non-existent `browser_subagent` tool reference
-
-### Added
-- `CHANGELOG.md` (this file)
-
 ---
 
 ## [0.1.0] — 2026-05-19
@@ -39,3 +22,20 @@ Versions follow [Semantic Versioning](https://semver.org/).
 - **Cross-platform hooks**: PostToolUse sync-md with bash → pwsh → powershell fallback
 - **Scripts**: install-vsp, sync-md, vsp-audit, vsp-sync, vsp-task (`.sh` + `.ps1` pairs)
 - **Docs**: abap-dev-rules, plugin-setup, prd-template, security, task-template, testing-guidelines
+- `CHANGELOG.md` (this file)
+
+### Changed
+- `plugin.json`: rewritten to full marketplace schema (added `$schema`, `displayName`, `repository`, `homepage`, `mcpServers`, `userConfig`; removed explicit component arrays in favour of auto-discovery)
+- `plugin.json`: license identifier updated from `AGPL-3.0` to `AGPL-3.0-only` (current SPDX 3.x standard)
+- `hooks/hooks.json`: added missing top-level `"hooks"` wrapper; removed invalid `SessionStart` event (not a supported Claude Code hook); replaced `$CLAUDE_PLUGIN_ROOT` with `${CLAUDE_PLUGIN_ROOT}`
+- `CLAUDE.md`: clarified difference between marketplace `userConfig` and standalone `.mcp.json` credential flows
+- `docs/plugin-setup.md`: corrected example SAP URL from `http://vhcalnplci:50000` to `https://vhcalnplci:44300` (HTTPS ADT port)
+- `scripts/vsp-audit.ps1`: enforced script pairing (removed `sync-md` exemption, activated `$failed = $true`); added Check 5 — MCP prefix consistency (detects `VSP_*` env vars in `.mcp.json`)
+- `scripts/vsp-audit.sh`: added Check 5 — MCP prefix consistency (detects `VSP_*` env vars in `.mcp.json`)
+
+### Fixed
+- Agent `color` values corrected to allowed set (`blue`, `cyan`, `green`, `yellow`, `magenta`, `red`):
+  - `pm`: `gold` → `yellow`
+  - `devops-admin`: `orange` → `yellow`
+  - `dba`, `read-only-analyst`, `sap-investigator`, `schema-inspector`: `purple` → `magenta`
+- `agents/pm.md`: removed non-existent `browser_subagent` tool reference
