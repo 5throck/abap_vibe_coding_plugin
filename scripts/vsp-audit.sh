@@ -1,12 +1,13 @@
 #!/bin/bash
 # scripts/vsp-audit.sh
 # Cross-platform documentation audit (Unix: macOS/Linux)
+# Note: Intentionally omits 'set -e' — runs all checks to report every issue at once.
 
 FAILED=0
 echo "--- Documentation Audit (Unix) ---"
 
 # 1. Absolute Path Check
-ABS_PATHS=$(grep -rEi "[A-Z]:\\\\|/Users/|/home/" . --include="*.md" | grep -vE "node_modules|\.git|\.claude|\.gemini|setup-guide.md|antigravity-setup.md")
+ABS_PATHS=$(grep -rEi "[A-Z]:\\\\|/Users/|/home/" . --include="*.md" | grep -vE "node_modules|\.git|\.claude|\.gemini|setup-guide.md|antigravity-setup.md|plugin-setup.md")
 if [ -n "$ABS_PATHS" ]; then
     echo "  [!] Absolute paths detected!"
     echo "$ABS_PATHS" | head -n 5

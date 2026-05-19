@@ -1,6 +1,6 @@
 # Task Handoff Template
 
-> **Usage**: Copy this file to `scratch/task-YYYY-MM-DD-NNN.md` at the start of each task.
+> **Usage**: Copy this file to `scratch/tasks/task-YYYY-MM-DD-NNN.md` at the start of each task.
 > Each agent fills in their section, then passes to the next role.
 > The PM archives the completed file to `memory/YYYY-MM-DD.md` after git commit.
 
@@ -35,7 +35,7 @@ Agent 1 — sap-investigator  (prompt: agents/sap-investigator.md)
 
 Agent 2 — read-only-analyst  (prompt: agents/read-only-analyst.md)
   Task: Query SAP tables for AS-IS data
-  Input: module=<SD|MM|FI|...>, context_file=skills/sap-<module>/SKILL.md
+  Input: module=<SD|MM|FI|...>, context_file=agents/<module>-analyst.md
   Queries to run:
     - <!-- AS-IS query 1 -->
     - <!-- AS-IS query 2 -->
@@ -55,6 +55,7 @@ Agent 3 — schema-inspector  (prompt: agents/schema-inspector.md)
 ## 1. Business Analysis
 
 **Agent**: <!-- e.g., SD Analyst -->
+**Context file loaded**: `agents/<module>-analyst.md`
 
 ### AS-IS
 
@@ -89,6 +90,7 @@ Agent 3 — schema-inspector  (prompt: agents/schema-inspector.md)
 
 ## 1-A. Governance Approval
 
+> See [skills/abap-dev/SKILL.md § sap:impact-architecture](../skills/abap-dev/SKILL.md) for the impact analysis pattern.
 > PM must obtain explicit approval before proceeding to Technical Design.
 
 **Agent**: PM (with Architect input)
@@ -140,43 +142,46 @@ Agent 3 — schema-inspector  (prompt: agents/schema-inspector.md)
 
 ### Execution Plan
 
+> Copy the applicable pattern below. Parallel blocks must complete before the first serial step.
+
 **Pattern A — Small edit (single object, <50 lines)**
 ```
 [parallel — dispatch as subagents in one message]
   Agent(sap-investigator): GrepObjects(object_url, "<old_string_pattern>")
-  Agent(schema-inspector): GetSource(type, name)
+  Agent(schema-inspector): GetSource(type, name)  ← confirm current state
 
 [serial — PM executes directly, do NOT delegate]
   SyntaxCheck(object_url)
   EditSource(object_url, old_string, new_string)
   RunUnitTests(object_url)
+  RunATCCheck(object_url)
   memory log → git commit
 ```
 
 **Pattern B — New object or full rewrite**
 ```
 [parallel — dispatch as subagents in one message]
-  Agent(sap-investigator): GrepPackages(packages, pattern)
-  Agent(read-only-analyst): RunQuery(...)
-  Agent(schema-inspector): GetTable(table_name) × N
+  Agent(sap-investigator): GrepPackages(packages, pattern)  ← avoid naming conflicts
+  Agent(read-only-analyst): RunQuery(...)  ← validate data model assumptions
+  Agent(schema-inspector): GetTable(table_name) × N  ← all dependent tables
 
 [serial — PM executes directly]
   WriteSource(object_url, source, mode=create|update)
   SyntaxCheck(object_url)
   RunUnitTests(object_url)
+  RunATCCheck(object_url)
   memory log → git commit
 ```
 
 **Pattern C — Multi-object refactor**
 ```
 [parallel — dispatch as subagents in one message]
-  Agent(sap-investigator): GrepPackages(packages, old_pattern)
-  Agent(schema-inspector): GetCDSDependencies(ddls_name)
+  Agent(sap-investigator): GrepPackages(packages, old_pattern)  ← find all occurrences
+  Agent(schema-inspector): GetCDSDependencies(ddls_name)  ← impact on CDS layer
 
 [serial per object — never parallelize writes]
   for each object in impact_list:
-    SyntaxCheck → EditSource(replace_all=true) → verify
-  RunUnitTests(all affected objects)
+    SyntaxCheck → EditSource(replace_all=true) → RunUnitTests → RunATCCheck
   memory log → git commit
 ```
 
@@ -256,7 +261,7 @@ Agent 3 — schema-inspector  (prompt: agents/schema-inspector.md)
 
 ### Memory Log Entry
 
-Append to `memory/YYYY-MM-DD.md`:
+Append to `../memory/YYYY-MM-DD.md`:
 
 ```markdown
 ## <Object Name> (<Object Type>)

@@ -1,11 +1,11 @@
-# abap-harness-engineering
+﻿# abap-harness-engineering
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](./LICENSE)
 
 A Claude Code plugin providing a complete **AI Harness Engineering** framework for SAP ABAP development. Includes 15 specialized agents, 8 skills, 7 commands, and MCP integration via the `vsp` server.
 
 > **What is Harness Engineering?**
-> A methodology where specialized AI agents collaborate within a structured environment — ensuring AI-driven SAP development is predictable, governed, and auditable. The PM-led governance model mirrors a real software engineering team: business analysts define requirements, architects design the solution, developers implement it, and QA verifies it. See the [reference implementation →](#reference-implementation-abap_vibe_coding)
+> A methodology where specialized AI agents collaborate within a structured environment - ensuring AI-driven SAP development is predictable, governed, and auditable. The PM-led governance model mirrors a real software engineering team: business analysts define requirements, architects design the solution, developers implement it, and QA verifies it. See the [reference implementation ->](#reference-implementation-abap_vibe_coding)
 
 ---
 
@@ -27,6 +27,10 @@ A Claude Code plugin providing a complete **AI Harness Engineering** framework f
 ---
 
 ## Installation
+
+For a step-by-step walk-through on installing, registering the plugin hooks, and connecting your first consumer repository, please see:
+
+* **[docs/plugin-setup.md](./docs/plugin-setup.md)**
 
 ### 1. Install the vsp Binary
 
@@ -65,13 +69,13 @@ Or set them in your shell profile / Claude Code environment.
 cc --plugin-dir /path/to/abap-harness-engineering
 ```
 
-**From Marketplace:** Install via Claude Code settings → Plugins → Search "abap-harness-engineering"
+**From Marketplace:** Install via Claude Code settings -> Plugins -> Search "abap-harness-engineering"
 
 ---
 
 ## Usage
 
-### Quick Start — Triage a Task
+### Quick Start - Triage a Task
 
 ```
 /triage Fix the SD billing report for customer 1000
@@ -79,7 +83,7 @@ cc --plugin-dir /path/to/abap-harness-engineering
 
 This will:
 1. Detect the SD module
-2. Create a task file in `scratch/`
+2. Create a task file in `scratch/tasks/`
 3. Generate parallel dispatch blocks for 3 read-only agents
 
 ### Transport Management
@@ -111,71 +115,74 @@ This will:
 
 ```
 Phase 1 (Parallel): sap-investigator + read-only-analyst + schema-inspector
-        ↓
-Phase 2 (Serial):   architect → code-writer
-        ↓
+        |
+Phase 2 (Serial):   architect -> code-writer
+        |
 Phase 3 (Serial):   test-runner
-        ↓
-Phase 4:            /post-write → /transport release → /sync
+        |
+Phase 4:            /post-write -> /transport release -> /sync
 ```
 
 ### Agent Roles
 
 | Agent | Phase | Parallelizable |
 |-------|-------|:--------------:|
-| sap-investigator | 1 | ✅ |
-| read-only-analyst | 1 | ✅ |
-| schema-inspector | 1 | ✅ |
-| sd/mm/fi/co/pp/le-analyst | 1 | ✅ |
-| architect | 2 | ❌ |
-| code-writer | 2 | ❌ |
-| fiori-developer | 2 | ❌ (writes) |
-| form-expert | 2 | ❌ (writes) |
-| gui-scripter | 2 | ❌ |
-| test-runner | 3 | ❌ |
+| sap-investigator | 1 | Parallel |
+| read-only-analyst | 1 | Parallel |
+| schema-inspector | 1 | Parallel |
+| sd/mm/fi/co/pp/le-analyst | 1 | Parallel |
+| architect | 2 | Serial |
+| code-writer | 2 | Serial |
+| fiori-developer | 2 | Design parallel / write serial |
+| form-expert | 2 | Design parallel / write serial |
+| gui-scripter | 2 | Serial |
+| test-runner | 3 | Serial after write |
 
 ---
 
 ## MCP Configuration
 
-The plugin configures the `vsp` MCP server automatically. The server runs in `hyperfocused` mode with access to `Z*`, `$TMP`, `$ZADT_VSP`, and `$VSP_ADT` packages.
+The plugin provides MCP configuration assets and integration. Note that the consumer project still needs `.mcp.json` or target environment variables configured in its root directory to initialize the connection. The server runs in `hyperfocused` mode with access to `Z*`, `$TMP`, `$ZADT_VSP`, and `$VSP_ADT` packages.
 
 Supported features:
-- `VSP_FEATURE_ABAPGIT=on` — abapGit integration
-- `VSP_FEATURE_TRANSPORT=on` — CTS transport management
-- `VSP_FEATURE_UI5=on` — Fiori/UI5 support
-- `VSP_FEATURE_RAP=on` — ABAP RESTful Application Programming
+- `VSP_FEATURE_ABAPGIT=on` - abapGit integration
+- `VSP_FEATURE_TRANSPORT=on` - CTS transport management
+- `VSP_FEATURE_UI5=on` - Fiori/UI5 support
+- `VSP_FEATURE_RAP=on` - ABAP RESTful Application Programming
 
-In addition to the `vsp` server, the plugin registers two documentation MCP servers:
-- `abap-docs` — ABAP language reference and object search via [mcp-abap.marianzeis.de](https://mcp-abap.marianzeis.de)
-- `sap-docs` — SAP Help Portal search via [mcp-sap-docs.marianzeis.de](https://mcp-sap-docs.marianzeis.de)
+In addition to the `vsp` server, the provided MCP configuration sample includes two documentation MCP servers:
+- `abap-docs` - ABAP language reference and object search via [mcp-abap.marianzeis.de](https://mcp-abap.marianzeis.de)
+- `sap-docs` - SAP Help Portal search via [mcp-sap-docs.marianzeis.de](https://mcp-sap-docs.marianzeis.de)
 
 ---
 
 ## Hooks
 
-A `PostToolUse` hook fires after every Write/Edit tool call and runs `scripts/sync-md.sh` for documentation audit.
+In Claude Code CLI sessions, a `PostToolUse` hook fires after every Write/Edit tool call and runs `scripts/sync-md.sh` for documentation audit.
 
-> **Note**: Hooks do not fire in Claude Code Desktop App. Run `/post-write` manually after each ABAP write in Desktop sessions.
+> **Note**: Hooks do not fire in Claude Code Desktop App. Run `/post-write` manually after each ABAP write in Desktop sessions. Also, note that automatic hooks rely on the `CLAUDE_PLUGIN_ROOT` environment variable being populated by the plugin runtime. For direct manual testing or execution outside the hook lifecycle, execute `scripts/sync-md.sh` or `scripts/sync-md.ps1` directly from your workspace root.
 
 ---
 
 ## Reference Implementation: abap_vibe_coding
 
-This plugin is the packaged, distributable form of the **[5throck/abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)** project — a fully operational Harness Engineering environment used in live SAP ABAP development.
+This plugin is the packaged, distributable form of the **[5throck/abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)** project. 
 
-The reference project provides additional context not included in this plugin:
+> **Note**: This plugin intentionally excludes live memory logs, scratch files, and full governance docs (like `AGENTS.md`, `docs/context.md`, and `docs/tooling-matrix.md`) to maintain it as a lightweight, executable package. Additionally, Gemini/Codex-specific configurations (such as `GEMINI.md` and `.codex/`) are omitted and remain in the reference implementation or consumer project. 
+
+The reference project provides the complete operational context not included in this plugin:
 
 | Resource | Description |
 |----------|-------------|
 | [AGENTS.md](https://github.com/5throck/abap_vibe_coding/blob/main/AGENTS.md) | Full agent role definitions, handoff protocols, and governance model |
 | [docs/context.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md) | Shared project context: codebase map, build commands, ABAP dev rules |
 | [docs/setup-guide.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/setup-guide.md) | Step-by-step environment setup (MCP, SAP ADT, abapGit, AI agents) |
-| [docs/task-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/task-template.md) | Full task handoff template (§0 Triage → §5 Finalization) |
+| [docs/task-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/task-template.md) | Full task handoff template (§0 Triage -> §5 Finalization) |
 | [docs/testing-guidelines.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/testing-guidelines.md) | ABAP Unit test standards and ATC priority thresholds |
 | [docs/prd-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/prd-template.md) | PRD / Acceptance Criteria template for business analysis |
 | [docs/security.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/security.md) | Sanitization policy for tracked docs and pre-commit scan rules |
 | [memory/MEMORY.md](https://github.com/5throck/abap_vibe_coding/blob/main/memory/MEMORY.md) | Index of development history and architectural decisions |
+| [docs/plugin-setup.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/plugin-setup.md) | Setup guide for the Claude Code plugin |
 
 > The reference project contains the same agents, skills, and commands as this plugin, plus live scratch files, memory logs, and session history from real development work.
 
@@ -183,7 +190,7 @@ The reference project provides additional context not included in this plugin:
 
 ## License
 
-AGPL v3 — see [LICENSE](./LICENSE) for details.
+AGPL v3 - see [LICENSE](./LICENSE) for details.
 
 ---
 
