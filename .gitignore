@@ -3,8 +3,12 @@ memory/*.md
 vsp
 vsp.exe
 .env
+.env.*
 .mcp.json
 .mcp.json.local
 .local/
+.gemini/
+.claude/worktrees/
+.agents/
 .DS_Store
 Thumbs.db
