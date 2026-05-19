@@ -5,7 +5,7 @@
       "hooks": [
         {
           "type": "command",
-          "command": "bash $CLAUDE_PLUGIN_ROOT/scripts/sync-md.sh",
+          "command": "bash \"$CLAUDE_PLUGIN_ROOT/scripts/sync-md.sh\" 2>/dev/null || pwsh -NonInteractive -File \"$CLAUDE_PLUGIN_ROOT/scripts/sync-md.ps1\" 2>/dev/null || powershell -NonInteractive -File \"$CLAUDE_PLUGIN_ROOT/scripts/sync-md.ps1\"",
           "timeout": 30
         }
       ]

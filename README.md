@@ -147,8 +147,8 @@ Supported features:
 - `VSP_FEATURE_RAP=on` — ABAP RESTful Application Programming
 
 In addition to the `vsp` server, the plugin registers two documentation MCP servers:
-- `abap-docs` — ABAP language reference and object search via [mcp.abap.help](https://mcp.abap.help)
-- `sap-docs` — SAP Help Portal search via [mcp.sap.help](https://mcp.sap.help)
+- `abap-docs` — ABAP language reference and object search via [mcp-abap.marianzeis.de](https://mcp-abap.marianzeis.de)
+- `sap-docs` — SAP Help Portal search via [mcp-sap-docs.marianzeis.de](https://mcp-sap-docs.marianzeis.de)
 
 ---
 
@@ -184,3 +184,7 @@ The reference project provides additional context not included in this plugin:
 ## License
 
 AGPL v3 — see [LICENSE](./LICENSE) for details.
+
+---
+
+*Last Updated: 2026-05-19*
