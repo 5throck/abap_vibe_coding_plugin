@@ -11,9 +11,17 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.2.0] — 2026-05-19
+## [0.1.0] — 2026-05-19
 
 ### Added
+- Initial release of the ABAP Harness Engineering plugin
+- **19 Agents**: pm, architect, code-writer, dba, devops-admin, fiori-developer, form-expert, gui-scripter, interface-expert, test-runner, read-only-analyst, sap-investigator, schema-inspector, and 6 module analysts (sd, mm, fi, co, pp, le)
+- **8 Skills**: abap-dev, post-write-chain, sap-sd, sap-mm, sap-fi, sap-co, sap-pp, sap-le
+- **7 Commands**: triage, new-task, sync, transport, post-write, memlog, celebrate
+- **MCP integration**: vsp (hyperfocused mode), abap-docs, sap-docs
+- **Cross-platform hooks**: PostToolUse sync-md with bash → pwsh → powershell fallback
+- **Scripts**: install-vsp, sync-md, vsp-audit, vsp-sync, vsp-task (`.sh` + `.ps1` pairs)
+- **Docs**: abap-dev-rules, plugin-setup, prd-template, security, task-template, testing-guidelines
 - `CHANGELOG.md` (this file)
 
 ### Changed
@@ -31,17 +39,3 @@ Versions follow [Semantic Versioning](https://semver.org/).
   - `devops-admin`: `orange` → `yellow`
   - `dba`, `read-only-analyst`, `sap-investigator`, `schema-inspector`: `purple` → `magenta`
 - `agents/pm.md`: removed non-existent `browser_subagent` tool reference
-
----
-
-## [0.1.0] — 2026-05-19
-
-### Added
-- Initial release of the ABAP Harness Engineering plugin
-- **19 Agents**: pm, architect, code-writer, dba, devops-admin, fiori-developer, form-expert, gui-scripter, interface-expert, test-runner, read-only-analyst, sap-investigator, schema-inspector, and 6 module analysts (sd, mm, fi, co, pp, le)
-- **8 Skills**: abap-dev, post-write-chain, sap-sd, sap-mm, sap-fi, sap-co, sap-pp, sap-le
-- **7 Commands**: triage, new-task, sync, transport, post-write, memlog, celebrate
-- **MCP integration**: vsp (hyperfocused mode), abap-docs, sap-docs
-- **Cross-platform hooks**: PostToolUse sync-md with bash → pwsh → powershell fallback
-- **Scripts**: install-vsp, sync-md, vsp-audit, vsp-sync, vsp-task (`.sh` + `.ps1` pairs)
-- **Docs**: abap-dev-rules, plugin-setup, prd-template, security, task-template, testing-guidelines
