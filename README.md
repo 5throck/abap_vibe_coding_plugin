@@ -1,8 +1,8 @@
-﻿# abap-harness-engineering
+# abap-harness-engineering
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](./LICENSE)
 
-A Claude Code plugin providing a complete **AI Harness Engineering** framework for SAP ABAP development. Includes 15 specialized agents, 8 skills, 7 commands, and MCP integration via the `vsp` server.
+A Claude Code plugin providing a complete **AI Harness Engineering** framework for SAP ABAP development. Includes 19 specialized agents, 8 skills, 7 commands, and MCP integration via the `vsp` server.
 
 > **What is Harness Engineering?**
 > A methodology where specialized AI agents collaborate within a structured environment - ensuring AI-driven SAP development is predictable, governed, and auditable. The PM-led governance model mirrors a real software engineering team: business analysts define requirements, architects design the solution, developers implement it, and QA verifies it. See the [reference implementation ->](#reference-implementation-abap_vibe_coding)
@@ -11,7 +11,7 @@ A Claude Code plugin providing a complete **AI Harness Engineering** framework f
 
 ## Features
 
-- **15 Agents**: Technical architect, code writer, Fiori developer, form expert, GUI scripter, business analysts (SD/MM/FI/CO/PP/LE), QA runner, schema inspector, SAP investigator
+- **19 Agents**: Global PM, technical architect, code writer, DBA, Interface Expert, DevOps / Admin, Fiori developer, form expert, GUI scripter, business analysts (SD/MM/FI/CO/PP/LE), QA runner, schema inspector, SAP investigator
 - **8 Skills**: ABAP development workflows, post-write quality gate, and 6 SAP ERP module knowledge bases (SD, MM, FI, CO, PP, LE)
 - **7 Commands**: `/triage`, `/transport`, `/post-write`, `/sync`, `/new-task`, `/memlog`, `/celebrate`
 - **MCP Integration**: `vsp` server for full SAP ADT access in hyperfocused mode
@@ -127,16 +127,20 @@ Phase 4:            /post-write -> /transport release -> /sync
 
 | Agent | Phase | Parallelizable |
 |-------|-------|:--------------:|
+| pm | 1 | Serial |
 | sap-investigator | 1 | Parallel |
 | read-only-analyst | 1 | Parallel |
 | schema-inspector | 1 | Parallel |
 | sd/mm/fi/co/pp/le-analyst | 1 | Parallel |
 | architect | 2 | Serial |
+| dba | 2 | Parallel |
+| interface-expert | 2 | Parallel |
 | code-writer | 2 | Serial |
 | fiori-developer | 2 | Design parallel / write serial |
 | form-expert | 2 | Design parallel / write serial |
 | gui-scripter | 2 | Serial |
 | test-runner | 3 | Serial after write |
+| devops-admin | 4 | Serial |
 
 ---
 
@@ -145,10 +149,10 @@ Phase 4:            /post-write -> /transport release -> /sync
 The plugin provides MCP configuration assets and integration. Note that the consumer project still needs `.mcp.json` or target environment variables configured in its root directory to initialize the connection. The server runs in `hyperfocused` mode with access to `Z*`, `$TMP`, `$ZADT_VSP`, and `$VSP_ADT` packages.
 
 Supported features:
-- `VSP_FEATURE_ABAPGIT=on` - abapGit integration
-- `VSP_FEATURE_TRANSPORT=on` - CTS transport management
-- `VSP_FEATURE_UI5=on` - Fiori/UI5 support
-- `VSP_FEATURE_RAP=on` - ABAP RESTful Application Programming
+- `SAP_FEATURE_ABAPGIT=on` - abapGit integration
+- `SAP_FEATURE_TRANSPORT=on` - CTS transport management
+- `SAP_FEATURE_UI5=on` - Fiori/UI5 support
+- `SAP_FEATURE_RAP=on` - ABAP RESTful Application Programming
 
 In addition to the `vsp` server, the provided MCP configuration sample includes two documentation MCP servers:
 - `abap-docs` - ABAP language reference and object search via [mcp-abap.marianzeis.de](https://mcp-abap.marianzeis.de)

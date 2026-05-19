@@ -37,13 +37,13 @@ When this plugin is installed in a consumer project:
 | Type | Count | Location |
 |------|------:|---------|
 | Commands | 7 | `commands/` |
-| Agents | 15 | `agents/` |
+| Agents | 19 | `agents/` |
 | Skills | 8 | `skills/*/SKILL.md` |
 | Hooks | 1 | `hooks/hooks.json` |
 
 **Commands**: celebrate, memlog, new-task, post-write, sync, transport, triage
 
-**Agents**: architect, co-analyst, code-writer, fi-analyst, fiori-developer, form-expert, gui-scripter, le-analyst, mm-analyst, pp-analyst, read-only-analyst, sap-investigator, schema-inspector, sd-analyst, test-runner
+**Agents**: architect, co-analyst, code-writer, dba, devops-admin, fi-analyst, fiori-developer, form-expert, gui-scripter, interface-expert, le-analyst, mm-analyst, pm, pp-analyst, read-only-analyst, sap-investigator, schema-inspector, sd-analyst, test-runner
 
 **Skills**: abap-dev, post-write-chain, sap-co, sap-fi, sap-le, sap-mm, sap-pp, sap-sd
 
