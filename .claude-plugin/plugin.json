@@ -10,7 +10,7 @@
   },
   "homepage": "https://github.com/5throck/abap_vibe_coding_plugin#readme",
   "repository": "https://github.com/5throck/abap_vibe_coding_plugin",
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-only",
   "keywords": ["sap", "abap", "harness", "mcp", "erp", "vsp", "abap-dev", "s4hana"],
   "hooks": "./hooks/hooks.json",
   "mcpServers": {
