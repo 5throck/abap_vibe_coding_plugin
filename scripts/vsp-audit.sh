@@ -37,17 +37,26 @@ done < <(find . -name "*.md" -not -path "*/node_modules/*" -not -path "*/.git/*"
 for script in scripts/*; do
     base=$(basename "$script" | sed 's/\.[^.]*$//')
     if [ "$base" == "sync-md" ] || [ "$base" == "install-vsp" ]; then continue; fi
-
+    
     if [[ "$script" == *.sh ]]; then
         if [ ! -f "scripts/$base.ps1" ]; then
             echo "  [!] Cross-Platform: Missing .ps1 pair for '$base.sh'"
+            # FAILED=1
         fi
     elif [[ "$script" == *.ps1 ]]; then
         if [ ! -f "scripts/$base.sh" ]; then
             echo "  [!] Cross-Platform: Missing .sh pair for '$base.ps1'"
+            # FAILED=1
         fi
     fi
 done
+
+# 4. Redundancy Check
+if [ -f "CLAUDE.md" ] && [ -f "GEMINI.md" ]; then
+    if diff "CLAUDE.md" "GEMINI.md" > /dev/null; then
+        echo "  [!] Redundancy: CLAUDE.md and GEMINI.md are identical."
+    fi
+fi
 
 if [ $FAILED -ne 0 ]; then
     echo "Audit FAILED."
