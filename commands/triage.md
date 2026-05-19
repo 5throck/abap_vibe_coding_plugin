@@ -24,7 +24,7 @@ Scan `$ARGUMENTS` for these keyword groups:
 | Journal Entry, Account, GL, AR, AP, Fixed Asset, FI, FB*, BKPF, BSEG, ACDOCA | FI |
 | Cost Center, Internal Order, CO-PA, Allocation, CO, KS*, CSKS, COEP, COSP | CO |
 
-If multiple modules match, select the one with the most keyword hits.
+If multiple modules match, select the one with the most keyword hits.  
 If no module matches, assign `CROSS` and note it.
 
 ### 2. Classification
@@ -42,7 +42,7 @@ If no module matches, assign `CROSS` and note it.
 Run the task creation script:
 
 ```bash
-bash $CLAUDE_PLUGIN_ROOT/scripts/vsp-task.sh "$ARGUMENTS"
+bash "${CLAUDE_PLUGIN_ROOT:-.}/scripts/vsp-task.sh" "$ARGUMENTS"
 ```
 
 Note the generated filename (e.g., `scratch/task-2026-05-05-001.md`).
@@ -74,7 +74,7 @@ Based on the detected module, output the ready-to-use dispatch block:
 ```markdown
 ## 0-A. PM Parallel Dispatch (Phase 1 — Read-Only)
 
-Agent 1 — sap-investigator
+Agent 1 — sap-investigator  (prompt: agents/sap-investigator.md)
   Task: Scan existing codebase for related objects
   Input:
   {
@@ -85,26 +85,31 @@ Agent 1 — sap-investigator
     "max_results": 30
   }
 
-Agent 2 — read-only-analyst
+Agent 2 — read-only-analyst  (prompt: agents/read-only-analyst.md)
   Task: Query SAP tables for AS-IS data
   Input:
   {
     "task": "<$ARGUMENTS>",
     "module": "<MODULE>",
+    "context_file": "agents/<module>-analyst.md",
     "queries": [
       { "purpose": "Count affected records", "sql": "SELECT COUNT(*) FROM <MAIN_TABLE> WHERE <condition>", "max_rows": 50 }
-    ]
+    ],
+    "tables_to_inspect": ["<MODULE_TABLE_1>", "<MODULE_TABLE_2>"]
   }
 
-Agent 3 — schema-inspector
+Agent 3 — schema-inspector  (prompt: agents/schema-inspector.md)
   Task: Inspect table structures
   Input:
   {
     "task": "Provide schema context for <$ARGUMENTS>",
     "tables": ["<MODULE_TABLE_1>", "<MODULE_TABLE_2>"],
+    "cds_views": [],
     "focus": "key_fields"
   }
 ```
+
+Replace `<MODULE_TABLE_N>` with the module's standard tables from `schema-inspector.md § Standard Table Groups`.
 
 ### 6. Next Step Reminder
 
@@ -114,3 +119,7 @@ Agent 3 — schema-inspector
 ▶  Dispatch all 3 agents IN A SINGLE MESSAGE (parallel).
 ⏳ Wait for all 3 results, then synthesize into §1 Business Analysis.
 ```
+
+---
+
+*Last Updated: 2026-05-05*

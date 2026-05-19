@@ -9,8 +9,6 @@ allowed-tools: ["mcp__abap__ListTransports", "mcp__abap__CreateTransport", "mcp_
 
 Manage SAP Transport Requests (CTS) for the current task.
 
-Usage: `/transport <action> [arguments]`
-
 Supported actions:
 
 ## `list` — Show open transports
