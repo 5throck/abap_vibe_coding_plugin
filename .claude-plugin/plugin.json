@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "abap-harness-engineering",
   "displayName": "ABAP Harness Engineering",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AI Harness Engineering framework for SAP ABAP development — 19 agents, 8 skills, 7 commands, and MCP integration for the full ABAP lifecycle.",
   "author": {
     "name": "5throck",
