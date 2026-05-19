@@ -1,0 +1,76 @@
+# CLAUDE.md
+
+Claude Code configuration for the **abap-harness-engineering** plugin — an AI Harness Engineering framework for SAP ABAP development.
+
+Parent project: https://github.com/5throck/abap_vibe_coding
+
+---
+
+## Setup
+
+1. **Install the vsp binary**
+   ```bash
+   bash scripts/install-vsp.sh
+   ```
+
+2. **Configure SAP credentials**
+   ```bash
+   cp .mcp.json.sample .mcp.json
+   ```
+   Edit `.mcp.json` and fill in your SAP system URL, username, and password. This file is gitignored — never commit it.
+
+3. **Enable the MCP server** in `.claude/settings.local.json`:
+   ```json
+   { "enableAllProjectMcpServers": true }
+   ```
+
+---
+
+## Component Overview
+
+| Type | Count | Location |
+|------|------:|---------|
+| Commands | 7 | `commands/` |
+| Agents | 15 | `agents/` |
+| Skills | 8 | `skills/*/SKILL.md` |
+| Hooks | 1 | `hooks/hooks.json` |
+
+**Commands**: celebrate, memlog, new-task, post-write, sync, transport, triage
+
+**Agents**: architect, co-analyst, code-writer, fi-analyst, fiori-developer, form-expert, gui-scripter, le-analyst, mm-analyst, pp-analyst, read-only-analyst, sap-investigator, schema-inspector, sd-analyst, test-runner
+
+**Skills**: abap-dev, post-write-chain, sap-co, sap-fi, sap-le, sap-mm, sap-pp, sap-sd
+
+---
+
+## Key Workflows
+
+```
+/triage
+  → Phase 1 parallel agents (sap-investigator, read-only-analyst, schema-inspector)
+  → architect (technical design)
+  → code-writer (implementation)
+  → /post-write (quality gate: SyntaxCheck → RunUnitTests → RunATCCheck)
+  → /transport (create/release CTS transport)
+  → /sync (commit and push)
+```
+
+---
+
+## Important: Desktop App Hook Limitation
+
+**PostToolUse hooks do NOT fire in Claude Code Desktop App.**
+
+After any `WriteSource` or `EditSource` call in the Desktop App, run the quality gate manually:
+
+```
+/post-write
+```
+
+This runs SyntaxCheck → RunUnitTests → RunATCCheck. Skipping it risks committing broken code.
+
+In the CLI, the hook fires automatically via `hooks/hooks.json`.
+
+---
+
+*Last updated: 2026-05-19*
