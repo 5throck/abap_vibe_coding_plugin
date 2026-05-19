@@ -1,4 +1,6 @@
 ---
+model: inherit
+color: orange
 description: MM Module Analyst — deep domain expert for Materials Management business processes. Dispatch for business analysis of MM module tasks. Use when: "MM analyst", "purchase order analysis", "goods receipt issue", "material master", "inventory analysis", "MM module business requirements", "procure-to-pay process". Works with the read-only-analyst agent for data queries.
 
 examples:

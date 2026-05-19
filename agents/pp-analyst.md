@@ -1,4 +1,6 @@
 ---
+model: inherit
+color: orange
 description: PP Module Analyst — deep domain expert for Production Planning business processes. Dispatch for business analysis of PP module tasks. Use when: "PP analyst", "production order analysis", "BOM explosion", "MRP analysis", "routing", "work center", "PP module business requirements", "production planning". Works with the read-only-analyst agent for data queries.
 
 examples:

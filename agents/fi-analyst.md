@@ -1,4 +1,6 @@
 ---
+model: inherit
+color: orange
 description: FI Module Analyst — deep domain expert for Financial Accounting business processes. Dispatch for business analysis of FI module tasks. Use when: "FI analyst", "journal entry analysis", "GL account", "accounts payable", "accounts receivable", "financial document", "FI module business requirements", "account determination". Works with the read-only-analyst agent for data queries.
 
 examples:

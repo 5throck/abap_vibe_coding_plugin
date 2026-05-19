@@ -1,4 +1,6 @@
 ---
+model: inherit
+color: orange
 description: CO Module Analyst — deep domain expert for Controlling business processes. Dispatch for business analysis of CO module tasks. Use when: "CO analyst", "cost center analysis", "internal order", "CO-PA profitability", "cost allocation", "controlling module", "CO module business requirements". Works with the read-only-analyst agent for data queries.
 
 examples:

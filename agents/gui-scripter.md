@@ -1,4 +1,6 @@
 ---
+model: inherit
+color: yellow
 description: SAP GUI Scripting & Automation Specialist (LAST RESORT) — automation of manual SAP GUI workflows where standard APIs are unavailable. Use ONLY when no BAPI, OData service, or standard ADT API can accomplish the task. Trigger when: "automate the SAP GUI transaction", "create a BDC program", "record the transaction", "batch input for VA02". Always confirm with Interface Expert and BAPI Explorer first.
 
 examples:

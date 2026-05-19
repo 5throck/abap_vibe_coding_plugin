@@ -1,4 +1,6 @@
 ---
+model: inherit
+color: orange
 description: LE Module Analyst — deep domain expert for Logistics Execution business processes. Dispatch for business analysis of LE module tasks. Use when: "LE analyst", "delivery analysis", "shipment analysis", "warehouse management", "transfer order", "handling unit", "LE module business requirements", "logistics execution". Works with the read-only-analyst agent for data queries.
 
 examples:

@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "abap": {
-      "command": "$CLAUDE_PLUGIN_ROOT/vsp",
+      "command": "./vsp",
       "args": ["--mode", "hyperfocused"],
       "env": {
         "VSP_MODE": "hyperfocused",
