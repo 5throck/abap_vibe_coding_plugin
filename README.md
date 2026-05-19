@@ -21,17 +21,20 @@ A Claude Code plugin providing a complete AI Harness Engineering framework for S
 
 ### 1. Install the vsp Binary
 
-**Option A: Download from GitHub Releases (recommended)**
+**Unix/macOS:**
 ```bash
-bash $CLAUDE_PLUGIN_ROOT/scripts/install-vsp.sh
+bash scripts/install-vsp.sh
 ```
 
-**Option B: Build from source**
+**Windows:**
+```powershell
+.\scripts\install-vsp.ps1
+```
+
+To install a specific version, pass the tag:
 ```bash
-git clone https://github.com/oisee/vibing-steampunk
-cd vibing-steampunk
-go build -o vsp ./cmd/vsp   # Windows: go build -o vsp.exe ./cmd/vsp
-cp vsp $CLAUDE_PLUGIN_ROOT/vsp
+bash scripts/install-vsp.sh v2.38.1        # Unix/macOS
+.\scripts\install-vsp.ps1 -Version v2.38.1 # Windows
 ```
 
 ### 2. Configure SAP Connection
