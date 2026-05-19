@@ -30,7 +30,7 @@ bash $CLAUDE_PLUGIN_ROOT/scripts/install-vsp.sh
 ```bash
 git clone https://github.com/oisee/vibing-steampunk
 cd vibing-steampunk
-go build -o vsp ./cmd/vsp
+go build -o vsp ./cmd/vsp   # Windows: go build -o vsp.exe ./cmd/vsp
 cp vsp $CLAUDE_PLUGIN_ROOT/vsp
 ```
 
