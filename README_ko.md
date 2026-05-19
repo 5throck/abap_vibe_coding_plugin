@@ -1,4 +1,4 @@
-﻿# abap-harness-engineering
+# abap-harness-engineering
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](./LICENSE)
 
@@ -127,16 +127,16 @@ Phase 4:        /post-write -> /transport release -> /sync
 
 | 에이전트 | 단계 | 병렬 실행 |
 |---------|------|:---------:|
-| sap-investigator | 1 | [x] |
-| read-only-analyst | 1 | [x] |
-| schema-inspector | 1 | [x] |
-| sd/mm/fi/co/pp/le-analyst | 1 | [x] |
-| architect | 2 | [ ] |
-| code-writer | 2 | [ ] |
-| fiori-developer | 2 | [ ] (쓰기 작업) |
-| form-expert | 2 | [ ] (쓰기 작업) |
-| gui-scripter | 2 | [ ] |
-| test-runner | 3 | [ ] |
+| sap-investigator | 1 | 병렬 실행 |
+| read-only-analyst | 1 | 병렬 실행 |
+| schema-inspector | 1 | 병렬 실행 |
+| sd/mm/fi/co/pp/le-analyst | 1 | 병렬 실행 |
+| architect | 2 | 직렬 실행 |
+| code-writer | 2 | 직렬 실행 |
+| fiori-developer | 2 | 디자인 병렬 / 쓰기 직렬 |
+| form-expert | 2 | 디자인 병렬 / 쓰기 직렬 |
+| gui-scripter | 2 | 직렬 실행 |
+| test-runner | 3 | 쓰기 후 직렬 실행 |
 
 ---
 

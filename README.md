@@ -1,4 +1,4 @@
-﻿# abap-harness-engineering
+# abap-harness-engineering
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](./LICENSE)
 
@@ -127,16 +127,16 @@ Phase 4:            /post-write -> /transport release -> /sync
 
 | Agent | Phase | Parallelizable |
 |-------|-------|:--------------:|
-| sap-investigator | 1 | Yes |
-| read-only-analyst | 1 | Yes |
-| schema-inspector | 1 | Yes |
-| sd/mm/fi/co/pp/le-analyst | 1 | Yes |
-| architect | 2 | No |
-| code-writer | 2 | No |
-| fiori-developer | 2 | No (writes) |
-| form-expert | 2 | No (writes) |
-| gui-scripter | 2 | No |
-| test-runner | 3 | No |
+| sap-investigator | 1 | Parallel |
+| read-only-analyst | 1 | Parallel |
+| schema-inspector | 1 | Parallel |
+| sd/mm/fi/co/pp/le-analyst | 1 | Parallel |
+| architect | 2 | Serial |
+| code-writer | 2 | Serial |
+| fiori-developer | 2 | Design parallel / write serial |
+| form-expert | 2 | Design parallel / write serial |
+| gui-scripter | 2 | Serial |
+| test-runner | 3 | Serial after write |
 
 ---
 
