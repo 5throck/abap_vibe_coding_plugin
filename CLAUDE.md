@@ -24,6 +24,12 @@ Parent project: https://github.com/5throck/abap_vibe_coding
    { "enableAllProjectMcpServers": true }
    ```
 
+## Consumer Project Integration
+
+When this plugin is installed in a consumer project:
+- **`.mcp.json` / `.env`**: The configuration is read from the **consumer project's root directory**, not the plugin directory. Make sure `.mcp.json` or `.env` is placed in your target project.
+- **Hooks**: The plugin's `hooks/hooks.json` will automatically fire in the consumer project's CLI sessions. (CLI sessions only; Desktop App users must run `/post-write` manually.) The underlying hook scripts execute with a cross-platform fallback sequence (`bash` → `pwsh` → `powershell`) to ensure seamless execution on Windows environments.
+
 ---
 
 ## Component Overview

@@ -138,7 +138,7 @@ Phase 4:            /post-write → /transport release → /sync
 
 ## MCP Configuration
 
-The plugin configures the `vsp` MCP server automatically. The server runs in `hyperfocused` mode with access to `Z*`, `$TMP`, `$ZADT_VSP`, and `$VSP_ADT` packages.
+The plugin provides MCP configuration assets and integration. Note that the consumer project still needs `.mcp.json` or target environment variables configured in its root directory to initialize the connection. The server runs in `hyperfocused` mode with access to `Z*`, `$TMP`, `$ZADT_VSP`, and `$VSP_ADT` packages.
 
 Supported features:
 - `VSP_FEATURE_ABAPGIT=on` — abapGit integration
@@ -154,7 +154,7 @@ In addition to the `vsp` server, the plugin registers two documentation MCP serv
 
 ## Hooks
 
-A `PostToolUse` hook fires after every Write/Edit tool call and runs `scripts/sync-md.sh` for documentation audit.
+In Claude Code CLI sessions, a `PostToolUse` hook fires after every Write/Edit tool call and runs `scripts/sync-md.sh` for documentation audit.
 
 > **Note**: Hooks do not fire in Claude Code Desktop App. Run `/post-write` manually after each ABAP write in Desktop sessions.
 
@@ -162,9 +162,11 @@ A `PostToolUse` hook fires after every Write/Edit tool call and runs `scripts/sy
 
 ## Reference Implementation: abap_vibe_coding
 
-This plugin is the packaged, distributable form of the **[5throck/abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)** project — a fully operational Harness Engineering environment used in live SAP ABAP development.
+This plugin is the packaged, distributable form of the **[5throck/abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)** project. 
 
-The reference project provides additional context not included in this plugin:
+> **Note**: This plugin intentionally excludes live memory logs, scratch files, and full governance docs (like `AGENTS.md`, `docs/context.md`, and `docs/tooling-matrix.md`) to maintain it as a lightweight, executable package. Additionally, Gemini/Codex-specific configurations (such as `GEMINI.md` and `.codex/`) are omitted and remain in the reference implementation or consumer project. 
+
+The reference project provides the complete operational context not included in this plugin:
 
 | Resource | Description |
 |----------|-------------|
