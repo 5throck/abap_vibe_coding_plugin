@@ -170,7 +170,9 @@ Write/Edit 툴 호출 이후 `PostToolUse` 훅이 실행되어 `scripts/sync-md.
 
 ## 참조 구현체: abap_vibe_coding
 
-이 플러그인은 **[5throck/abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)** 프로젝트를 패키징하여 배포 가능한 형태로 만든 것입니다. 해당 프로젝트는 실제 SAP ABAP 개발에 사용되는 완전히 운영 중인 하네스 엔지니어링 환경입니다.
+이 플러그인은 **[5throck/abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)** 프로젝트를 패키징하여 배포 가능한 형태로 만든 것입니다. 
+
+> **참고**: 이 플러그인은 가볍고 실행 가능한 패키지 상태를 유지하기 위해 실제 메모리 로그, 스크래치 파일 및 전체 거버넌스 문서(`AGENTS.md`, `docs/context.md`, `docs/tooling-matrix.md` 등)를 의도적으로 제외했습니다. 또한 Gemini/Codex 전용 설정(`GEMINI.md` 및 `.codex/` 등) 역시 플러그인에서는 제외되어 참조 구현체나 소비자 프로젝트에만 존재합니다. 
 
 참조 프로젝트는 이 플러그인에 포함되지 않은 추가 컨텍스트를 제공합니다:
 
