@@ -9,6 +9,14 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added (2026-05-21)
+- `skills/sap-sd/SKILL.md`, `sap-mm`, `sap-fi`, `sap-co`, `sap-pp`, `sap-le`: Synced BAPI lifecycle expansions from the core repository.
+- `.gitignore`: Added `.claude/settings.local.json` to prevent local configurations from being committed.
+
+### Changed (2026-05-21)
+- `docs/plugin-setup.md`: Standardized environment variables to use `SAP_*` prefix instead of legacy `VSP_*` prefix.
+- `README_ko.md`: Restored and translated the missing packaging exclusions note to match the English `README.md` for 100% parity.
+
 ---
 
 ## [0.1.0] — 2026-05-19
