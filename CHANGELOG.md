@@ -9,6 +9,16 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added (2026-05-21 Project Constitution Compliance)
+- `scripts/dev-sync.sh` / `dev-sync.ps1`: Project Constitution §3 standard entry-point wrappers delegating to `vsp-sync.*`
+- `docs/context.md`: Full project context — Project Overview, Tech Stack, Architecture, Agents, Skills, Dev Workflow, Key Files, Gotchas
+- `memory/MEMORY.md`: Memory system bootstrap — log index for session development history
+- `.gitignore`: Added `!memory/MEMORY.md` exception so the index is tracked while daily logs remain gitignored
+
+### Changed (2026-05-21 Project Constitution Compliance)
+- `commands/sync.md`: Updated script invocation from `vsp-sync.sh` → `dev-sync.sh`
+- `CLAUDE.md`: Added Session Start directive, Development Commands section, Memory & Git rules; updated Last Updated to 2026-05-21
+
 ### Added (2026-05-21)
 - `.githooks/pre-push`: Added Git hook to block direct pushes to `main` branch; enforces PR-based workflow.
 - `.github/workflows/auto-merge.yml`: Added GitHub Actions workflow that automatically Squash & Merges a PR when it receives an "Approved" review.
