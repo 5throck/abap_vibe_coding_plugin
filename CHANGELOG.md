@@ -10,11 +10,15 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Added (2026-05-21)
+- `.githooks/pre-push`: Added Git hook to block direct pushes to `main` branch; enforces PR-based workflow.
+- `.github/workflows/auto-merge.yml`: Added GitHub Actions workflow that automatically Squash & Merges a PR when it receives an "Approved" review.
 - `skills/sap-sd/SKILL.md`, `sap-mm`, `sap-fi`, `sap-co`, `sap-pp`, `sap-le`: Synced BAPI lifecycle expansions from the core repository.
 - `.gitignore`: Added `.claude/settings.local.json` to prevent local configurations from being committed.
+- `.githooks/pre-commit`: Added Git hook to enforce `CHANGELOG.md` updates on every commit.
 
 ### Changed (2026-05-21)
 - `docs/plugin-setup.md`: Standardized environment variables to use `SAP_*` prefix instead of legacy `VSP_*` prefix.
+- `docs/plugin-setup.md`: Added instructions for configuring `core.hooksPath` to enforce git hooks.
 - `README_ko.md`: Restored and translated the missing packaging exclusions note to match the English `README.md` for 100% parity.
 
 ---
