@@ -12,6 +12,7 @@ This guide describes how to install and use the **ABAP Vibe Coding Plugin** in a
 - **Claude Code CLI** installed (`npm install -g @anthropic-ai/claude-code`)
 - **vsp (MCP Server)** binary placed at `C:\Users\<your-username>\abap\vsp.exe` (Windows) or `~/abap/vsp` (macOS/Linux)
 - **SAP Connection Details** configured in a `.env` file at the root of your consumer repository (see `.env.sample` in the plugin root)
+- **Git Hooks configured** to enforce CHANGELOG updates by running `git config core.hooksPath .githooks` locally in your clone.
 
 ---
 
