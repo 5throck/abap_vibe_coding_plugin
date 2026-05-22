@@ -9,6 +9,18 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added (2026-05-23 Project Structure Compliance)
+- `SECURITY.md`: Security vulnerability reporting policy (CONSTITUTION §1 required file)
+- `.github/pull_request_template.md`: Standard PR body template (CONSTITUTION §1 required file)
+- `.gemini/settings.json`: Gemini CLI project settings (CONSTITUTION §1 required file)
+- `scripts/git-sync.sh` / `git-sync.ps1`: Cross-platform git sync script pair (CONSTITUTION §3 script parity rule)
+- `.claude/commands/triage.md`: Triage slash command — sync with abap_vibe_coding
+- `.claude/commands/transport.md`: Transport slash command — sync with abap_vibe_coding
+- `.claude/commands/celebrate.md`: Celebrate slash command — sync with abap_vibe_coding
+
+### Fixed (2026-05-23 Project Structure Compliance)
+- `.claude/settings.json`: PostToolUse hook matcher extended to `Write|Edit|mcp__abap__WriteSource|mcp__abap__EditSource` — ABAP MCP write calls now trigger the sync-md audit script (parity with abap_vibe_coding)
+
 ### Changed
 - Add ## Environment Setup section and register Session Start Skills in docs/context.md
 
