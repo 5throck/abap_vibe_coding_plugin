@@ -29,6 +29,37 @@ A Claude Code plugin that bundles the complete vsp/SAP ABAP Harness Engineering 
 
 ---
 
+## Environment Setup
+
+**Marketplace install (recommended):**
+```
+/plugin enable abap-harness-engineering
+```
+Claude Code prompts for SAP credentials at enable time — no `.mcp.json` needed.
+
+**Manual / standalone install:**
+```bash
+# 1. Install the vsp binary in the consumer project root
+bash scripts/install-vsp.sh
+
+# 2. Configure SAP credentials
+cp .mcp.json.sample .mcp.json
+# Edit .mcp.json — fill in SAP URL, username, password (gitignored)
+
+# 3. Enable MCP server in .claude/settings.local.json
+{ "enableAllProjectMcpServers": true }
+
+# 4. Activate git hooks
+git config core.hooksPath .githooks
+```
+
+Required config keys (`.mcp.json` for standalone):
+- `SAP_URL` — SAP system base URL
+- `SAP_USER` — SAP username
+- `SAP_PASSWORD` — SAP password
+
+---
+
 ## Architecture
 
 ```
@@ -142,3 +173,35 @@ bash scripts/vsp-publish.sh    # Package + publish to marketplace
 ---
 
 *Last Updated: 2026-05-21*
+
+---
+
+## Session Start Skills
+<!-- Skills listed here are loaded at the start of EVERY session by ALL AI tools. -->
+<!-- Format: `skills/<name>/SKILL.md` — reason / trigger                          -->
+- `skills/abap-dev/SKILL.md` — always load; SAP ABAP development workflows and tool settings
+- `skills/post-write-chain/SKILL.md` — always load; mandatory QA chain after any write (SyntaxCheck → RunUnitTests → RunATCCheck)
+
+---
+
+## Coding Guidelines
+
+> These rules apply to every AI tool working in this project.
+> Full rationale: [CONSTITUTION.md §8](../../CONSTITUTION.md#8-coding-behavior-guidelines)
+
+### 1. Think Before Coding
+- State assumptions explicitly before implementing. If uncertain, ask — don't guess silently.
+- **Secrets**: Never hardcode passwords, API tokens, or keys. Always use env vars / `.env.sample`.
+
+### 2. Simplicity First
+- Write the minimum code that solves the problem. Nothing speculative.
+
+### 3. Surgical Changes
+- Touch only what is necessary. Don't "improve" adjacent code.
+
+### 4. Goal-Driven Execution
+- Convert every task into a verifiable goal before starting.
+
+### 5. Response Language
+- All **conversational** replies → **Korean (한국어)** by default.
+- All code, config, commit messages, PR titles, branch names → **English only**.
