@@ -9,6 +9,8 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Removed (2026-05-23 Plugin Intent Alignment)
+- `AGENTS.md`, `GEMINI.md`, `docs/context.md`, `memory/`: Removed live governance and memory artifacts from the plugin package to align with the lightweight design intent. These configurations now strictly live in the reference parent project `abap_vibe_coding`.
 ### Fixed (2026-05-23 Audit Script — Relative Link Filter)
 - `scripts/audit.sh` / `audit.ps1`: Add `../../` relative-path exclusion to markdown link checker — GitHub Security Advisory links (`../../security/advisories/new`) are cross-repo relative URLs, not local file paths, and must be excluded from broken-link validation
 
