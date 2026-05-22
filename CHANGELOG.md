@@ -9,6 +9,9 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed (2026-05-22)
+- `scripts/sync-md.sh` / `sync-md.ps1`: Skip audit hook for temporary/generated MD files (`scratch/`, `memory/`, `docs/superpowers/`) via `CLAUDE_FILE_PATHS` env var check
+
 ### Added (2026-05-21 Project Constitution Compliance)
 - `scripts/dev-sync.sh` / `dev-sync.ps1`: Project Constitution §3 standard entry-point wrappers delegating to `vsp-sync.*`
 - `docs/context.md`: Full project context — Project Overview, Tech Stack, Architecture, Agents, Skills, Dev Workflow, Key Files, Gotchas
