@@ -10,7 +10,17 @@ Parent project: https://github.com/5throck/abap_vibe_coding
 
 ## Session Start
 
-**When developing this plugin, read `../abap_vibe_coding/docs/context.md` first** — it contains the full architecture map, agent/skill inventory, workflow pipeline, and gotchas.
+At the start of every Claude Code session, run this checklist:
+
+```
+0. git config core.hooksPath .githooks         # activate hooks (run once per clone)
+1. Read ../../CONSTITUTION.md                  # workspace design standard
+2. Read ../abap_vibe_coding/docs/context.md    # full architecture map, ABAP rules, workflow
+3. Read AGENTS.md                              # plugin agent roster
+4. Read ../abap_vibe_coding/memory/MEMORY.md  # recent session history (skip if absent)
+5. Load skills/abap-dev/SKILL.md              # SAP dev workflows
+6. Load skills/post-write-chain/SKILL.md      # mandatory QA chain after any write
+```
 
 ---
 
@@ -120,9 +130,10 @@ In the CLI, the hook fires automatically via `hooks/hooks.json`.
 
 ---
 
-*Last updated: 2026-05-21*
-
-
 ### Optimal Interaction Guidelines
 - **XML Tagging**: Utilize XML tags like `<thought>`, `<plan>`, and `<execution>` to structure complex reasoning and plans before generating final responses.
 - **Tone**: Maintain an objective, highly analytical tone. Focus on systematic execution.
+
+---
+
+*Last Updated: 2026-05-23*
