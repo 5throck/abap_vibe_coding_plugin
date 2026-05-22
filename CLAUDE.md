@@ -2,7 +2,7 @@
 
 Claude Code configuration for the **abap-harness-engineering** plugin — an AI Harness Engineering framework for SAP ABAP development.
 
-> **Doc intent:** This file is Claude Code-specific. Shared project context (architecture, agents, skills, workflows) lives in [docs/context.md](docs/context.md). Agent roles live in [AGENTS.md](AGENTS.md) (see parent project).
+> **Doc intent:** This file is Claude Code-specific. Shared project context (architecture, agents, skills, workflows) lives in [../abap_vibe_coding/docs/context.md](../abap_vibe_coding/docs/context.md). Agent roles live in [../abap_vibe_coding/AGENTS.md](../abap_vibe_coding/AGENTS.md) (see parent project).
 
 Parent project: https://github.com/5throck/abap_vibe_coding
 
@@ -10,7 +10,7 @@ Parent project: https://github.com/5throck/abap_vibe_coding
 
 ## Session Start
 
-**When developing this plugin, read `docs/context.md` first** — it contains the full architecture map, agent/skill inventory, workflow pipeline, and gotchas.
+**When developing this plugin, read `../abap_vibe_coding/docs/context.md` first** — it contains the full architecture map, agent/skill inventory, workflow pipeline, and gotchas.
 
 ---
 
@@ -121,3 +121,8 @@ In the CLI, the hook fires automatically via `hooks/hooks.json`.
 ---
 
 *Last updated: 2026-05-21*
+
+
+### Optimal Interaction Guidelines
+- **XML Tagging**: Utilize XML tags like `<thought>`, `<plan>`, and `<execution>` to structure complex reasoning and plans before generating final responses.
+- **Tone**: Maintain an objective, highly analytical tone. Focus on systematic execution.
