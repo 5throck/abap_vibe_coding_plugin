@@ -10,6 +10,9 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Changed
+- Add ## Environment Setup section and register Session Start Skills in docs/context.md
+
+### Changed
 - Add standard slash commands, smart pre-commit hook (memory/ exclusion), and Coding Guidelines section to docs/context.md
 
 ### Fixed (2026-05-22 Skill Command Wrappers)

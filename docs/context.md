@@ -29,6 +29,37 @@ A Claude Code plugin that bundles the complete vsp/SAP ABAP Harness Engineering 
 
 ---
 
+## Environment Setup
+
+**Marketplace install (recommended):**
+```
+/plugin enable abap-harness-engineering
+```
+Claude Code prompts for SAP credentials at enable time — no `.mcp.json` needed.
+
+**Manual / standalone install:**
+```bash
+# 1. Install the vsp binary in the consumer project root
+bash scripts/install-vsp.sh
+
+# 2. Configure SAP credentials
+cp .mcp.json.sample .mcp.json
+# Edit .mcp.json — fill in SAP URL, username, password (gitignored)
+
+# 3. Enable MCP server in .claude/settings.local.json
+{ "enableAllProjectMcpServers": true }
+
+# 4. Activate git hooks
+git config core.hooksPath .githooks
+```
+
+Required config keys (`.mcp.json` for standalone):
+- `SAP_URL` — SAP system base URL
+- `SAP_USER` — SAP username
+- `SAP_PASSWORD` — SAP password
+
+---
+
 ## Architecture
 
 ```
@@ -148,7 +179,8 @@ bash scripts/vsp-publish.sh    # Package + publish to marketplace
 ## Session Start Skills
 <!-- Skills listed here are loaded at the start of EVERY session by ALL AI tools. -->
 <!-- Format: `skills/<name>/SKILL.md` — reason / trigger                          -->
-- *(none yet)*
+- `skills/abap-dev/SKILL.md` — always load; SAP ABAP development workflows and tool settings
+- `skills/post-write-chain/SKILL.md` — always load; mandatory QA chain after any write (SyntaxCheck → RunUnitTests → RunATCCheck)
 
 ---
 
