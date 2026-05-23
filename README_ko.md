@@ -168,27 +168,19 @@ Write/Edit 툴 호출 이후 `PostToolUse` 훅이 실행되어 `scripts/sync-md.
 
 ---
 
-## 참조 구현체: abap_vibe_coding
+## 독립형 플러그인 아키텍처
 
 이 플러그인은 **[5throck/abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)** 프로젝트를 패키징하여 배포 가능한 형태로 만든 것입니다. 
 
-> **참고**: 이 플러그인은 가볍고 실행 가능한 패키지 상태를 유지하기 위해 실제 메모리 로그, 스크래치 파일 및 전체 거버넌스 문서(`AGENTS.md`, `docs/context.md`, `docs/tooling-matrix.md` 등)를 의도적으로 제외했습니다. 또한 Gemini/Codex 전용 설정(`GEMINI.md` 및 `.codex/` 등) 역시 플러그인에서는 제외되어 참조 구현체나 소비자 프로젝트에만 존재합니다. 
+이 레포지토리는 일반적인 경량 플러그인과 달리, 사용자 환경에서 완벽히 작동하기 위해 **독립형(Standalone)** 아키텍처로 설계되었습니다. 플러그인이 소비자 레포지토리에 설치되면, AI 에이전트(Claude Code, Gemini CLI, Antigravity)는 플러그인 내부의 `docs/`, `agents/`, `skills/` 디렉토리를 참조하여 동일한 성능을 발휘합니다.
 
-참조 프로젝트는 이 플러그인에 포함되지 않은 추가 컨텍스트를 제공합니다:
+플러그인은 다음과 같은 전체 Harness Engineering 문서와 템플릿을 내장하고 있습니다:
+- 전체 아키텍처를 정의한 `docs/context.md`
+- 개발을 위한 `task-template.md`, `prd-template.md`
+- 코드 테스트 및 보안 가이드라인
+- `AGENTS.md` 및 `GEMINI.md` 전체 구성 파일
 
-| 문서 | 설명 |
-|------|------|
-| [AGENTS.md](https://github.com/5throck/abap_vibe_coding/blob/main/AGENTS.md) | 전체 에이전트 역할 정의, 핸드오프 프로토콜, 거버넌스 모델 |
-| [docs/context.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md) | 공유 프로젝트 컨텍스트: 코드베이스 맵, 빌드 커맨드, ABAP 개발 규칙 |
-| [docs/setup-guide.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/setup-guide.md) | 단계별 환경 구성 가이드 (MCP, SAP ADT, abapGit, AI 에이전트) |
-| [docs/task-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/task-template.md) | 전체 태스크 핸드오프 템플릿 (§0 트리아지 -> §5 최종화) |
-| [docs/testing-guidelines.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/testing-guidelines.md) | ABAP 단위 테스트 표준 및 ATC 우선순위 기준 |
-| [docs/prd-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/prd-template.md) | 비즈니스 분석을 위한 PRD / 인수 조건 템플릿 |
-| [docs/security.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/security.md) | 추적 문서 보안 정책 및 pre-commit 스캔 규칙 |
-| [memory/MEMORY.md](https://github.com/5throck/abap_vibe_coding/blob/main/memory/MEMORY.md) | 개발 이력 및 아키텍처 결정 사항 인덱스 |
-| [docs/plugin-setup.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/plugin-setup.md) | 클로드 코드 플러그인을 위한 전용 설정 가이드 |
-
-> 참조 프로젝트는 이 플러그인과 동일한 에이전트, 스킬, 커맨드를 포함하며, 실제 개발 작업의 스크래치 파일, 메모리 로그, 세션 이력도 함께 포함합니다.
+> 상위 참조 프로젝트(`abap_vibe_coding`)에는 실제 개발 작업에서 발생한 스크래치 파일, 메모리 로그 등이 포함되어 있습니다. 본 플러그인은 해당 워크플로우를 어느 SAP 프로젝트에서나 복제할 수 있도록 정제된 거버넌스 구조와 지능만을 패키징한 것입니다.
 
 ---
 
@@ -198,7 +190,4 @@ AGPL v3 - 자세한 내용은 [LICENSE](./LICENSE)를 참고하세요.
 
 ---
 
-*Last Updated: 2026-05-19*
-
-
-This will trigger the Phase 0 Dynamic Team Assembly process to align roles and skills.
+*Last Updated: 2026-05-23*
