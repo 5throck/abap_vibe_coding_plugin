@@ -168,27 +168,19 @@ In Claude Code CLI sessions, a `PostToolUse` hook fires after every Write/Edit t
 
 ---
 
-## Reference Implementation: abap_vibe_coding
+## Standalone Plugin Architecture
 
 This plugin is the packaged, distributable form of the **[5throck/abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)** project. 
 
-> **Note**: This plugin intentionally excludes live memory logs, scratch files, and full governance docs (like `AGENTS.md`, `docs/context.md`, and `docs/tooling-matrix.md`) to maintain it as a lightweight, executable package. Additionally, Gemini/Codex-specific configurations (such as `GEMINI.md` and `.codex/`) are omitted and remain in the reference implementation or consumer project. 
+Unlike typical lightweight plugins, this repository is designed as a **standalone, fully-featured framework**. When installed in a consumer's repository, AI agents (Claude Code, Gemini CLI, Antigravity) will read from the plugin's internal `docs/`, `agents/`, and `skills/` directories. 
 
-The reference project provides the complete operational context not included in this plugin:
+The plugin is fully self-contained and ships with the complete Harness Engineering documentation, including:
+- Comprehensive `docs/context.md`
+- Module-specific `task-template.md` and `prd-template.md`
+- Code testing and security guidelines
+- The full `AGENTS.md` and `GEMINI.md` configurations
 
-| Resource | Description |
-|----------|-------------|
-| [AGENTS.md](https://github.com/5throck/abap_vibe_coding/blob/main/AGENTS.md) | Full agent role definitions, handoff protocols, and governance model |
-| [docs/context.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md) | Shared project context: codebase map, build commands, ABAP dev rules |
-| [docs/setup-guide.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/setup-guide.md) | Step-by-step environment setup (MCP, SAP ADT, abapGit, AI agents) |
-| [docs/task-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/task-template.md) | Full task handoff template (§0 Triage -> §5 Finalization) |
-| [docs/testing-guidelines.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/testing-guidelines.md) | ABAP Unit test standards and ATC priority thresholds |
-| [docs/prd-template.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/prd-template.md) | PRD / Acceptance Criteria template for business analysis |
-| [docs/security.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/security.md) | Sanitization policy for tracked docs and pre-commit scan rules |
-| [memory/MEMORY.md](https://github.com/5throck/abap_vibe_coding/blob/main/memory/MEMORY.md) | Index of development history and architectural decisions |
-| [docs/plugin-setup.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/plugin-setup.md) | Setup guide for the Claude Code plugin |
-
-> The reference project contains the same agents, skills, and commands as this plugin, plus live scratch files, memory logs, and session history from real development work.
+> The upstream reference project (`abap_vibe_coding`) contains live scratch files, memory logs, and session history from real development work. This plugin contains the distilled intelligence and governance structure to replicate that workflow in any SAP project.
 
 ---
 
@@ -198,7 +190,4 @@ AGPL v3 - see [LICENSE](./LICENSE) for details.
 
 ---
 
-*Last Updated: 2026-05-19*
-
-
-This will trigger the Phase 0 Dynamic Team Assembly process to align roles and skills.
+*Last Updated: 2026-05-23*
