@@ -9,6 +9,13 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- GEMINI.md: full Antigravity 2.0 / Gemini CLI configuration with Context Loading, tool safeguards, Planning Mode artifacts, and Subagent orchestration
+- AGENTS.md: canonical 14-agent index with dispatch protocol and skills table
+
+### Changed
+- CLAUDE.md: replace minimal session start with standard 6-step checklist
+
 ### Removed (2026-05-23 Plugin Intent Alignment)
 - `AGENTS.md`, `GEMINI.md`, `docs/context.md`, `memory/`: Removed live governance and memory artifacts from the plugin package to align with the lightweight design intent. These configurations now strictly live in the reference parent project `abap_vibe_coding`.
 ### Fixed (2026-05-23 Audit Script — Relative Link Filter)
