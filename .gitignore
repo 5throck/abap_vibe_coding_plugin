@@ -1,6 +1,4 @@
 scratch/*.md
-memory/*.md
-!memory/MEMORY.md
 vsp
 vsp.exe
 .env
