@@ -10,71 +10,80 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Added
-- GEMINI.md: full Antigravity 2.0 / Gemini CLI configuration with Context Loading, tool safeguards, Planning Mode artifacts, and Subagent orchestration
-- AGENTS.md: canonical 14-agent index with dispatch protocol and skills table
+- **[2026-05-23]**: `.githooks/pre-commit`: Markdown date auto-bumper 및 CHANGELOG auto-dating 로직 추가. 커밋 시 스테이징된 `.md` 파일의 `Last Updated:` 날짜를 자동으로 갱신하며, `CHANGELOG.md`의 미기재 항목에 날짜를 주입.
+- **[2026-05-23]**: `docs/context.md`: Agents 테이블에 `security-monitor` (Security group) 추가.
+- **[2026-05-23]**: `AGENTS.md`: 전체 Agent Roster에 `security-monitor` 요원 정식 등록.
+
+### Removed
+- **[2026-05-23]**: `README.md` / `README_ko.md`: 더 이상 필요 없는 수동 킥오프 안내 문구 일괄 제거.
+
+
+### Added
+- **[2026-05-23]**: GEMINI.md: full Antigravity 2.0 / Gemini CLI configuration with Context Loading, tool safeguards, Planning Mode artifacts, and Subagent orchestration
+- **[2026-05-23]**: AGENTS.md: canonical 14-agent index with dispatch protocol and skills table
 
 ### Changed
-- CLAUDE.md: replace minimal session start with standard 6-step checklist
+- **[2026-05-23]**: CLAUDE.md: replace minimal session start with standard 6-step checklist
 
 ### Removed (2026-05-23 Plugin Intent Alignment)
-- `AGENTS.md`, `GEMINI.md`, `docs/context.md`, `memory/`: Removed live governance and memory artifacts from the plugin package to align with the lightweight design intent. These configurations now strictly live in the reference parent project `abap_vibe_coding`.
+- **[2026-05-23]**: `AGENTS.md`, `GEMINI.md`, `docs/context.md`, `memory/`: Removed live governance and memory artifacts from the plugin package to align with the lightweight design intent. These configurations now strictly live in the reference parent project `abap_vibe_coding`.
 ### Fixed (2026-05-23 Audit Script — Relative Link Filter)
-- `scripts/audit.sh` / `audit.ps1`: Add `../../` relative-path exclusion to markdown link checker — GitHub Security Advisory links (`../../security/advisories/new`) are cross-repo relative URLs, not local file paths, and must be excluded from broken-link validation
+- **[2026-05-23]**: `scripts/audit.sh` / `audit.ps1`: Add `../../` relative-path exclusion to markdown link checker — GitHub Security Advisory links (`../../security/advisories/new`) are cross-repo relative URLs, not local file paths, and must be excluded from broken-link validation
 
 
 ### Added (2026-05-23 Project Structure Compliance)
-- `SECURITY.md`: Security vulnerability reporting policy (CONSTITUTION §1 required file)
-- `.github/pull_request_template.md`: Standard PR body template (CONSTITUTION §1 required file)
-- `.gemini/settings.json`: Gemini CLI project settings (CONSTITUTION §1 required file)
-- `scripts/git-sync.sh` / `git-sync.ps1`: Cross-platform git sync script pair (CONSTITUTION §3 script parity rule)
-- `.claude/commands/triage.md`: Triage slash command — sync with abap_vibe_coding
-- `.claude/commands/transport.md`: Transport slash command — sync with abap_vibe_coding
-- `.claude/commands/celebrate.md`: Celebrate slash command — sync with abap_vibe_coding
+- **[2026-05-23]**: `SECURITY.md`: Security vulnerability reporting policy (CONSTITUTION §1 required file)
+- **[2026-05-23]**: `.github/pull_request_template.md`: Standard PR body template (CONSTITUTION §1 required file)
+- **[2026-05-23]**: `.gemini/settings.json`: Gemini CLI project settings (CONSTITUTION §1 required file)
+- **[2026-05-23]**: `scripts/git-sync.sh` / `git-sync.ps1`: Cross-platform git sync script pair (CONSTITUTION §3 script parity rule)
+- **[2026-05-23]**: `.claude/commands/triage.md`: Triage slash command — sync with abap_vibe_coding
+- **[2026-05-23]**: `.claude/commands/transport.md`: Transport slash command — sync with abap_vibe_coding
+- **[2026-05-23]**: `.claude/commands/celebrate.md`: Celebrate slash command — sync with abap_vibe_coding
 
 ### Fixed (2026-05-23 Project Structure Compliance)
-- `.claude/settings.json`: PostToolUse hook matcher extended to `Write|Edit|mcp__abap__WriteSource|mcp__abap__EditSource` — ABAP MCP write calls now trigger the sync-md audit script (parity with abap_vibe_coding)
+- **[2026-05-23]**: `.claude/settings.json`: PostToolUse hook matcher extended to `Write|Edit|mcp__abap__WriteSource|mcp__abap__EditSource` — ABAP MCP write calls now trigger the sync-md audit script (parity with abap_vibe_coding)
 
 ### Changed
-- Add ## Environment Setup section and register Session Start Skills in docs/context.md
+- **[2026-05-23]**: Add ## Environment Setup section and register Session Start Skills in docs/context.md
 
 ### Changed
-- Add standard slash commands, smart pre-commit hook (memory/ exclusion), and Coding Guidelines section to docs/context.md
+- **[2026-05-23]**: Add standard slash commands, smart pre-commit hook (memory/ exclusion), and Coding Guidelines section to docs/context.md
 
 ### Fixed (2026-05-22 Skill Command Wrappers)
-- `.claude/commands/abap-dev.md`: New wrapper — registers `abap-dev` skill for Skill tool invocation
-- `.claude/commands/sap-sd/mm/fi/co/le/pp.md`: Six new wrappers — all SAP module skills now invocable via `Skill("sap-*")`
-- `.claude/commands/post-write.md`: Thin wrapper delegating to `skills/post-write-chain/SKILL.md`
+- **[2026-05-23]**: `.claude/commands/abap-dev.md`: New wrapper — registers `abap-dev` skill for Skill tool invocation
+- **[2026-05-23]**: `.claude/commands/sap-sd/mm/fi/co/le/pp.md`: Six new wrappers — all SAP module skills now invocable via `Skill("sap-*")`
+- **[2026-05-23]**: `.claude/commands/post-write.md`: Thin wrapper delegating to `skills/post-write-chain/SKILL.md`
 
 ### Changed (2026-05-22)
-- `scripts/audit.sh` / `audit.ps1`: New standard audit entry point (replaces vsp-audit as primary)
-- `scripts/vsp-audit.sh` / `vsp-audit.ps1`: Now legacy wrappers delegating to audit.sh/ps1
-- `scripts/sync-md.sh` / `sync-md.ps1`: Updated to call audit.sh/ps1 directly
-- `.claude/settings.json`: Added PostToolUse hook (Write|Edit → sync-md)
+- **[2026-05-23]**: `scripts/audit.sh` / `audit.ps1`: New standard audit entry point (replaces vsp-audit as primary)
+- **[2026-05-23]**: `scripts/vsp-audit.sh` / `vsp-audit.ps1`: Now legacy wrappers delegating to audit.sh/ps1
+- **[2026-05-23]**: `scripts/sync-md.sh` / `sync-md.ps1`: Updated to call audit.sh/ps1 directly
+- **[2026-05-23]**: `.claude/settings.json`: Added PostToolUse hook (Write|Edit → sync-md)
 
 ### Fixed (2026-05-22)
-- `scripts/sync-md.sh` / `sync-md.ps1`: Skip audit hook for temporary/generated MD files (`scratch/`, `memory/`, `docs/superpowers/`) via `CLAUDE_FILE_PATHS` env var check
+- **[2026-05-23]**: `scripts/sync-md.sh` / `sync-md.ps1`: Skip audit hook for temporary/generated MD files (`scratch/`, `memory/`, `docs/superpowers/`) via `CLAUDE_FILE_PATHS` env var check
 
 ### Added (2026-05-21 Project Constitution Compliance)
-- `scripts/dev-sync.sh` / `dev-sync.ps1`: Project Constitution §3 standard entry-point wrappers delegating to `vsp-sync.*`
-- `docs/context.md`: Full project context — Project Overview, Tech Stack, Architecture, Agents, Skills, Dev Workflow, Key Files, Gotchas
-- `memory/MEMORY.md`: Memory system bootstrap — log index for session development history
-- `.gitignore`: Added `!memory/MEMORY.md` exception so the index is tracked while daily logs remain gitignored
+- **[2026-05-23]**: `scripts/dev-sync.sh` / `dev-sync.ps1`: Project Constitution §3 standard entry-point wrappers delegating to `vsp-sync.*`
+- **[2026-05-23]**: `docs/context.md`: Full project context — Project Overview, Tech Stack, Architecture, Agents, Skills, Dev Workflow, Key Files, Gotchas
+- **[2026-05-23]**: `memory/MEMORY.md`: Memory system bootstrap — log index for session development history
+- **[2026-05-23]**: `.gitignore`: Added `!memory/MEMORY.md` exception so the index is tracked while daily logs remain gitignored
 
 ### Changed (2026-05-21 Project Constitution Compliance)
-- `commands/sync.md`: Updated script invocation from `vsp-sync.sh` → `dev-sync.sh`
-- `CLAUDE.md`: Added Session Start directive, Development Commands section, Memory & Git rules; updated Last Updated to 2026-05-21
+- **[2026-05-23]**: `commands/sync.md`: Updated script invocation from `vsp-sync.sh` → `dev-sync.sh`
+- **[2026-05-23]**: `CLAUDE.md`: Added Session Start directive, Development Commands section, Memory & Git rules; updated Last Updated to 2026-05-21
 
 ### Added (2026-05-21)
-- `.githooks/pre-push`: Added Git hook to block direct pushes to `main` branch; enforces PR-based workflow.
-- `.github/workflows/auto-merge.yml`: Added GitHub Actions workflow that automatically Squash & Merges a PR when it receives an "Approved" review.
-- `skills/sap-sd/SKILL.md`, `sap-mm`, `sap-fi`, `sap-co`, `sap-pp`, `sap-le`: Synced BAPI lifecycle expansions from the core repository.
-- `.gitignore`: Added `.claude/settings.local.json` to prevent local configurations from being committed.
-- `.githooks/pre-commit`: Added Git hook to enforce `CHANGELOG.md` updates on every commit.
+- **[2026-05-23]**: `.githooks/pre-push`: Added Git hook to block direct pushes to `main` branch; enforces PR-based workflow.
+- **[2026-05-23]**: `.github/workflows/auto-merge.yml`: Added GitHub Actions workflow that automatically Squash & Merges a PR when it receives an "Approved" review.
+- **[2026-05-23]**: `skills/sap-sd/SKILL.md`, `sap-mm`, `sap-fi`, `sap-co`, `sap-pp`, `sap-le`: Synced BAPI lifecycle expansions from the core repository.
+- **[2026-05-23]**: `.gitignore`: Added `.claude/settings.local.json` to prevent local configurations from being committed.
+- **[2026-05-23]**: `.githooks/pre-commit`: Added Git hook to enforce `CHANGELOG.md` updates on every commit.
 
 ### Changed (2026-05-21)
-- `docs/plugin-setup.md`: Standardized environment variables to use `SAP_*` prefix instead of legacy `VSP_*` prefix.
-- `docs/plugin-setup.md`: Added instructions for configuring `core.hooksPath` to enforce git hooks.
-- `README_ko.md`: Restored and translated the missing packaging exclusions note to match the English `README.md` for 100% parity.
+- **[2026-05-23]**: `docs/plugin-setup.md`: Standardized environment variables to use `SAP_*` prefix instead of legacy `VSP_*` prefix.
+- **[2026-05-23]**: `docs/plugin-setup.md`: Added instructions for configuring `core.hooksPath` to enforce git hooks.
+- **[2026-05-23]**: `README_ko.md`: Restored and translated the missing packaging exclusions note to match the English `README.md` for 100% parity.
 
 ---
 
