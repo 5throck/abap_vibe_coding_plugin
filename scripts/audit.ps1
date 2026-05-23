@@ -74,6 +74,23 @@ foreach ($cfg in @(".mcp.json")) {
     }
 }
 
+# 9. Active CRITICAL security advisories (warn only)
+if (Test-Path "security") {
+    $secFiles = Get-ChildItem "security\*.md" -ErrorAction SilentlyContinue
+    if ($secFiles) {
+        $criticalCount = 0
+        foreach ($sf in $secFiles) {
+            $content = Get-Content $sf.FullName -Raw -ErrorAction SilentlyContinue
+            if ($content -match "(?m)^severity: CRITICAL" -and $content -match "(?m)^status: active") {
+                $criticalCount++
+            }
+        }
+        if ($criticalCount -gt 0) {
+            Write-Host "  [WARN] security/: $criticalCount active CRITICAL advisory/advisories — run /security-check to review" -ForegroundColor Yellow
+        }
+    }
+}
+
 if ($failed) {
     Write-Host "`nAudit FAILED." -ForegroundColor Red
     exit 1
