@@ -63,3 +63,7 @@ Phase 6 — Finalize   : pm runs /sync → PR created
 ---
 
 *Last Updated: 2026-05-23*
+
+
+## Dynamic Roster Updates
+**Note on Phase 0 Kickoff:** The PM agent is explicitly authorized to assess project requirements during kickoff and dynamically expand this AGENTS.md registry by creating new specialist agents or skills.

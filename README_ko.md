@@ -199,3 +199,9 @@ AGPL v3 - 자세한 내용은 [LICENSE](./LICENSE)를 참고하세요.
 ---
 
 *Last Updated: 2026-05-19*
+
+
+## 🤖 Multi-Agent Kickoff (Recommended)
+Before writing any code or beginning a new major feature, ask the AI to start a PM-led kickoff meeting:
+> *"Let's start the PM agent kickoff meeting for this project."*
+This will trigger the Phase 0 Dynamic Team Assembly process to align roles and skills.
