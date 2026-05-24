@@ -10,6 +10,23 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 - feat: add skills index, dispatch templates, and handoff spec
 - refactor: reorganize configuration files into dedicated config/ directory
+- feat: add MCP SSoT and update CHANGELOG
+
+### Added
+- **[2026-05-24]**: `.mcp.json`: Single Source of Truth for MCP configuration (abap, abap-docs, sap-docs)
+- **[2026-05-24]**: Skills index (skills/SKILLS.md) with auto-discovery documentation
+- **[2026-05-24]**: Agent dispatch templates (templates/dispatch-parallel.md, templates/dispatch-serial.md)
+- **[2026-05-24]**: Agent handoff specification (agents/handoff-spec.md)
+- **[2026-05-24]**: Desktop App fallback skill (skills/desktop-app-fallback/SKILL.md)
+
+### Changed
+- **[2026-05-24]**: Documentation organization aligned with parent project improvements
+- **[2026-05-24]**: Agent dispatch patterns standardized
+
+### Technical Details
+- **[2026-05-24]**: Applied improvements from abap_vibe_coding parent project
+- **[2026-05-24]**: Enhanced agent coordination with standardized templates
+- **[2026-05-24]**: Improved error recovery and context passing patterns
 
 ### Added
 - **[2026-05-23]**: `.githooks/pre-commit`: Add Markdown date auto-bumper and CHANGELOG auto-dating logic. Automatically updates `Last Updated:` date in staged `.md` files upon commit, and injects date into undated `CHANGELOG.md` entries.

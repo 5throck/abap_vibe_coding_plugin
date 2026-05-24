@@ -1,0 +1,30 @@
+{
+  "mcpServers": {
+    "abap": {
+      "command": "vsp",
+      "args": ["--mode", "hyperfocused"],
+      "env": {
+        "SAP_URL": "${sap_url}",
+        "SAP_USER": "${sap_user}",
+        "SAP_PASSWORD": "${sap_password}",
+        "SAP_CLIENT": "${sap_client:100}",
+        "SAP_LANGUAGE": "EN",
+        "SAP_MODE": "hyperfocused",
+        "SAP_ALLOWED_PACKAGES": "Z*,$TMP,$ZADT_VSP,$VSP_ADT",
+        "SAP_FEATURE_ABAPGIT": "on",
+        "SAP_FEATURE_TRANSPORT": "on",
+        "SAP_FEATURE_UI5": "on",
+        "SAP_FEATURE_RAP": "on"
+      }
+    },
+    "abap-docs": {
+      "type": "http",
+      "url": "https://mcp-abap.marianzeis.de/mcp"
+    },
+    "sap-docs": {
+      "type": "http",
+      "url": "https://mcp-sap-docs.marianzeis.de/mcp"
+    }
+  },
+  "note": "Single Source of Truth for MCP configuration. plugin.json uses userConfig for marketplace installs."
+}
