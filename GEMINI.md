@@ -142,6 +142,7 @@ bash scripts/vsp-sync.sh "feat: description"     # macOS/Linux
 
 Always append to AI-generated commit messages:
 ```
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 Co-Authored-By: Gemini <noreply@google.com>
 ```
 
