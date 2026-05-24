@@ -8,6 +8,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ---
 
 ## [Unreleased]
+- refactor: apply Hybrid Scripting model, remove utility ts files
 - feat: Restructure plugin to Standalone Architecture and sync scripts
 - docs: update README with current project state and Bun migration
 - feat: migrate plugin scripts to Bun-based TypeScript
@@ -37,6 +38,9 @@ Versions follow [Semantic Versioning](https://semver.org/).
 - **[2026-05-23]**: `.githooks/pre-commit`: Add Markdown date auto-bumper and CHANGELOG auto-dating logic. Automatically updates `Last Updated:` date in staged `.md` files upon commit, and injects date into undated `CHANGELOG.md` entries.
 - **[2026-05-23]**: `docs/context.md`: Add `security-monitor` (Security group) to Agents table.
 - **[2026-05-23]**: `AGENTS.md`: Register `security-monitor` agent formally in the global Agent Roster.
+
+### Changed
+- **[2026-05-25]**: Unified **Hybrid Scripting Automation** model with core project. Utility `.ts` scripts (`dev-sync`, `audit`, etc.) removed to rely purely on native `.ps1`/`.sh`, keeping `.ts` specifically for Agent Orchestration (`dispatch`, `verify-skills`).
 
 ### Removed
 - **[2026-05-23]**: `README.md` / `README_ko.md`: Remove obsolete manual kickoff instruction text.

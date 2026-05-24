@@ -460,7 +460,17 @@ For a full comparison of tool capabilities (Claude Code CLI vs Desktop App vs An
 **Note:** The agent and skills lists in this project may be dynamically expanded by the PM orchestrator during the Kickoff Phase based on emerging requirements.
 
 
-
 ### 8. File Encoding Rule (Markdown & Scripts)
 - All text files, including Markdown (.md) and scripts (.ps1, .sh, .py, .js, etc.), must be saved as **UTF-8 (without BOM)**.
 - Script outputs (Add-Content, Set-Content) must explicitly specify -Encoding UTF8.
+
+### 9. Hybrid Scripting & Cross-Platform Rule
+
+This project uses a **Hybrid Scripting Automation** model:
+1. **Utility Scripts (Everyday sync/audit)**: Implemented in pure PowerShell (`.ps1`) and Bash (`.sh`) for ease of use without external dependencies.
+2. **Agent Orchestration**: Complex multi-agent workflow coordination and error handling logic are implemented in TypeScript (`.ts`) and executed via Bun.
+
+**Script Pairing Rule**:
+- Any modification to a `.ps1` utility script MUST be accompanied by the exact same logical modification to its `.sh` counterpart, and vice versa.
+- A script should never exist in only one format unless it is an OS-specific installer.
+- **Agent Orchestration** `.ts` files do not require PS1/SH pairs.
