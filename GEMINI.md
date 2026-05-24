@@ -120,6 +120,14 @@ After any `WriteSource` / `EditSource` via `sap_execute`, execute the mandatory 
 Interact with spawned agents via their unique `conversationID`.
 **Reactive Wakeup**: Do not poll in a loop —simply yield execution and the platform wakes you automatically when an agent replies or a background task completes.
 
+
+#### Superpowers Plugin & Cost Optimization (3-Tier Strategy)
+The PM agent MUST leverage the **`superpowers`** plugin (e.g., `subagent-driven-development`, `dispatching-parallel-agents`) for multi-agent harness engineering using a 3-tier model strategy:
+**Model Selection Overrides** (overridden per subagent invocation when appropriate):
+- **High-tier (Design/Planning)** → `gemini-3.1-pro` (Parameter: `thinking_level="medium"`): Complex reasoning, architectural design, planning, and PM orchestration.
+- **Medium-tier (Review/QA)** → `gemini-3.5-flash` (Parameter: `thinking_level="medium"`): Code review, testing, PR review, and quality gates (`verification-before-completion`). Supervises the Low-tier.
+- **Low-tier (Execution/Coding)** → `gemini-3.5-flash` (Parameter: `thinking_level="low"`): Fast, repetitive coding, boilerplate generation, or strictly scoped sub-agent tasks.
+
 ---
 
 ## Git Commit Policy
