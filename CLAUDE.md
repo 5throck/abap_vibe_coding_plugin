@@ -1,6 +1,6 @@
 ﻿# CLAUDE.md
 
-Claude Code configuration for the **abap-harness-engineering** plugin ??an AI Harness Engineering framework for SAP ABAP development.
+Claude Code configuration for the **abap-harness-engineering** plugin —an AI Harness Engineering framework for SAP ABAP development.
 
 > **Doc intent:** This file is Claude Code-specific. Shared project context (architecture, agents, skills, workflows) lives in [https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md). Agent roles live in [https://github.com/5throck/abap_vibe_coding/blob/main/AGENTS.md](https://github.com/5throck/abap_vibe_coding/blob/main/AGENTS.md) (see parent project).
 
@@ -32,26 +32,26 @@ At the start of every Claude Code session, run this checklist:
 
 2. **Configure SAP credentials**
 
-   **Marketplace install (recommended)**: Claude Code prompts for SAP credentials when you enable the plugin (`/plugin enable abap-harness-engineering`). Credentials are passed securely via `userConfig` ??no file needed.
+   **Marketplace install (recommended)**: Claude Code prompts for SAP credentials when you enable the plugin (`/plugin enable abap-harness-engineering`). Credentials are passed securely via `userConfig` —no file needed.
 
    **Manual / standalone install**: Copy the sample and edit it:
    ```bash
    cp .mcp.json.sample .mcp.json
    ```
-   Edit `.mcp.json` and fill in your SAP system URL, username, and password. This file is gitignored ??never commit it.
+   Edit `.mcp.json` and fill in your SAP system URL, username, and password. This file is gitignored —never commit it.
 
 3. **Enable the MCP server** in `.claude/settings.local.json` (in the consumer project root):
    ```json
    { "enableAllProjectMcpServers": true }
    ```
-   > **Note ??two MCP config files**: `plugin.json` contains `mcpServers` with `userConfig` substitution for marketplace installs. `.mcp.json` is a standalone fallback for direct development use (no userConfig, reads SAP credentials from environment variables or the file itself). The plugin runtime uses `plugin.json`; `.mcp.json` is only needed for manual testing outside the plugin lifecycle.
+   > **Note —two MCP config files**: `plugin.json` contains `mcpServers` with `userConfig` substitution for marketplace installs. `.mcp.json` is a standalone fallback for direct development use (no userConfig, reads SAP credentials from environment variables or the file itself). The plugin runtime uses `plugin.json`; `.mcp.json` is only needed for manual testing outside the plugin lifecycle.
 
 ## Consumer Project Integration
 
 When this plugin is installed in a consumer project:
 - **Marketplace install**: SAP credentials are supplied via the `userConfig` prompts at enable time and injected into the `abap` MCP server automatically. No `.mcp.json` is needed.
 - **Manual install**: The configuration is read from the **consumer project's root `.mcp.json`**, not the plugin directory. Make sure `.mcp.json` is placed in your target project.
-- **Hooks**: The plugin's `hooks/hooks.json` will automatically fire in the consumer project's CLI sessions. (CLI sessions only; Desktop App users must run `/post-write` manually.) The underlying hook scripts execute with a cross-platform fallback sequence (`bash` ??`pwsh` ??`powershell`) to ensure seamless execution on Windows environments. (Note: These automatic hooks rely on the `CLAUDE_PLUGIN_ROOT` environment variable being populated by the plugin runtime. For direct manual testing or execution outside the hook lifecycle, execute `scripts/sync-md.sh` or `scripts/sync-md.ps1` directly from your workspace root.)
+- **Hooks**: The plugin's `hooks/hooks.json` will automatically fire in the consumer project's CLI sessions. (CLI sessions only; Desktop App users must run `/post-write` manually.) The underlying hook scripts execute with a cross-platform fallback sequence (`bash` —`pwsh` —`powershell`) to ensure seamless execution on Windows environments. (Note: These automatic hooks rely on the `CLAUDE_PLUGIN_ROOT` environment variable being populated by the plugin runtime. For direct manual testing or execution outside the hook lifecycle, execute `scripts/sync-md.sh` or `scripts/sync-md.ps1` directly from your workspace root.)
 
 ---
 
@@ -114,7 +114,7 @@ After any `WriteSource` or `EditSource` call in the Desktop App, run the quality
 /post-write
 ```
 
-This runs SyntaxCheck ??RunUnitTests ??RunATCCheck. Skipping it risks committing broken code.
+This runs SyntaxCheck —RunUnitTests —RunATCCheck. Skipping it risks committing broken code.
 
 In the CLI, the hook fires automatically via `hooks/hooks.json`.
 
@@ -122,8 +122,8 @@ In the CLI, the hook fires automatically via `hooks/hooks.json`.
 
 ## Memory & Git
 
-- Session logs: `memory/YYYY-MM-DD.md` ??append after each meaningful session
-- Memory index: `memory/MEMORY.md` ??updated automatically by `/sync`
+- Session logs: `memory/YYYY-MM-DD.md` —append after each meaningful session
+- Memory index: `memory/MEMORY.md` —updated automatically by `/sync`
 - All git artifacts (commit messages, PR titles, branch names) must be in **English**
 - Branch naming: `pr/<YYYYMMDD-HHmmss>-<slug>` (auto-created by dev-sync on main)
 
@@ -135,5 +135,5 @@ In the CLI, the hook fires automatically via `hooks/hooks.json`.
 
 ---
 
-*Last Updated: 2026-05-23*
+*Last Updated: 2026-05-24*
 

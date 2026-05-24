@@ -1,4 +1,4 @@
-﻿# AGENTS.md ??abap-harness-engineering Plugin
+﻿# AGENTS.md —abap-harness-engineering Plugin
 
 Canonical agent roster for the **abap-harness-engineering** Claude Code plugin.
 All agent definitions live in [`agents/`](agents/). This file is the shared index read by all AI tools.
@@ -11,14 +11,14 @@ All agent definitions live in [`agents/`](agents/). This file is the shared inde
 
 | Agent | File | Color | Role |
 |-------|------|:-----:|------|
-| `pm` | `agents/pm.md` | ?윞 yellow | Global orchestrator ??triage, subagent dispatch, quality gates, finalization |
+| `pm` | `agents/pm.md` | ?윞 yellow | Global orchestrator —triage, subagent dispatch, quality gates, finalization |
 | `devops-admin` | `agents/devops-admin.md` | ?뵶 red | Transports, system config, abapGit, CTS management |
 
 ## Execution
 
 | Agent | File | Color | Role |
 |-------|------|:-----:|------|
-| `code-writer` | `agents/code-writer.md` | ?윟 green | ABAP implementation ??WriteSource / EditSource |
+| `code-writer` | `agents/code-writer.md` | ?윟 green | ABAP implementation —WriteSource / EditSource |
 | `read-only-analyst` | `agents/read-only-analyst.md` | ?뵷 blue | ABAP SQL queries, read-only investigation |
 | `schema-inspector` | `agents/schema-inspector.md` | ?뵷 blue | Table / structure read-only analysis |
 | `fiori-developer` | `agents/fiori-developer.md` | ?뵷 blue | UI5 / Fiori app development |
@@ -29,12 +29,12 @@ All agent definitions live in [`agents/`](agents/). This file is the shared inde
 
 | Agent | File | Color | Module |
 |-------|------|:-----:|--------|
-| `sd-analyst` | `agents/sd-analyst.md` | ?윞 yellow | SD ??Sales & Distribution |
-| `mm-analyst` | `agents/mm-analyst.md` | ?윞 yellow | MM ??Materials Management |
-| `fi-analyst` | `agents/fi-analyst.md` | ?윞 yellow | FI ??Financial Accounting |
-| `co-analyst` | `agents/co-analyst.md` | ?윞 yellow | CO ??Controlling |
-| `pp-analyst` | `agents/pp-analyst.md` | ?윞 yellow | PP ??Production Planning |
-| `le-analyst` | `agents/le-analyst.md` | ?윞 yellow | LE ??Logistics Execution |
+| `sd-analyst` | `agents/sd-analyst.md` | ?윞 yellow | SD —Sales & Distribution |
+| `mm-analyst` | `agents/mm-analyst.md` | ?윞 yellow | MM —Materials Management |
+| `fi-analyst` | `agents/fi-analyst.md` | ?윞 yellow | FI —Financial Accounting |
+| `co-analyst` | `agents/co-analyst.md` | ?윞 yellow | CO —Controlling |
+| `pp-analyst` | `agents/pp-analyst.md` | ?윞 yellow | PP —Production Planning |
+| `le-analyst` | `agents/le-analyst.md` | ?윞 yellow | LE —Logistics Execution |
 
 ---
 
@@ -62,7 +62,7 @@ Phase 6 ??Finalize   : pm runs /sync ??PR created
 
 ---
 
-*Last Updated: 2026-05-23*
+*Last Updated: 2026-05-24*
 
 
 ## Dynamic Roster Updates
