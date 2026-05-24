@@ -1,4 +1,4 @@
-# Changelog
+﻿# Changelog
 
 All notable changes to **abap-harness-engineering** are documented here.
 
@@ -8,15 +8,12 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ---
 
 ## [Unreleased]
-- Merge main and resolve conflicts
-- chore: add sample env and mcp configuration files
-- refactor: apply Hybrid Scripting model, remove utility ts files
-- feat: Restructure plugin to Standalone Architecture and sync scripts
-- docs: update README with current project state and Bun migration
-- feat: migrate plugin scripts to Bun-based TypeScript
-- feat: add skills index, dispatch templates, and handoff spec
-- refactor: reorganize configuration files into dedicated config/ directory
-- feat: add MCP SSoT and update CHANGELOG
+
+### Added
+- **[2026-05-25]**: docs: comprehensive documentation improvement and synchronization
+
+### Fixed
+- **[2026-05-25]**: fix: test changelog and memory automation
 
 ### Added
 - **[2026-05-24]**: `.mcp.json`: Single Source of Truth for MCP configuration (abap, abap-docs, sap-docs)
@@ -145,3 +142,4 @@ Versions follow [Semantic Versioning](https://semver.org/).
   - `devops-admin`: `orange` → `yellow`
   - `dba`, `read-only-analyst`, `sap-investigator`, `schema-inspector`: `purple` → `magenta`
 - `agents/pm.md`: removed non-existent `browser_subagent` tool reference
+

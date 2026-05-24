@@ -11,8 +11,7 @@ This guide describes how to install and use the **ABAP Vibe Coding Plugin** in a
 
 - **Claude Code CLI** installed (`npm install -g @anthropic-ai/claude-code`)
 - **vsp (MCP Server)** binary placed at `C:\Users\<your-username>\abap\vsp.exe` (Windows) or `~/abap/vsp` (macOS/Linux)
-- **SAP Connection Details** configured in a `.env` file at the root of your consumer repository (see `config/env.sample` in the plugin root)
-- **Git Hooks configured** to enforce CHANGELOG updates by running `git config core.hooksPath .githooks` locally in your clone.
+- **SAP Connection Details** configured in a `.env` file at the root of your consumer repository (see `.env.sample` in the plugin root)
 
 ---
 
@@ -84,7 +83,7 @@ Create a `.claude/settings.json` file in the root of your consumer repository to
 Create a `.env` file at the root of your consumer repository to define SAP connection credentials:
 
 ```bash
-SAP_URL=https://vhcalnplci:44300
+SAP_URL=http://vhcalnplci:50000
 SAP_USER=DEVELOPER
 SAP_PASSWORD=your-sap-password
 SAP_CLIENT=001
@@ -117,4 +116,4 @@ For detailed guidelines regarding the complete Harness Governance, Agent role re
 - **MCP Server Details**: [docs/mcp_usage.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/mcp_usage.md)
 
 ---
-*Last Updated: 2026-05-19*
+*Last Updated: 2026-05-25*

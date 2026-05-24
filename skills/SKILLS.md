@@ -8,6 +8,8 @@ Auto-generated index of all available skills in the `skills/` directory for the 
 |-------|-------------|---------|
 | `abap-dev` | SAP ABAP development workflows and MCP tool optimization | Session start |
 | `post-write-chain` | Mandatory QA chain after any WriteSource/EditSource | After write operations |
+| `desktop-app-fallback` | Manual Post-Write QA for Desktop App | Desktop App usage |
+| `source-command-celebrate` | Celebration for successful task completion | After task completion |
 
 ## Module-Specific Skills
 
@@ -20,6 +22,21 @@ Auto-generated index of all available skills in the `skills/` directory for the 
 | `sap-pp` | Production Planning module context | PP tasks (BOM, routing) |
 | `sap-sd` | Sales & Distribution module context | SD tasks (sales orders, billing) |
 
+## Utility Skills (Commands)
+
+| Skill | Description | Trigger |
+|-------|-------------|---------|
+| `changelog` | Add entry to CHANGELOG.md [Unreleased] | After completing changes |
+| `memlog` | Append session entry to memory/YYYY-MM-DD.md | During/after session |
+| `new-task` | Create task file from template | New task start |
+| `new-project` | Scaffold new project structure | New project start |
+| `post-write` | Run Post-Write QA chain | After ABAP writes |
+| `sync` | Full sync pipeline (memlog → changelog → audit → commit) | Session end |
+| `transport` | Manage SAP Transport Requests | Transport operations |
+| `triage` | Auto-classify and dispatch for SAP requests | New SAP task |
+| `verify` | Verify code changes by running the app | Testing changes |
+| `celebrate` | Celebrate successful task completion | After task completion |
+
 ## Skill Loading
 
 Skills are auto-discovered from the `skills/` directory at session start.
@@ -31,5 +48,5 @@ To add a new skill:
 
 ---
 
-*Generated: 2026-05-24*
+*Generated: 2026-05-25*
 *Source: abap-harness-engineering plugin*

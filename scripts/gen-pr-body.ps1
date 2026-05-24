@@ -1,12 +1,9 @@
-# gen-pr-body.ps1 — Generate a structured PR body from commit message + diff
-# Usage: .\scripts\gen-pr-body.ps1 "commit message"
-# Output: PR body markdown (stdout)
-#
-# Behaviour:
-#   1. If `claude` CLI is available → ask Claude to write the PR body (AI mode)
-#   2. Otherwise → build a structured template from commit message + file list (fallback)
-
 param([Parameter(Mandatory)][string]$CommitMsg)
+
+# UTF-8 encoding enforcement
+$PSDefaultParameterValues['*:Encoding'] = 'utf8'
+$ErrorActionPreference = 'Stop'
+
 
 $Today = Get-Date -Format "yyyy-MM-dd"
 
@@ -27,14 +24,14 @@ if (-not $Files) { $Files = (git show --name-only --format="" HEAD 2>$null) }
 
 $FileList = ($Files | Select-Object -First 30 | ForEach-Object { "- $_" }) -join "`n"
 $DiffStat = (git diff --stat HEAD~1 HEAD 2>$null) -join "`n"
-if (-not $DiffStat) { $DiffStat = (git diff --cached --stat 2>$null) -join "`n" }
+if (-not $DiffStat) { $DiffStat = (git diff --cached --stat 2>$null) -join "`n"
 
 # ── AI mode: generate body via Claude CLI ─────────────────────────────────────
 $ClaudePath = Get-Command claude -ErrorAction SilentlyContinue
 if ($ClaudePath) {
     $Prompt = @"
 Generate a GitHub Pull Request body for the following change.
-Output ONLY the PR body in markdown — no explanation, no code fences around the whole output.
+Output ONLY the PR body in markdown - no explanation, no code fences around the whole output.
 
 Commit message : $CommitMsg
 Date           : $Today
@@ -57,7 +54,7 @@ Use EXACTLY this structure (keep all section headers, fill placeholders):
 [1-3 sentences: what problem does this solve and why now?]
 
 ## What Changed
-[concise bullet list of actual changes — be specific, not generic]
+[concise bullet list of actual changes - be specific, not generic]
 
 ## Test Plan
 - [ ] ``bash scripts/audit.sh`` passes
@@ -79,7 +76,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
     $Prompt | Set-Content $TmpFile -Encoding UTF8
 
     try {
-        $Body = claude -p (Get-Content $TmpFile -Raw) 2>$null
+        $Body = claude -p (Get-Content $TmpFile -Raw -Encoding UTF8) 2>$null
         if ($Body) {
             Write-Output $Body
             exit 0

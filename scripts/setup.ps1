@@ -1,4 +1,4 @@
-# setup.ps1 — Post-scaffold environment setup (Windows PowerShell)
+# setup.ps1 - Post-scaffold environment setup (Windows PowerShell)
 # Mirrors setup.sh exactly. Called automatically by new-project.ps1;
 # can also be re-run manually at any time.
 #
@@ -24,12 +24,12 @@ function Pass($msg) { Write-Host "[PASS] $msg" -ForegroundColor Green }
 function Info($msg) { Write-Host "[INFO] $msg" -ForegroundColor Cyan }
 function Warn($msg) { Write-Host "[WARN] $msg" -ForegroundColor Yellow }
 
-Write-Host "=== setup.ps1 — environment setup ===" -ForegroundColor Cyan
+Write-Host "=== setup.ps1 - environment setup ===" -ForegroundColor Cyan
 
 # OSI-approved licenses accepted by default
 $OssLicenses = "MIT;ISC;BSD-2-Clause;BSD-3-Clause;Apache-2.0;Apache-1.1;CC0-1.0;CC-BY-3.0;CC-BY-4.0;Unlicense;0BSD;PSF-2.0;Python-2.0;MPL-2.0;LGPL-2.0;LGPL-2.1;LGPL-3.0;Artistic-2.0;Zlib;BlueOak-1.0.0"
 
-# ── OS detection ──────────────────────────────────────────────────────────────
+# ── OS detection ───────────────────────────────────────────────────────────────
 $IsWin = $true; $IsMac = $false; $IsLin = $false
 if ($PSVersionTable.PSVersion.Major -ge 6) {
     $IsMac = $IsMacOS; $IsLin = $IsLinux; $IsWin = -not ($IsMac -or $IsLin)
@@ -37,10 +37,10 @@ if ($PSVersionTable.PSVersion.Major -ge 6) {
 $OsLabel = if ($IsMac) { "macOS" } elseif ($IsLin) { "Linux" } else { "Windows" }
 Info "Detected OS: $OsLabel (PowerShell $($PSVersionTable.PSVersion))"
 
-# ── Helper: require a command or warn ────────────────────────────────────────
+# ── Helper: require a command or warn ───────────────────────────────────────────
 function Require([string]$Cmd, [string]$Hint) {
     if (-not (Get-Command $Cmd -ErrorAction SilentlyContinue)) {
-        Warn "$Cmd not found — $Hint"; return $false
+        Warn "$Cmd not found → $Hint"; return $false
     }
     return $true
 }
@@ -62,7 +62,7 @@ function Activate-Venv {
     foreach ($s in $scripts) {
         if (Test-Path $s) { & $s; return }
     }
-    Warn "Could not find venv Activate.ps1 — continuing without activation"
+    Warn "Could not find venv Activate.ps1 → continuing without activation"
 }
 
 function Show-VenvHint([string]$Mgr = "pip") {
@@ -82,17 +82,17 @@ function Ensure-Venv {
         if (-not (Test-Path ".venv")) {
             Info "Creating Python virtual environment with uv (.venv)…"
             uv venv .venv; Pass ".venv created (uv)"
-        } else { Info ".venv already exists — reusing (uv)" }
+        } else { Info ".venv already exists → reusing (uv)" }
         Activate-Venv; return "uv"
     } elseif ($PyBin) {
         if (-not (Test-Path ".venv")) {
-            Info "uv not found — creating .venv with $PyBin -m venv (fallback)"
+            Info "uv not found → creating .venv with $PyBin -m venv (fallback)"
             Info "  Install uv for faster installs: winget install astral-sh.uv  or  pip install uv"
             & $PyBin -m venv .venv; Pass ".venv created (venv)"
-        } else { Info ".venv already exists — reusing" }
+        } else { Info ".venv already exists → reusing" }
         Activate-Venv; return "pip"
     } else {
-        Warn "Neither uv nor Python 3 found — skipping venv"
+        Warn "Neither uv nor Python 3 found → skipping venv"
         Warn "  Install uv (recommended): winget install astral-sh.uv"
         Warn "  Or install Python 3: https://python.org"
         return $null
@@ -112,20 +112,20 @@ function Audit-NodeLicenses {
     if (Get-Command npx -ErrorAction SilentlyContinue) {
         $result = npx --yes license-checker --summary --onlyAllow $OssLicenses 2>&1
         if ($LASTEXITCODE -eq 0) {
-            Pass "License audit passed — all packages use OSI-approved licenses"
+            Pass "License audit passed → all packages use OSI-approved licenses"
         } else {
             Warn "⚠  License audit flagged non-OSS packages. Review before committing."
             Warn "   Run: npx license-checker --summary"
             Warn "   Document justified exceptions in docs/context.md § Non-OSS Dependencies"
         }
-    } else { Warn "npx not available — skipping Node.js license audit" }
+    } else { Warn "npx not available → skipping Node.js license audit" }
 }
 
 function Audit-PythonLicenses {
     if ($SkipLicenseCheck) { Info "Skipping license audit (-SkipLicenseCheck)"; return }
     Info "Running Python license audit…"
     if (-not (Get-Command pip-licenses -ErrorAction SilentlyContinue)) {
-        Info "pip-licenses not installed — installing for audit…"
+        Info "pip-licenses not installed → installing for audit…"
         if ($UvBin) { uv pip install pip-licenses --quiet 2>$null }
         else         { pip install pip-licenses --quiet 2>$null }
     }
@@ -134,13 +134,13 @@ function Audit-PythonLicenses {
         $flagged = $report | Select-String -Pattern "GPL-3|AGPL|SSPL|BSL|Proprietary|Commercial" |
                    Where-Object { $_ -notmatch "^Name" }
         if (-not $flagged) {
-            Pass "License audit passed — no restrictive licenses detected"
+            Pass "License audit passed → no restrictive licenses detected"
         } else {
             Warn "⚠  License audit flagged these packages:"
             $flagged | ForEach-Object { Warn "   $_" }
             Warn "   Document justified exceptions in docs/context.md § Non-OSS Dependencies"
         }
-    } else { Warn "Could not install pip-licenses — skipping Python license audit" }
+    } else { Warn "Could not install pip-licenses → skipping Python license audit" }
 }
 
 # ── 1. .env.sample → .env ─────────────────────────────────────────────────────
@@ -154,10 +154,21 @@ if (Test-Path ".env.sample") {
 # ── 2. Dependency install + license audit (stack auto-detection) ──────────────
 if (-not $SkipInstall) {
 
+    # ── Bun Agent Orchestration ────────────────────────────────────────────────
+    if (Test-Path "scripts\package.json") {
+        if (Require "bun" "install Bun using .\scripts\install-bun.ps1") {
+            Info "Agent orchestration (Bun) detected → running bun install in scripts/"
+            Push-Location scripts
+            bun install
+            if ($LASTEXITCODE -eq 0) { Pass "bun install complete" }
+            Pop-Location
+        }
+    }
+
     # ── Node.js ────────────────────────────────────────────────────────────────
     if (Test-Path "package.json") {
         if (Require "npm" "install Node.js from https://nodejs.org") {
-            Info "Node.js project detected — running npm install"
+            Info "Node.js project detected → running npm install"
             npm install
             if ($LASTEXITCODE -eq 0) { Pass "npm install complete"; Audit-NodeLicenses }
         }
@@ -200,7 +211,7 @@ if (-not $SkipInstall) {
     # ── Ruby ──────────────────────────────────────────────────────────────────
     if (Test-Path "Gemfile") {
         if (Require "bundle" "run: gem install bundler") {
-            Info "Ruby project detected — running bundle install"
+            Info "Ruby project detected → running bundle install"
             bundle install
             if ($LASTEXITCODE -eq 0) {
                 Pass "bundle install complete"
@@ -217,7 +228,7 @@ if (-not $SkipInstall) {
         Where-Object { $_.FullName -notmatch "\\.git\\" } | Select-Object -First 1
     if ($dotnetProj) {
         if (Require "dotnet" "install .NET SDK from https://dotnet.microsoft.com/download") {
-            Info ".NET project detected ($($dotnetProj.Name)) — running dotnet restore"
+            Info ".NET project detected ($($dotnetProj.Name)) → running dotnet restore"
             dotnet restore
             if ($LASTEXITCODE -eq 0) {
                 Pass "dotnet restore complete"
@@ -236,7 +247,7 @@ if (-not $SkipInstall) {
     # ── Java / Maven ──────────────────────────────────────────────────────────
     if (Test-Path "pom.xml") {
         if (Require "mvn" "install Maven from https://maven.apache.org or: sdk install maven") {
-            Info "Maven project detected — running mvn dependency:resolve -q"
+            Info "Maven project detected → running mvn dependency:resolve -q"
             mvn dependency:resolve -q
             if ($LASTEXITCODE -eq 0) {
                 Pass "mvn dependency:resolve complete"
@@ -251,8 +262,8 @@ if (-not $SkipInstall) {
     $gradleBuild = @("build.gradle","build.gradle.kts") | Where-Object { Test-Path $_ } | Select-Object -First 1
     if ($gradleBuild) {
         $gradleExe = if (Test-Path "gradlew.bat") { ".\gradlew.bat" } elseif (Test-Path "./gradlew") { "bash" } else { "gradle" }
-        if (Require $gradleExe "install Gradle from https://gradle.org or: sdk install gradle") {
-            Info "Gradle project detected — running dependencies"
+        if (Require $gradleExe "install Gradle from https://gradlew.org or: sdk install gradle") {
+            Info "Gradle project detected → running dependencies"
             if ($gradleExe -eq "bash") { bash ./gradlew dependencies -q } else { & $gradleExe dependencies -q }
             if ($LASTEXITCODE -eq 0) {
                 Pass "Gradle dependencies resolved"
@@ -266,7 +277,7 @@ if (-not $SkipInstall) {
     # ── Go ─────────────────────────────────────────────────────────────────────
     if (Test-Path "go.mod") {
         if (Require "go" "install Go from https://go.dev/dl/") {
-            Info "Go project detected — running go mod download"
+            Info "Go project detected → running go mod download"
             go mod download
             if ($LASTEXITCODE -eq 0) {
                 Pass "go mod download complete"
@@ -275,10 +286,10 @@ if (-not $SkipInstall) {
         }
     }
 
-    # ── Rust ──────────────────────────────────────────────────────────────────
+    # ── Rust ───────────────────────────────────────────────────────────────────
     if (Test-Path "Cargo.toml") {
         if (Require "cargo" "install Rust from https://rustup.rs  (run: winget install Rustlang.Rustup)") {
-            Info "Rust project detected — running cargo fetch"
+            Info "Rust project detected → running cargo fetch"
             cargo fetch
             if ($LASTEXITCODE -eq 0) {
                 Pass "cargo fetch complete"
@@ -294,7 +305,7 @@ if (-not $SkipInstall) {
     # ── Elixir / Mix ──────────────────────────────────────────────────────────
     if (Test-Path "mix.exs") {
         if (Require "mix" "install Elixir from https://elixir-lang.org/install.html  or  winget install ElixirLang.Elixir") {
-            Info "Elixir project detected — running mix deps.get"
+            Info "Elixir project detected → running mix deps.get"
             mix deps.get
             if ($LASTEXITCODE -eq 0) {
                 Pass "mix deps.get complete"
@@ -306,10 +317,10 @@ if (-not $SkipInstall) {
     # ── C/C++ (CMake) ─────────────────────────────────────────────────────────
     if (Test-Path "CMakeLists.txt") {
         if (Require "cmake" "install CMake from https://cmake.org") {
-            Info "CMake project detected — configuring build (cmake -B build)"
+            Info "CMake project detected → configuring build (cmake -B build)"
             cmake -B build -S . 2>&1 | Select-Object -Last 5
             if ($LASTEXITCODE -eq 0) {
-                Pass "CMake configure complete — build artifacts in build\"
+                Pass "CMake configure complete → build artifacts in build\"
                 Info "  To build: cmake --build build"
             }
         }
@@ -319,7 +330,7 @@ if (-not $SkipInstall) {
     if ((Test-Path "Makefile") -and (-not (Test-Path "CMakeLists.txt"))) {
         $makeAvail = (Get-Command make -ErrorAction SilentlyContinue) -or (Get-Command nmake -ErrorAction SilentlyContinue)
         if ($makeAvail) {
-            Info "Makefile detected — 'make' available but NOT run automatically"
+            Info "Makefile detected → 'make' available but NOT run automatically"
             Info "  Run manually: make"
         } else {
             Warn "Makefile detected but make/nmake not found"
@@ -337,14 +348,14 @@ if (-not $SkipInstall) {
     $foundStack = ($knownManifests | Where-Object { Test-Path $_ }).Count -gt 0
     if (-not $foundStack) {
         $dotnetFound = Get-ChildItem -Path . -Recurse -Depth 3 -Include "*.csproj","*.sln","*.fsproj" `
-                       -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch "\\.git\\" }
+                           -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch "\\.git\\" }
         if ($dotnetFound) { $foundStack = $true }
     }
 
     if (-not $foundStack) {
         Write-Host ""
-        Write-Host ("━" * 60) -ForegroundColor DarkGray
-        Write-Host "⚠  UNKNOWN STACK — manual setup required" -ForegroundColor Yellow
+        Write-Host ("=" * 60) -ForegroundColor DarkGray
+        Write-Host "WARNING: UNKNOWN STACK - manual setup required" -ForegroundColor Yellow
         Write-Host ""
         Write-Host "  No recognized project manifest found in this directory."
         Write-Host "  Automatic dependency installation has been skipped."
@@ -359,8 +370,8 @@ if (-not $SkipInstall) {
         Write-Host "    3. Present the plan with risk assessment for your approval"
         Write-Host "    4. Execute ONLY after explicit confirmation"
         Write-Host ""
-        Write-Host "  ⛔ Do NOT run any install commands without agent security review." -ForegroundColor Red
-        Write-Host ("━" * 60) -ForegroundColor DarkGray
+        Write-Host "  WARNING: Do NOT run any install commands without agent security review." -ForegroundColor Red
+        Write-Host ("=" * 60) -ForegroundColor DarkGray
         Write-Host ""
     }
 
@@ -369,7 +380,7 @@ if (-not $SkipInstall) {
 # ── 3. Gemini Plugins Setup ───────────────────────────────────────────────────
 $SuperpowersDir = Join-Path $HOME ".gemini\config\plugins\superpowers"
 if (-not (Test-Path $SuperpowersDir)) {
-    Info "Gemini superpowers plugin not found — installing globally…"
+    Info "Gemini superpowers plugin not found → installing globally…"
     $PluginsDir = Join-Path $HOME ".gemini\config\plugins"
     if (-not (Test-Path $PluginsDir)) { New-Item -ItemType Directory -Path $PluginsDir -Force | Out-Null }
     git clone https://github.com/obra/superpowers $SuperpowersDir 2>$null
@@ -382,7 +393,28 @@ if (-not (Test-Path $SuperpowersDir)) {
     Pop-Location
 }
 
-# ── 4. Initialize CodeGraph MCP ───────────────────────────────────────────────
+# ── 4. Install RTK (Rust Token Killer) ────────────────────────────────────────
+if ($IsMac -or $IsLin) {
+    if (-not (Get-Command rtk -ErrorAction SilentlyContinue)) {
+        Info "Installing rtk (Rust Token Killer) for AI token optimization…"
+        if (Get-Command brew -ErrorAction SilentlyContinue) {
+            brew install rtk
+            if ($LASTEXITCODE -eq 0) { Pass "rtk installed via Homebrew" }
+        } elseif (Get-Command cargo -ErrorAction SilentlyContinue) {
+            cargo install --git https://github.com/rtk-ai/rtk
+            if ($LASTEXITCODE -eq 0) { Pass "rtk installed via Cargo" }
+        } else {
+            Warn "Neither Homebrew nor Cargo found → skipping rtk installation."
+        }
+    } else {
+        Info "rtk is already installed."
+    }
+} else {
+    Info "Skipping rtk installation (Windows native is not fully supported)."
+    Info "  Note: If you run setup.sh or setup.ps1 inside WSL, it will install rtk normally."
+}
+
+# ── 5. Initialize CodeGraph MCP ───────────────────────────────────────────────
 if (Get-Command npx -ErrorAction SilentlyContinue) {
     Info "Initializing and indexing CodeGraph for AI context…"
     npx -y @colbymchenry/codegraph init 2>$null
@@ -390,25 +422,25 @@ if (Get-Command npx -ErrorAction SilentlyContinue) {
     if ($LASTEXITCODE -eq 0) { Pass "CodeGraph initialized successfully" }
     else { Warn "Failed to initialize CodeGraph" }
 } else {
-    Warn "npx not found — skipping CodeGraph initialization"
+    Warn "npx not found → skipping CodeGraph initialization"
 }
 
-# ── 5. Initialize memory log ──────────────────────────────────────────────────
+# ── 6. Initialize memory log ──────────────────────────────────────────────────
 $Date = Get-Date -Format "yyyy-MM-dd"
 if (-not (Test-Path "memory")) { New-Item -ItemType Directory -Path "memory" -Force | Out-Null }
 $LogPath = "memory\$Date.md"
 if (-not (Test-Path $LogPath)) {
-    Add-Content $LogPath " -Encoding UTF8 ## Session — chore: initial scaffold`n`n- Project successfully scaffolded from workspace templates.`n"
+    Add-Content $LogPath "## Session — chore: initial scaffold`n`n- Project successfully scaffolded from workspace templates.`n" -Encoding UTF8
 }
 $IndexPath = "memory\MEMORY.md"
 if (Test-Path $IndexPath) {
-    $IndexContent = Get-Content $IndexPath -Raw
+    $IndexContent = Get-Content $IndexPath -Raw -Encoding UTF8
     if ($IndexContent -notmatch "\[$Date\]") {
         Add-Content $IndexPath "| [$Date]($Date.md) | chore: initial scaffold |" -Encoding UTF8
     }
 }
 
-# ── 6. Initial commit ─────────────────────────────────────────────────────────
+# ── 7. Initial commit ─────────────────────────────────────────────────────────
 if (-not $SkipCommit) {
     $gitDir = git rev-parse --git-dir 2>$null
     if ($LASTEXITCODE -eq 0) {
@@ -416,11 +448,11 @@ if (-not $SkipCommit) {
         $msg = "chore: initial scaffold`n`nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
         git commit -m $msg 2>$null
         if ($LASTEXITCODE -eq 0) { Pass "Initial commit created" } else { Warn "Nothing to commit (already committed?)" }
-    } else { Warn "Not inside a git repository — skipping initial commit" }
+    } else { Warn "Not inside a git repository → skipping initial commit" }
 } else { Info "Skipping initial commit (-SkipCommit)" }
 
 Write-Host ""
-Write-Host "✅ Setup complete." -ForegroundColor Green
+Write-Host "Setup complete." -ForegroundColor Green
 Write-Host ""
 Write-Host "Next:" -ForegroundColor Cyan
 Write-Host "  git remote add origin <url>"
