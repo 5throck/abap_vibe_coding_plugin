@@ -1,19 +1,19 @@
 ## Why
 
-This PR applies the comprehensive 3-phase project improvements from the parent `abap_vibe_coding` project to the plugin, ensuring architectural alignment while respecting the plugin's unique design constraints (marketplace distribution, plugin lifecycle, `userConfig` substitution).
+This PR applies the comprehensive **3-Phase Project Improvement Plan** from the parent `abap_vibe_coding` project to the plugin, ensuring architectural alignment while respecting the plugin's unique design constraints (marketplace distribution, plugin lifecycle, `userConfig` substitution).
 
 ## What Changed
 
-### Phase 1: Foundation Layer
+### Phase 1: Foundation Layer - Bun Runtime Migration
 
-**Bun Runtime Migration** (commit `7469847`)
+**Bun-based TypeScript Scripts** (commit `7469847`)
 - Migrated all core scripts from dual `.sh`/`.ps1` to single-source `.ts` files
 - Added `scripts/package.json` with npm script shortcuts
 - Added `scripts/tsconfig.json` configured for Bun's TypeScript
 - Added `scripts/README.md` with usage documentation
 - Updated `.gitignore` to exclude `bun.lockb`
 
-**New TypeScript Scripts (9 files)**
+**9 New TypeScript Scripts:**
 | Script | Purpose |
 |--------|---------|
 | `dev-sync.ts` | Full pipeline: memlog → sync-md → changelog → audit → commit → PR |
@@ -49,6 +49,27 @@ This PR applies the comprehensive 3-phase project improvements from the parent `
 
 **Note:** For marketplace installs, `plugin.json` with `userConfig` substitution remains the primary MCP configuration source. `.mcp.json` serves as a standalone fallback for direct development use outside the plugin lifecycle.
 
+### Documentation Updates
+
+**README.md Updates** (commit `e426ef4`)
+- Agent count: 19 → 20 (added `security-monitor`)
+- Skill count: 8 → 9 (added `desktop-app-fallback`)
+- Added Bun Scripts section with 9 TypeScript scripts
+- Updated agent roles table with `security-monitor`
+- Updated Last Updated to 2026-05-24
+
+## Architectural Alignment
+
+| Phase | Main Project | Plugin Project |
+|-------|--------------|----------------|
+| **1A: Docs** | ✅ Complete | N/A (uses parent) |
+| **1B: Bun Scripts** | ✅ Complete (13 scripts) | ✅ Complete (9 scripts) |
+| **1C: MCP Config** | ✅ Complete | ✅ Complete (as fallback) |
+| **2A: Agent Coord** | ✅ Complete | ✅ Complete |
+| **2B: Skills** | ✅ Complete | ✅ Complete |
+| **3A: QA Automation** | ✅ Complete | ✅ Complete |
+| **3B: Monitoring** | ✅ Complete | N/A (delegates) |
+
 ## Architectural Decisions
 
 | Aspect | Decision | Rationale |
@@ -59,14 +80,24 @@ This PR applies the comprehensive 3-phase project improvements from the parent `
 | **Legacy Scripts** | Retained `.sh`/`.ps1` | Backward compatibility during transition |
 | **Documentation** | References parent | Plugin delegates `docs/context.md`, `AGENTS.md` to parent project |
 
+## Component Parity
+
+| Component | Main | Plugin | Status |
+|-----------|------|--------|:------:|
+| **Agents** | 20 | 20 | ✅ Identical |
+| **Skills** | 9 | 9 | ✅ Identical |
+| **Commands** | 16 (native) | 7 (plugin) | ⚠️ Intentional difference |
+| **TS Scripts** | 13 | 9 | ⚠️ Plugin subset |
+
 ## Test Plan
 
 - [ ] `bun scripts/audit.ts` passes
 - [ ] `bun run dev-sync "test: verify Bun migration"` executes successfully
 - [ ] Legacy `.sh`/`.ps1` scripts still work
 - [ ] All 9 new TypeScript scripts execute without errors
-- [ ] `skills/SKILLS.md` index is accurate
+- [ ] `skills/SKILLS.md` index is accurate (9 skills)
 - [ ] Agent dispatch templates are valid Markdown
+- [ ] `.mcp.json` works as fallback for manual testing
 - [ ] CHANGELOG.md updated under `[Unreleased]`
 
 ## Verification Steps
@@ -82,6 +113,11 @@ bun run vsp-task "test-task"
 
 # Verify legacy scripts still work
 bash scripts/vsp-sync.sh "test: legacy compatibility"
+
+# Verify component counts
+ls agents/*.md | grep -v handoff-spec | wc -l  # Should be 20
+ls -d skills/*/ | wc -l  # Should be 9
+ls commands/*.md | wc -l  # Should be 7
 ```
 
 ## Security Checklist
@@ -104,6 +140,12 @@ bash scripts/vsp-sync.sh "test: legacy compatibility"
 - Focus on cross-platform compatibility of TypeScript scripts
 - Verify that `.mcp.json` role as fallback (not primary) is documented
 - Confirm that agent coordination templates match parent project
+- Verify component parity (20 agents, 9 skills)
+
+## Files Changed
+
+- **14 files added**: `scripts/*.ts` (9), `scripts/package.json`, `scripts/tsconfig.json`, `scripts/README.md`, `skills/SKILLS.md`, `templates/dispatch-*.md`, `agents/handoff-spec.md`, `skills/desktop-app-fallback/`, `.mcp.json`, `CHANGELOG.md`, `PR_BODY.md`
+- **2 files modified**: `.gitignore`, `README.md`
 
 ---
 

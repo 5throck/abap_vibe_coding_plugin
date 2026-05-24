@@ -20,10 +20,12 @@ Versions follow [Semantic Versioning](https://semver.org/).
 - **[2026-05-24]**: Agent dispatch templates (templates/dispatch-parallel.md, templates/dispatch-serial.md)
 - **[2026-05-24]**: Agent handoff specification (agents/handoff-spec.md)
 - **[2026-05-24]**: Desktop App fallback skill (skills/desktop-app-fallback/SKILL.md)
+- **[2026-05-24]**: Bun-based TypeScript scripts (9 files) for cross-platform compatibility
 
 ### Changed
 - **[2026-05-24]**: Documentation organization aligned with parent project improvements
 - **[2026-05-24]**: Agent dispatch patterns standardized
+- **[2026-05-24]**: README updated with current agent (20) and skill (9) counts
 
 ### Technical Details
 - **[2026-05-24]**: Applied improvements from abap_vibe_coding parent project
