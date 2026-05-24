@@ -206,10 +206,18 @@ license_audit_python() {
 }
 
 # ── 1. .env.sample → .env ─────────────────────────────────────────────────────
+# Check both legacy root location and new config/ directory
+_ENV_SAMPLE=""
 if [ -f ".env.sample" ]; then
+  _ENV_SAMPLE=".env.sample"
+elif [ -f "config/env.sample" ]; then
+  _ENV_SAMPLE="config/env.sample"
+fi
+
+if [ -n "$_ENV_SAMPLE" ]; then
   if [ ! -f ".env" ]; then
-    cp .env.sample .env
-    pass ".env created from .env.sample — fill in secrets before running the app"
+    cp "$_ENV_SAMPLE" .env
+    pass ".env created from $_ENV_SAMPLE — fill in secrets before running the app"
   else
     info ".env already exists — skipping copy"
   fi
