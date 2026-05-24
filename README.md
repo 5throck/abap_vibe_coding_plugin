@@ -235,3 +235,4 @@ AGPL v3 - see [LICENSE](./LICENSE) for details.
 ---
 
 *Last Updated: 2026-05-25*
+
