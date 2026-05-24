@@ -8,6 +8,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ---
 
 ## [Unreleased]
+- Merge main and resolve conflicts
 - chore: add sample env and mcp configuration files
 - refactor: apply Hybrid Scripting model, remove utility ts files
 - feat: Restructure plugin to Standalone Architecture and sync scripts
