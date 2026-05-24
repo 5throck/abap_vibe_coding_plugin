@@ -15,6 +15,7 @@ A Claude Code plugin providing a complete **AI Harness Engineering** framework f
 - **9 Skills**: ABAP development workflows, post-write quality gate, desktop app fallback, and 6 SAP ERP module knowledge bases (SD, MM, FI, CO, PP, LE)
 - **7 Commands**: `/triage`, `/transport`, `/post-write`, `/sync`, `/new-task`, `/memlog`, `/celebrate`
 - **MCP Integration**: `vsp` server for full SAP ADT access in hyperfocused mode
+- **Bun Scripts**: Cross-platform TypeScript scripts (~50ms startup, single-source maintenance)
 
 ---
 
@@ -174,6 +175,40 @@ In addition to the `vsp` server, the provided MCP configuration sample includes 
 In Claude Code CLI sessions, a `PostToolUse` hook fires after every Write/Edit tool call and runs `scripts/sync-md.sh` for documentation audit.
 
 > **Note**: Hooks do not fire in Claude Code Desktop App. Run `/post-write` manually after each ABAP write in Desktop sessions. Also, note that automatic hooks rely on the `CLAUDE_PLUGIN_ROOT` environment variable being populated by the plugin runtime. For direct manual testing or execution outside the hook lifecycle, execute `scripts/sync-md.sh` or `scripts/sync-md.ps1` directly from your workspace root.
+
+---
+
+## Hybrid Scripting (Bun & Shell)
+
+This project uses a **hybrid scripting approach**:
+1. **Utility Scripts**: Everyday development utilities (like `dev-sync`, `audit`) are implemented in pure **PowerShell (`.ps1`)** and **Bash (`.sh`)** for cross-platform ease of use without external dependencies.
+2. **Agent Orchestration**: Complex multi-agent workflow coordination and orchestration logic are implemented in **TypeScript (`.ts`)** and executed via **Bun**.
+
+See `scripts/README.md` for complete documentation.
+
+### Prerequisites for Agent Orchestration
+
+**Windows:**
+```powershell
+powershell -c "irm bun.sh/install.ps1"
+```
+
+**macOS / Linux:**
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+### Usage
+
+```bash
+# Everyday Utility Scripts (No dependencies)
+.\scripts\dev-sync.ps1 "feat: description"   # Windows
+bash scripts/dev-sync.sh "feat: description" # macOS/Linux
+
+# Agent Orchestration Scripts (Requires Bun)
+bun scripts/dispatch.ts parallel
+bun scripts/verify-skills.ts
+```
 
 ---
 
