@@ -1,9 +1,9 @@
-﻿# GEMINI.md ??abap-harness-engineering Plugin
+﻿# GEMINI.md —abap-harness-engineering Plugin
 
 > **Doc intent:** This file contains Gemini CLI / Antigravity-specific overrides only.
 > Shared project context lives in [`https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md`](https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md).
 > Agent roles live in [`agents/`](agents/) and [`AGENTS.md`](AGENTS.md).
-> Workspace-level Gemini behaviors ??[`https://raw.githubusercontent.com/5throck/ai-workspace-standards/main/GEMINI.md`](https://raw.githubusercontent.com/5throck/ai-workspace-standards/main/GEMINI.md).
+> Workspace-level Gemini behaviors —[`https://raw.githubusercontent.com/5throck/ai-workspace-standards/main/GEMINI.md`](https://raw.githubusercontent.com/5throck/ai-workspace-standards/main/GEMINI.md).
 
 ---
 
@@ -40,11 +40,11 @@ Gemini CLI uses different tool names from Claude Code:
 | **Command Execution** | `run_command` | Execute PowerShell/Bash shell commands. Returns task process IDs. NEVER use `cd` commands. |
 | **Agent** | `invoke_subagent` | Pass agent role from `agents/<name>.md` |
 
-#### ?좑툘 Surgical Multi-Replace Offset Safeguard
+#### 🚨 Surgical Multi-Replace Offset Safeguard
 When calling `multi_replace_file_content` with multiple `ReplacementChunks`, the line numbers of subsequent target blocks will shift if previous edits change the line count.
 - **Rule**: Sort and process `ReplacementChunks` from the **bottom of the file to the top** (descending order of line numbers: largest `StartLine` first).
 
-#### ?좑툘 Grep Search 50-Match Cap Safeguard
+#### 🚨 Grep Search 50-Match Cap Safeguard
 The `grep_search` tool silently truncates results at exactly **50 matches**.
 - **Rule**: If a search yields 50 results, do **NOT** assume you have all occurrences.
 - **Remediation**: Partition the search by targeting specific subdirectories or applying restrictive file glob filters via the `Includes` parameter (e.g., `["*.go"]`).
@@ -118,7 +118,7 @@ After any `WriteSource` / `EditSource` via `sap_execute`, execute the mandatory 
 
 #### Communication (`send_message`)
 Interact with spawned agents via their unique `conversationID`.
-**Reactive Wakeup**: Do not poll in a loop ??simply yield execution and the platform wakes you automatically when an agent replies or a background task completes.
+**Reactive Wakeup**: Do not poll in a loop —simply yield execution and the platform wakes you automatically when an agent replies or a background task completes.
 
 ---
 
@@ -140,8 +140,8 @@ Co-Authored-By: Gemini <noreply@google.com>
 ---
 
 ## Response Language
-- All **conversational** replies ??**Korean (?쒓뎅??** by default.
-- All code, config, commit messages, PR titles, branch names ??**English only**.
+- All **conversational** replies —**Korean (?쒓뎅—** by default.
+- All code, config, commit messages, PR titles, branch names —**English only**.
 
 ---
 
@@ -151,5 +151,6 @@ Co-Authored-By: Gemini <noreply@google.com>
 
 ---
 
-*Last Updated: 2026-05-23*
+*Last Updated: 2026-05-24*
+
 
