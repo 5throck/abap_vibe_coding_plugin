@@ -1,17 +1,33 @@
-scratch/*.md
-vsp
-vsp.exe
+# Secrets — never commit
 .env
-.env.*
-.mcp.json
-.mcp.json.local
-.local/
-.gemini/
-.claude/worktrees/
-.agents/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+dist/
+*.egg-info/
+
+# Node.js
+node_modules/
+.next/
+dist/
+build/
+
+# OS artifacts
 .DS_Store
 Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Local AI settings (personal overrides — never shared)
 .claude/settings.local.json
+.gemini/settings.local.json
+.mcp.local.json
 
 # Crypto / certificates — never commit private key material
 *.pem
@@ -33,5 +49,5 @@ Thumbs.db
 *.sqlite
 *.db
 
-# Local MCP overrides
-.mcp.local.json
+# CodeGraph Index
+.codegraph/
