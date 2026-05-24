@@ -8,6 +8,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ---
 
 ## [Unreleased]
+- feat: Restructure plugin to Standalone Architecture and sync scripts
 - docs: update README with current project state and Bun migration
 - feat: migrate plugin scripts to Bun-based TypeScript
 - feat: add skills index, dispatch templates, and handoff spec

@@ -1,4 +1,4 @@
-﻿# context.md
+# context.md
 
 **vsp** —Go-native MCP server and CLI for SAP ABAP Development Tools (ADT).
 
@@ -159,12 +159,14 @@ Auto-discovered from `skills/` directory. Each skill is `skills/<name>/SKILL.md`
 
 ---
 
-## Session Start Skills
-<!-- Skills listed here are loaded at the start of EVERY session by ALL AI tools. -->
-<!-- NOTE: This list may be dynamically expanded by the PM during the Kickoff Phase.-->
-<!-- Format: `skills/<name>/SKILL.md` —reason / trigger                          -->
-- `skills/abap-dev/SKILL.md` —always load; MCP tool optimization and ABAP write workflows
-- `skills/post-write-chain/SKILL.md` —always load; mandatory QA chain after any WriteSource / EditSource
+## Initial Context Files
+<!-- Files listed here MUST be loaded at the start of EVERY session by ALL AI tools. -->
+<!-- The exact loading mechanism (e.g., '@' syntax or 'Read' commands) is tool-specific and defined in CLAUDE.md / GEMINI.md. -->
+- `docs/context.md` —Full architecture map, ABAP rules, workflow
+- `AGENTS.md` —Plugin agent roster
+- `memory/MEMORY.md` —Recent session history (if exists)
+- `skills/abap-dev/SKILL.md` —Always load for SAP ABAP development tasks
+- `skills/post-write-chain/SKILL.md` —Always load; mandatory QA chain after any WriteSource/EditSource
 
 ---
 
@@ -373,13 +375,6 @@ For full project governance and role-based orchestration, refer to [AGENTS.md �
 - All code, config, commit messages, PR titles, branch names, **CHANGELOG.md**, and **memory/ logs** —**English only**.
 
 ---
-
-## Session Start Skills
-<!-- Skills listed here are loaded at the start of EVERY session by ALL AI tools. -->
-<!-- NOTE: This list may be dynamically expanded by the PM during the Kickoff Phase.-->
-<!-- Format: `skills/<name>/SKILL.md` —reason / trigger                          -->
-- `skills/abap-dev/SKILL.md` —always load for SAP ABAP development tasks
-- `skills/post-write-chain/SKILL.md` —always load; mandatory QA after any write
 
 ---
 

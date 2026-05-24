@@ -1,4 +1,4 @@
-﻿# CLAUDE.md
+# CLAUDE.md
 
 Claude Code configuration for the **abap-harness-engineering** plugin —an AI Harness Engineering framework for SAP ABAP development.
 
@@ -11,6 +11,7 @@ Parent project: https://github.com/5throck/abap_vibe_coding
 ## Session Start
 
 At the start of every Claude Code session, run this checklist:
+*(Ref: `docs/context.md` -> `Initial Context Files`)*
 
 ```
 0. git config core.hooksPath .githooks         # activate hooks (run once per clone)
@@ -57,22 +58,6 @@ When this plugin is installed in a consumer project:
 - **Hooks**: The plugin's `hooks/hooks.json` will automatically fire in the consumer project's CLI sessions. (CLI sessions only; Desktop App users must run `/post-write` manually.) The underlying hook scripts execute with a cross-platform fallback sequence (`bash` —`pwsh` —`powershell`) to ensure seamless execution on Windows environments. (Note: These automatic hooks rely on the `CLAUDE_PLUGIN_ROOT` environment variable being populated by the plugin runtime. For direct manual testing or execution outside the hook lifecycle, execute `scripts/sync-md.sh` or `scripts/sync-md.ps1` directly from your workspace root.)
 
 ---
-
-## Development Commands
-
-```bash
-# Sync session to Git (audit ??memory ??commit ??PR)
-bash scripts/dev-sync.sh "feat: description"
-
-# Documentation audit only
-bash scripts/vsp-audit.sh
-
-# Publish plugin to marketplace
-bash scripts/vsp-publish.sh
-
-# Create new task file
-bash scripts/vsp-task.sh "task-description"
-```
 
 ---
 
@@ -122,13 +107,6 @@ This runs SyntaxCheck —RunUnitTests —RunATCCheck. Skipping it risks committi
 In the CLI, the hook fires automatically via `hooks/hooks.json`.
 
 ---
-
-## Memory & Git
-
-- Session logs: `memory/YYYY-MM-DD.md` —append after each meaningful session
-- Memory index: `memory/MEMORY.md` —updated automatically by `/sync`
-- All git artifacts (commit messages, PR titles, branch names) must be in **English**
-- Branch naming: `pr/<YYYYMMDD-HHmmss>-<slug>` (auto-created by dev-sync on main)
 
 ---
 
