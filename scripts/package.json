@@ -1,23 +1,15 @@
 {
-  "name": "abap-harness-engineering-scripts",
+  "name": "vsp-scripts",
   "version": "1.0.0",
-  "description": "Cross-platform Bun scripts for ABAP Harness Engineering plugin",
-  "type": "module",
+  "description": "VSP Harness Engineering Scripts - Hybrid Orchestration",
   "scripts": {
-    "dev-sync": "bun scripts/dev-sync.ts",
-    "audit": "bun scripts/audit.ts",
-    "vsp-sync": "bun scripts/vsp-sync.ts",
-    "vsp-task": "bun scripts/vsp-task.ts",
-    "vsp-audit": "bun scripts/vsp-audit.ts",
-    "sync-md": "bun scripts/sync-md.ts",
-    "git-sync": "bun scripts/git-sync.ts",
-    "gen-pr-body": "bun scripts/gen-pr-body.ts",
-    "post-write": "bun scripts/post-write.ts"
+    "verify-skills": "bun scripts/verify-skills.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
+    "@types/node": "^20.0.0",
     "typescript": "^5.0.0"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
   }
 }

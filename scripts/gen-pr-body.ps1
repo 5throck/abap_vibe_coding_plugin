@@ -10,6 +10,16 @@ param([Parameter(Mandatory)][string]$CommitMsg)
 
 $Today = Get-Date -Format "yyyy-MM-dd"
 
+# ── Read Memory and Changelog ──────────────────────────────────────────────────
+$MemoryContent = ""
+if (Test-Path "memory\$Today.md") { $MemoryContent = Get-Content "memory\$Today.md" -Raw }
+
+$ChangelogContent = ""
+if (Test-Path "CHANGELOG.md") {
+    $cl = Get-Content "CHANGELOG.md" -Raw
+    if ($cl -match '(?m)^## \[Unreleased\]([\s\S]*?)(?=\n## |\z)') { $ChangelogContent = $Matches[1].Trim() }
+}
+
 # ── Collect changed files ──────────────────────────────────────────────────────
 $Files = (git diff --name-only HEAD~1 HEAD 2>$null)
 if (-not $Files) { $Files = (git diff --cached --name-only 2>$null) }
@@ -28,6 +38,12 @@ Output ONLY the PR body in markdown — no explanation, no code fences around th
 
 Commit message : $CommitMsg
 Date           : $Today
+
+Memory Log     :
+$MemoryContent
+
+Changelog      :
+$ChangelogContent
 
 Changed files  :
 $($Files -join "`n")
@@ -80,9 +96,11 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 ## Why
 $CommitMsg
 
+$($MemoryContent ? "## Session Memory`n$MemoryContent`n" : "")
 ## What Changed
 $FileList
 
+$($ChangelogContent ? "## Changelog Notes`n$ChangelogContent`n" : "")
 ## Test Plan
 - [ ] ``bash scripts/audit.sh`` passes
 - [ ] CHANGELOG.md updated under ``[Unreleased]``

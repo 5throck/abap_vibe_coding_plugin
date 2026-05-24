@@ -144,15 +144,10 @@ function Audit-PythonLicenses {
 }
 
 # ── 1. .env.sample → .env ─────────────────────────────────────────────────────
-# Check both legacy root location and new config/ directory
-$_envSample = $null
-if (Test-Path ".env.sample") { $_envSample = ".env.sample" }
-elseif (Test-Path "config/env.sample") { $_envSample = "config/env.sample" }
-
-if ($_envSample) {
+if (Test-Path ".env.sample") {
     if (-not (Test-Path ".env")) {
-        Copy-Item $_envSample ".env"
-        Pass ".env created from $_envSample — fill in secrets before running the app"
+        Copy-Item ".env.sample" ".env"
+        Pass ".env created from .env.sample — fill in secrets before running the app"
     } else { Info ".env already exists — skipping copy" }
 }
 

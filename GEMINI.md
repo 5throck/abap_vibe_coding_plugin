@@ -1,4 +1,4 @@
-﻿# GEMINI.md —abap-harness-engineering Plugin
+# GEMINI.md —abap-harness-engineering Plugin
 
 > **Doc intent:** This file contains Gemini CLI / Antigravity-specific overrides only.
 > Shared project context lives in [`https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md`](https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md).
@@ -10,6 +10,7 @@
 ## Context Loading
 
 Load project files at session start using the `@` syntax:
+*(Ref: `docs/context.md` -> `Initial Context Files`)*
 ```
 @docs/context.md                            # full project knowledge (ABAP rules, build, codebase map)
 @AGENTS.md                                  # plugin agent roster
@@ -79,15 +80,6 @@ Enter Planning Mode for complex tasks or architectural modifications. Leverage t
 
 ---
 
-## Post-Write QA Chain
-
-After any `WriteSource` / `EditSource` via `sap_execute`, execute the mandatory chain:
-```json
-{ "action": "SyntaxCheck",   "object_url": "/sap/bc/adt/..." }
-{ "action": "RunUnitTests",  "object_url": "/sap/bc/adt/..." }
-{ "action": "RunATCCheck",   "object_url": "/sap/bc/adt/..." }
-```
-
 ---
 
 ## Subagent Instantiation & Async Orchestration
@@ -130,27 +122,7 @@ The PM agent MUST leverage the **`superpowers`** plugin (e.g., `subagent-driven-
 
 ---
 
-## Git Commit Policy
-
-**Auto-commits and PostToolUse hooks are disabled in Gemini CLI.**
-
-After completing a task, manually run the sync pipeline:
-```bash
-bash scripts/vsp-sync.sh "feat: description"     # macOS/Linux
-.\scripts\vsp-sync.ps1 "feat: description"       # Windows
-```
-
-Always append to AI-generated commit messages:
-```
-Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
-Co-Authored-By: Gemini <noreply@google.com>
-```
-
 ---
-
-## Response Language
-- All **conversational** replies —**Korean (?쒓뎅—** by default.
-- All code, config, commit messages, PR titles, branch names —**English only**.
 
 ---
 

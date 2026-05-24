@@ -1,4 +1,4 @@
-﻿# context.md
+# context.md
 
 **vsp** —Go-native MCP server and CLI for SAP ABAP Development Tools (ADT).
 
@@ -159,12 +159,14 @@ Auto-discovered from `skills/` directory. Each skill is `skills/<name>/SKILL.md`
 
 ---
 
-## Session Start Skills
-<!-- Skills listed here are loaded at the start of EVERY session by ALL AI tools. -->
-<!-- NOTE: This list may be dynamically expanded by the PM during the Kickoff Phase.-->
-<!-- Format: `skills/<name>/SKILL.md` —reason / trigger                          -->
-- `skills/abap-dev/SKILL.md` —always load; MCP tool optimization and ABAP write workflows
-- `skills/post-write-chain/SKILL.md` —always load; mandatory QA chain after any WriteSource / EditSource
+## Initial Context Files
+<!-- Files listed here MUST be loaded at the start of EVERY session by ALL AI tools. -->
+<!-- The exact loading mechanism (e.g., '@' syntax or 'Read' commands) is tool-specific and defined in CLAUDE.md / GEMINI.md. -->
+- `docs/context.md` —Full architecture map, ABAP rules, workflow
+- `AGENTS.md` —Plugin agent roster
+- `memory/MEMORY.md` —Recent session history (if exists)
+- `skills/abap-dev/SKILL.md` —Always load for SAP ABAP development tasks
+- `skills/post-write-chain/SKILL.md` —Always load; mandatory QA chain after any WriteSource/EditSource
 
 ---
 
@@ -374,13 +376,6 @@ For full project governance and role-based orchestration, refer to [AGENTS.md �
 
 ---
 
-## Session Start Skills
-<!-- Skills listed here are loaded at the start of EVERY session by ALL AI tools. -->
-<!-- NOTE: This list may be dynamically expanded by the PM during the Kickoff Phase.-->
-<!-- Format: `skills/<name>/SKILL.md` —reason / trigger                          -->
-- `skills/abap-dev/SKILL.md` —always load for SAP ABAP development tasks
-- `skills/post-write-chain/SKILL.md` —always load; mandatory QA after any write
-
 ---
 
 ## Project-Wide Rules (All Tools)
@@ -465,7 +460,17 @@ For a full comparison of tool capabilities (Claude Code CLI vs Desktop App vs An
 **Note:** The agent and skills lists in this project may be dynamically expanded by the PM orchestrator during the Kickoff Phase based on emerging requirements.
 
 
-
 ### 8. File Encoding Rule (Markdown & Scripts)
 - All text files, including Markdown (.md) and scripts (.ps1, .sh, .py, .js, etc.), must be saved as **UTF-8 (without BOM)**.
 - Script outputs (Add-Content, Set-Content) must explicitly specify -Encoding UTF8.
+
+### 9. Hybrid Scripting & Cross-Platform Rule
+
+This project uses a **Hybrid Scripting Automation** model:
+1. **Utility Scripts (Everyday sync/audit)**: Implemented in pure PowerShell (`.ps1`) and Bash (`.sh`) for ease of use without external dependencies.
+2. **Agent Orchestration**: Complex multi-agent workflow coordination and error handling logic are implemented in TypeScript (`.ts`) and executed via Bun.
+
+**Script Pairing Rule**:
+- Any modification to a `.ps1` utility script MUST be accompanied by the exact same logical modification to its `.sh` counterpart, and vice versa.
+- A script should never exist in only one format unless it is an OS-specific installer.
+- **Agent Orchestration** `.ts` files do not require PS1/SH pairs.
