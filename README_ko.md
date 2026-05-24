@@ -176,40 +176,6 @@ Write/Edit 툴 호출 이후 `PostToolUse` 훅이 실행되어 `scripts/sync-md.
 
 ---
 
-## 하이브리드 스크립팅 (Bun & Shell)
-
-이 프로젝트는 **하이브리드 스크립팅 방식**을 사용합니다:
-1. **유틸리티 스크립트**: 일상적인 개발 워크플로우(동기화, 코드 감사 등)는 외부 의존성 없이 교차 플랫폼에서 쉽게 사용할 수 있도록 **PowerShell(`.ps1`)** 및 **Bash(`.sh`)**로 구현됩니다.
-2. **에이전트 오케스트레이션**: 복잡한 다중 에이전트 워크플로우 조정 및 오케스트레이션 로직은 **TypeScript(`.ts`)**로 구현되며 **Bun**을 통해 실행됩니다.
-
-자세한 내용은 `scripts/README.md`를 참조하세요.
-
-### 에이전트 오케스트레이션을 위한 사전 요구사항
-
-**Windows:**
-```powershell
-powershell -c "irm bun.sh/install.ps1"
-```
-
-**macOS / Linux:**
-```bash
-curl -fsSL https://bun.sh/install | bash
-```
-
-### 사용법
-
-```bash
-# 일상적인 유틸리티 스크립트 (의존성 없음)
-.\scripts\dev-sync.ps1 "feat: description"   # Windows
-bash scripts/dev-sync.sh "feat: description" # macOS/Linux
-
-# 에이전트 오케스트레이션 스크립트 (Bun 필요)
-bun scripts/dispatch.ts parallel
-bun scripts/verify-skills.ts
-```
-
----
-
 ## 독립형 플러그인 아키텍처
 
 이 플러그인은 **[5throck/abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)** 프로젝트를 패키징하여 배포 가능한 형태로 만든 것입니다. 
