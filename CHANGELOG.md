@@ -8,6 +8,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ---
 
 ## [Unreleased]
+- feat: migrate plugin scripts to Bun-based TypeScript
 - feat: add skills index, dispatch templates, and handoff spec
 - refactor: reorganize configuration files into dedicated config/ directory
 - feat: add MCP SSoT and update CHANGELOG
