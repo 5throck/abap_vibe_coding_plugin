@@ -1,17 +1,19 @@
 # abap-harness-engineering
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](./LICENSE)
+[![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-Plugin-blue)](https://claude.com/claude-code)
+[![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-green)](https://modelcontextprotocol.io)
 
 A Claude Code plugin providing a complete **AI Harness Engineering** framework for SAP ABAP development. Includes 20 specialized agents, 9 skills, 7 commands, and MCP integration via the `vsp` server.
 
 > **What is Harness Engineering?**
-> A methodology where specialized AI agents collaborate within a structured environment - ensuring AI-driven SAP development is predictable, governed, and auditable. The PM-led governance model mirrors a real software engineering team: business analysts define requirements, architects design the solution, developers implement it, and QA verifies it. See the [reference implementation ->](#reference-implementation-abap_vibe_coding)
+> A methodology where specialized AI agents collaborate within a structured environment - ensuring AI-driven SAP development is predictable, governed, and auditable. The PM-led governance model mirrors a real software engineering team: business analysts define requirements, architects design the solution, developers implement it, and QA verifies it. See the [reference implementation](https://github.com/5throck/abap_vibe_coding).
 
 ---
 
 ## Features
 
-- **20 Agents**: Global PM, technical architect, code writer, DBA, Interface Expert, DevOps / Admin, Fiori developer, form expert, GUI scripter, security monitor, business analysts (SD/MM/FI/CO/PP/LE), QA runner, schema inspector, SAP investigator, read-only analyst
+- **20 Agents**: Global PM, technical architect, code writer, DBA, interface expert, DevOps/admin, Fiori developer, form expert, GUI scripter, security monitor, business analysts (SD/MM/FI/CO/PP/LE), QA runner, schema inspector, SAP investigator, read-only analyst
 - **9 Skills**: ABAP development workflows, post-write quality gate, desktop app fallback, and 6 SAP ERP module knowledge bases (SD, MM, FI, CO, PP, LE)
 - **7 Commands**: `/triage`, `/transport`, `/post-write`, `/sync`, `/new-task`, `/memlog`, `/celebrate`
 - **MCP Integration**: `vsp` server for full SAP ADT access in hyperfocused mode
@@ -78,7 +80,21 @@ Or set them in your shell profile / Claude Code environment.
 cc --plugin-dir /path/to/abap-harness-engineering
 ```
 
-**From Marketplace:** Install via Claude Code settings -> Plugins -> Search "abap-harness-engineering"
+**From Marketplace:**
+1. Open Claude Code
+2. Go to **Settings → Plugins → Browse**
+3. Search for **"abap-harness-engineering"**
+4. Click **Install → Enable**
+5. Enter SAP credentials when prompted
+
+### Plugin vs Standalone Mode
+
+| Feature | Plugin Mode | Standalone Mode |
+|---------|-------------|:---------------:|
+| SAP Credentials | UI prompt (userConfig) | .env file |
+| Documentation | Built-in | External docs/ |
+| Hooks | Auto-registered | Manual setup |
+| Updates | Via marketplace | Manual git pull |
 
 ---
 
@@ -91,7 +107,7 @@ cc --plugin-dir /path/to/abap-harness-engineering
 ```
 
 This will:
-1. Detect the SD module
+1. Detect the SD module automatically
 2. Create a task file in `scratch/tasks/`
 3. Generate parallel dispatch blocks for 3 read-only agents
 
@@ -212,11 +228,34 @@ bun scripts/verify-skills.ts
 
 ---
 
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| **vsp command not found** | Run `bash scripts/install-vsp.sh` (or `.ps1` on Windows) |
+| **Hooks not firing** | Desktop App limitation - use `/post-write` manually |
+| **SAP connection failed** | Check `.env` file or MCP server configuration |
+| **Plugin not loading** | Verify `.claude/settings.local.json` has `"enableAllProjectMcpServers": true` |
+| **Agent not responding** | Check [AGENTS.md](AGENTS.md) for trigger keywords |
+
+---
+
+## Updates
+
+Check for plugin updates:
+```bash
+cc plugin update abap-harness-engineering
+```
+
+Version history: [CHANGELOG.md](CHANGELOG.md)
+
+---
+
 ## Standalone Plugin Architecture
 
-This plugin is the packaged, distributable form of the **[5throck/abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)** project. 
+This plugin is the packaged, distributable form of the **[5throck/abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)** project.
 
-Unlike typical lightweight plugins, this repository is designed as a **standalone, fully-featured framework**. When installed in a consumer's repository, AI agents (Claude Code, Gemini CLI, Antigravity) will read from the plugin's internal `docs/`, `agents/`, and `skills/` directories. 
+Unlike typical lightweight plugins, this repository is designed as a **standalone, fully-featured framework**. When installed in a consumer's repository, AI agents (Claude Code, Gemini CLI, Antigravity) will read from the plugin's internal `docs/`, `agents/`, and `skills/` directories.
 
 The plugin is fully self-contained and ships with the complete Harness Engineering documentation, including:
 - Comprehensive `docs/context.md`
@@ -228,6 +267,23 @@ The plugin is fully self-contained and ships with the complete Harness Engineeri
 
 ---
 
+## Community
+
+- 🐛 [Report Issues](https://github.com/5throck/abap_vibe_coding_plugin/issues)
+- 💡 [Feature Requests](https://github.com/5throck/abap_vibe_coding_plugin/discussions)
+- 📖 [Contributing Guide](CONTRIBUTING.md)
+
+---
+
+## Related Documentation
+
+- [Reference Implementation](https://github.com/5throck/abap_vibe_coding) - Upstream project with live examples
+- [Plugin Setup Guide](docs/plugin-setup.md) - Step-by-step installation
+- [Agent Roles](AGENTS.md) - Complete agent catalog
+- [Changelog](CHANGELOG.md) - Version history
+
+---
+
 ## License
 
 AGPL v3 - see [LICENSE](./LICENSE) for details.
@@ -235,4 +291,3 @@ AGPL v3 - see [LICENSE](./LICENSE) for details.
 ---
 
 *Last Updated: 2026-05-25*
-

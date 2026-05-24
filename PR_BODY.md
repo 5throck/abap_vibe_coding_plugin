@@ -1,153 +1,76 @@
 ## Why
 
-This PR applies the comprehensive **3-Phase Project Improvement Plan** from the parent `abap_vibe_coding` project to the plugin, ensuring architectural alignment while respecting the plugin's unique design constraints (marketplace distribution, plugin lifecycle, `userConfig` substitution).
+Comprehensive documentation improvement and synchronization between the reference implementation (`abap_vibe_coding`) and the plugin distribution (`abap_vibe_coding_plugin`). This ensures consistency, removes duplication, and improves user experience.
 
 ## What Changed
 
-### Phase 1: Foundation Layer - Bun Runtime Migration
+### Documentation Enhancements
 
-**Bun-based TypeScript Scripts** (commit `7469847`)
-- Migrated all core scripts from dual `.sh`/`.ps1` to single-source `.ts` files
-- Added `scripts/package.json` with npm script shortcuts
-- Added `scripts/tsconfig.json` configured for Bun's TypeScript
-- Added `scripts/README.md` with usage documentation
-- Updated `.gitignore` to exclude `bun.lockb`
+**README Improvements** (both projects)
+- Added badges: MCP Compatible, Claude Code Plugin, Contributing
+- Added 🚀 Quick Start section for faster onboarding
+- Added Agent Roles table with parallelizability indicators
+- Added Community section (issues, feature requests, contributing)
+- Added Related Documentation section with cross-references
+- Updated Korean translations (README_ko.md)
 
-**9 New TypeScript Scripts:**
-| Script | Purpose |
-|--------|---------|
-| `dev-sync.ts` | Full pipeline: memlog → sync-md → changelog → audit → commit → PR |
-| `audit.ts` | Documentation integrity check |
-| `vsp-sync.ts` | Memory sync and git commit |
-| `vsp-task.ts` | Create task files |
-| `sync-md.ts` | Update memory index |
-| `git-sync.ts` | Git commit and push |
-| `gen-pr-body.ts` | Generate PR body from commit + diff |
-| `post-write.ts` | QA chain reminder for Desktop App |
-| `vsp-audit.ts` | Wrapper for audit.ts |
+### File Organization
 
-**Benefits:**
-- Single source of truth (no more dual `.sh`/`.ps1` maintenance)
-- Cross-platform by design (Windows, macOS, Linux)
-- Modern async/await and native JSON handling
-- ~50ms startup (negligible vs human time)
-- Legacy `.sh`/`.ps1` scripts retained for backward compatibility
+**Templates to Docs Migration**
+- Moved `templates/dispatch-parallel.md` → `docs/dispatch-parallel.md`
+- Moved `templates/dispatch-serial.md` → `docs/dispatch-serial.md`
+- Removed empty `templates/` folders
 
-### Phase 2: Orchestration Layer
+**Plugin → Upstream Sync**
+- `docs/abap-dev-rules.md` - ABAP naming conventions and workflow rules
 
-**Agent Coordination** (commit `b23a282`)
-- Added `skills/SKILLS.md` - auto-generated skill index
-- Added `templates/dispatch-parallel.md` - parallel dispatch template
-- Added `templates/dispatch-serial.md` - serial dispatch template
-- Added `agents/handoff-spec.md` - JSON-based handoff format
+**Upstream → Plugin Sync**
+- `docs/antigravity-setup.md` - Antigravity VS Code extension setup
+- `docs/mcp_usage.md` - MCP server usage guide with SQL limitations
+- `docs/setup-guide.md` - 43KB comprehensive setup guide
+- `docs/tooling-matrix.md` - Cross-tool capability comparison
+- `docs/skill.md` - Legacy skill entry point
+- `docs/superpowers/` - Superpowers plugin documentation
+- `skills/source-command-celebrate/` - Celebration skill
+- `docs/testing-guidelines.md` - Updated with ATC P2 Escalation workflow, test skeleton
+- `docs/task-template.md` - Added Rollback Plan section
+- `docs/context.md` - Latest version with all updates
+- `docs/plugin-setup.md` - Added Git Hooks section
 
-### Phase 2.5: MCP Configuration
+### File Cleanup
 
-**MCP Single Source of Truth** (commit `abcf7e0`)
-- Added `.mcp.json` as fallback for manual testing
-- Updated `CHANGELOG.md` with all improvements
+**Removed Duplicate Files** (plugin project)
+- `.env.sample` (use `config/env.sample` instead)
+- `.mcp.json.sample` (use `config/mcp.json.sample` instead)
+- `PR_BODY.md` - stale PR template from previous work
 
-**Note:** For marketplace installs, `plugin.json` with `userConfig` substitution remains the primary MCP configuration source. `.mcp.json` serves as a standalone fallback for direct development use outside the plugin lifecycle.
+### Content Updates
 
-### Documentation Updates
+**AGENTS.md** (plugin)
+- Restructured to match upstream format
+- Added complete agent roster (20 agents)
+- Added trigger keywords for business analysts
+- Added detailed Dispatch Protocol section
 
-**README.md Updates** (commit `e426ef4`)
-- Agent count: 19 → 20 (added `security-monitor`)
-- Skill count: 8 → 9 (added `desktop-app-fallback`)
-- Added Bun Scripts section with 9 TypeScript scripts
-- Updated agent roles table with `security-monitor`
-- Updated Last Updated to 2026-05-24
+**SKILLS.md** (both projects)
+- Added `desktop-app-fallback` skill
+- Added `source-command-celebrate` skill
+- Plugin: Added Utility Skills section with command references
 
-## Architectural Alignment
+## Verification
 
-| Phase | Main Project | Plugin Project |
-|-------|--------------|----------------|
-| **1A: Docs** | ✅ Complete | N/A (uses parent) |
-| **1B: Bun Scripts** | ✅ Complete (13 scripts) | ✅ Complete (9 scripts) |
-| **1C: MCP Config** | ✅ Complete | ✅ Complete (as fallback) |
-| **2A: Agent Coord** | ✅ Complete | ✅ Complete |
-| **2B: Skills** | ✅ Complete | ✅ Complete |
-| **3A: QA Automation** | ✅ Complete | ✅ Complete |
-| **3B: Monitoring** | ✅ Complete | N/A (delegates) |
+- [ ] All README badges display correctly
+- [ ] Quick Start section provides clear entry points
+- [ ] Agent Roles table accurately reflects parallelizability
+- [ ] Community links point to correct GitHub locations
+- [ ] `config/` folder is single source of truth for sample files
+- [ ] No duplicate sample files in root directory
+- [ ] All cross-references between projects work
 
-## Architectural Decisions
+## Related Issues
 
-| Aspect | Decision | Rationale |
-|--------|----------|-----------|
-| **Script Runtime** | Bun (not Deno) | ~50ms vs ~200ms startup; native TypeScript |
-| **MCP Config** | `.mcp.json` + `plugin.json` | `plugin.json` is primary for marketplace; `.mcp.json` for manual testing |
-| **Hooks** | Kept `hooks/hooks.json` | Plugin uses Claude Code hooks, not git hooks |
-| **Legacy Scripts** | Retained `.sh`/`.ps1` | Backward compatibility during transition |
-| **Documentation** | References parent | Plugin delegates `docs/context.md`, `AGENTS.md` to parent project |
-
-## Component Parity
-
-| Component | Main | Plugin | Status |
-|-----------|------|--------|:------:|
-| **Agents** | 20 | 20 | ✅ Identical |
-| **Skills** | 9 | 9 | ✅ Identical |
-| **Commands** | 16 (native) | 7 (plugin) | ⚠️ Intentional difference |
-| **TS Scripts** | 13 | 9 | ⚠️ Plugin subset |
-
-## Test Plan
-
-- [ ] `bun scripts/audit.ts` passes
-- [ ] `bun run dev-sync "test: verify Bun migration"` executes successfully
-- [ ] Legacy `.sh`/`.ps1` scripts still work
-- [ ] All 9 new TypeScript scripts execute without errors
-- [ ] `skills/SKILLS.md` index is accurate (9 skills)
-- [ ] Agent dispatch templates are valid Markdown
-- [ ] `.mcp.json` works as fallback for manual testing
-- [ ] CHANGELOG.md updated under `[Unreleased]`
-
-## Verification Steps
-
-```bash
-# Install Bun (one-time)
-powershell -c "irm bun.sh/install.ps1"
-
-# Test TypeScript scripts
-bun run audit
-bun run dev-sync "test: verify Bun migration"
-bun run vsp-task "test-task"
-
-# Verify legacy scripts still work
-bash scripts/vsp-sync.sh "test: legacy compatibility"
-
-# Verify component counts
-ls agents/*.md | grep -v handoff-spec | wc -l  # Should be 20
-ls -d skills/*/ | wc -l  # Should be 9
-ls commands/*.md | wc -l  # Should be 7
-```
-
-## Security Checklist
-
-- [ ] No secrets, credentials, or API keys committed
-- [ ] No `.env` files staged (use `.env.sample` for templates)
-- [ ] Dependencies unchanged or reviewed for new CVEs
-- [ ] `.mcp.json` is gitignored (contains SAP credentials as example)
-
-## Notes
-
-**Breaking Changes:** None
-
-**Migration Guide:**
-1. Install Bun: `powershell -c "irm bun.sh/install.ps1"` (Windows) or `curl -fsSL https://bun.sh/install | bash` (Unix/macOS)
-2. Use `bun run <script>` or `bun scripts/<script>.ts` for new scripts
-3. Legacy `.sh`/`.ps1` scripts continue to work during transition period
-
-**Reviewer Guidance:**
-- Focus on cross-platform compatibility of TypeScript scripts
-- Verify that `.mcp.json` role as fallback (not primary) is documented
-- Confirm that agent coordination templates match parent project
-- Verify component parity (20 agents, 9 skills)
-
-## Files Changed
-
-- **14 files added**: `scripts/*.ts` (9), `scripts/package.json`, `scripts/tsconfig.json`, `scripts/README.md`, `skills/SKILLS.md`, `templates/dispatch-*.md`, `agents/handoff-spec.md`, `skills/desktop-app-fallback/`, `.mcp.json`, `CHANGELOG.md`, `PR_BODY.md`
-- **2 files modified**: `.gitignore`, `README.md`
+None
 
 ---
 
-Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
-Co-Authored-By: Gemini <noreply@google.com>
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
