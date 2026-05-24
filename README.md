@@ -52,7 +52,15 @@ bash scripts/install-vsp.sh v2.38.1        # Unix/macOS
 
 ### 2. Configure SAP Connection
 
-Copy `.mcp.json.sample` to `.mcp.json` and `.env.sample` to `.env`, then fill in your SAP credentials:
+See **[config/README.md](./config/README.md)** for detailed setup instructions.
+
+Quick setup for manual installation:
+```bash
+cp config/env.sample .env
+cp config/mcp.json.sample .mcp.json
+```
+
+Edit `.env` with your SAP credentials:
 ```bash
 export SAP_URL=https://your-sap-host:8080
 export SAP_USER=your-username

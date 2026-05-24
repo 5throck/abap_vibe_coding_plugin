@@ -32,13 +32,16 @@ At the start of every Claude Code session, run this checklist:
 
 2. **Configure SAP credentials**
 
+   See **[config/README.md](../config/README.md)** for detailed setup instructions.
+
    **Marketplace install (recommended)**: Claude Code prompts for SAP credentials when you enable the plugin (`/plugin enable abap-harness-engineering`). Credentials are passed securely via `userConfig` —no file needed.
 
    **Manual / standalone install**: Copy the sample and edit it:
    ```bash
-   cp .mcp.json.sample .mcp.json
+   cp config/mcp.json.sample .mcp.json
+   cp config/env.sample .env
    ```
-   Edit `.mcp.json` and fill in your SAP system URL, username, and password. This file is gitignored —never commit it.
+   Edit `.env` with your SAP credentials and configure `.mcp.json` for your platform. These files are gitignored —never commit them.
 
 3. **Enable the MCP server** in `.claude/settings.local.json` (in the consumer project root):
    ```json

@@ -52,7 +52,15 @@ bash scripts/install-vsp.sh v2.38.1        # Unix/macOS
 
 ### 2. SAP 연결 설정
 
-`.mcp.json.sample`을 `.mcp.json`으로, `.env.sample`을 `.env`로 복사한 뒤 SAP 연결 정보를 입력합니다:
+**[config/README.md](./config/README.md)**를 참고하여 상세한 설정 방법을 확인하세요.
+
+빠른 설정:
+```bash
+cp config/env.sample .env
+cp config/mcp.json.sample .mcp.json
+```
+
+`.env`를 편집하여 SAP 연결 정보를 입력합니다:
 ```bash
 export SAP_URL=https://your-sap-host:8080
 export SAP_USER=your-username
