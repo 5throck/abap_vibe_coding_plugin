@@ -2,7 +2,7 @@
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](./LICENSE)
 
-A Claude Code plugin providing a complete **AI Harness Engineering** framework for SAP ABAP development. Includes 19 specialized agents, 8 skills, 7 commands, and MCP integration via the `vsp` server.
+A Claude Code plugin providing a complete **AI Harness Engineering** framework for SAP ABAP development. Includes 20 specialized agents, 9 skills, 7 commands, and MCP integration via the `vsp` server.
 
 > **What is Harness Engineering?**
 > A methodology where specialized AI agents collaborate within a structured environment - ensuring AI-driven SAP development is predictable, governed, and auditable. The PM-led governance model mirrors a real software engineering team: business analysts define requirements, architects design the solution, developers implement it, and QA verifies it. See the [reference implementation ->](#reference-implementation-abap_vibe_coding)
@@ -11,10 +11,11 @@ A Claude Code plugin providing a complete **AI Harness Engineering** framework f
 
 ## Features
 
-- **19 Agents**: Global PM, technical architect, code writer, DBA, Interface Expert, DevOps / Admin, Fiori developer, form expert, GUI scripter, business analysts (SD/MM/FI/CO/PP/LE), QA runner, schema inspector, SAP investigator
-- **8 Skills**: ABAP development workflows, post-write quality gate, and 6 SAP ERP module knowledge bases (SD, MM, FI, CO, PP, LE)
+- **20 Agents**: Global PM, technical architect, code writer, DBA, Interface Expert, DevOps / Admin, Fiori developer, form expert, GUI scripter, security monitor, business analysts (SD/MM/FI/CO/PP/LE), QA runner, schema inspector, SAP investigator, read-only analyst
+- **9 Skills**: ABAP development workflows, post-write quality gate, desktop app fallback, and 6 SAP ERP module knowledge bases (SD, MM, FI, CO, PP, LE)
 - **7 Commands**: `/triage`, `/transport`, `/post-write`, `/sync`, `/new-task`, `/memlog`, `/celebrate`
 - **MCP Integration**: `vsp` server for full SAP ADT access in hyperfocused mode
+- **Bun Scripts**: Cross-platform TypeScript scripts (~50ms startup, single-source maintenance)
 
 ---
 
@@ -139,6 +140,7 @@ Phase 4:            /post-write -> /transport release -> /sync
 | sap-investigator | 1 | Parallel |
 | read-only-analyst | 1 | Parallel |
 | schema-inspector | 1 | Parallel |
+| security-monitor | 1 | Parallel |
 | sd/mm/fi/co/pp/le-analyst | 1 | Parallel |
 | architect | 2 | Serial |
 | dba | 2 | Parallel |
@@ -176,6 +178,29 @@ In Claude Code CLI sessions, a `PostToolUse` hook fires after every Write/Edit t
 
 ---
 
+## Bun Scripts (2026-05-24)
+
+All core scripts have been migrated to **Bun-based TypeScript** for cross-platform compatibility:
+
+```bash
+# Install Bun (one-time)
+powershell -c "irm bun.sh/install.ps1"  # Windows
+curl -fsSL https://bun.sh/install | bash  # Unix/macOS
+
+# Run scripts
+bun run dev-sync "feat: description"
+bun run audit
+bun scripts/vsp-task.ts "task-name"
+```
+
+**New TypeScript Scripts** (9 files): `dev-sync.ts`, `audit.ts`, `vsp-sync.ts`, `vsp-task.ts`, `sync-md.ts`, `git-sync.ts`, `gen-pr-body.ts`, `post-write.ts`, `vsp-audit.ts`
+
+Legacy `.sh`/`.ps1` scripts are retained for backward compatibility.
+
+See `scripts/README.md` for complete documentation.
+
+---
+
 ## Standalone Plugin Architecture
 
 This plugin is the packaged, distributable form of the **[5throck/abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)** project. 
@@ -198,4 +223,4 @@ AGPL v3 - see [LICENSE](./LICENSE) for details.
 
 ---
 
-*Last Updated: 2026-05-23*
+*Last Updated: 2026-05-24*
