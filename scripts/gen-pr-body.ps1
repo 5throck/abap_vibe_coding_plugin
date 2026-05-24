@@ -1,4 +1,4 @@
-# gen-pr-body.ps1 — Generate a structured PR body from commit message + diff
+# gen-pr-body.ps1 - Generate a structured PR body from commit message + diff
 # Usage: .\scripts\gen-pr-body.ps1 "commit message"
 # Output: PR body markdown (stdout)
 #
@@ -6,19 +6,13 @@
 #   1. If `claude` CLI is available → ask Claude to write the PR body (AI mode)
 #   2. Otherwise → build a structured template from commit message + file list (fallback)
 
+# UTF-8 encoding enforcement
+$PSDefaultParameterValues['*:Encoding'] = 'utf8'
+$ErrorActionPreference = 'Stop'
+
 param([Parameter(Mandatory)][string]$CommitMsg)
 
 $Today = Get-Date -Format "yyyy-MM-dd"
-
-# ── Read Memory and Changelog ──────────────────────────────────────────────────
-$MemoryContent = ""
-if (Test-Path "memory\$Today.md") { $MemoryContent = Get-Content "memory\$Today.md" -Raw }
-
-$ChangelogContent = ""
-if (Test-Path "CHANGELOG.md") {
-    $cl = Get-Content "CHANGELOG.md" -Raw
-    if ($cl -match '(?m)^## \[Unreleased\]([\s\S]*?)(?=\n## |\z)') { $ChangelogContent = $Matches[1].Trim() }
-}
 
 # ── Collect changed files ──────────────────────────────────────────────────────
 $Files = (git diff --name-only HEAD~1 HEAD 2>$null)
@@ -34,16 +28,10 @@ $ClaudePath = Get-Command claude -ErrorAction SilentlyContinue
 if ($ClaudePath) {
     $Prompt = @"
 Generate a GitHub Pull Request body for the following change.
-Output ONLY the PR body in markdown — no explanation, no code fences around the whole output.
+Output ONLY the PR body in markdown - no explanation, no code fences around the whole output.
 
 Commit message : $CommitMsg
 Date           : $Today
-
-Memory Log     :
-$MemoryContent
-
-Changelog      :
-$ChangelogContent
 
 Changed files  :
 $($Files -join "`n")
@@ -57,7 +45,7 @@ Use EXACTLY this structure (keep all section headers, fill placeholders):
 [1-3 sentences: what problem does this solve and why now?]
 
 ## What Changed
-[concise bullet list of actual changes — be specific, not generic]
+[concise bullet list of actual changes - be specific, not generic]
 
 ## Test Plan
 - [ ] ``bash scripts/audit.sh`` passes
@@ -79,7 +67,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
     $Prompt | Set-Content $TmpFile -Encoding UTF8
 
     try {
-        $Body = claude -p (Get-Content $TmpFile -Raw) 2>$null
+        $Body = claude -p (Get-Content $TmpFile -Raw -Encoding UTF8) 2>$null
         if ($Body) {
             Write-Output $Body
             exit 0
@@ -96,11 +84,9 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 ## Why
 $CommitMsg
 
-$($MemoryContent ? "## Session Memory`n$MemoryContent`n" : "")
 ## What Changed
 $FileList
 
-$($ChangelogContent ? "## Changelog Notes`n$ChangelogContent`n" : "")
 ## Test Plan
 - [ ] ``bash scripts/audit.sh`` passes
 - [ ] CHANGELOG.md updated under ``[Unreleased]``

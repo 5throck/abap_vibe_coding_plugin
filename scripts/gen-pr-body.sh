@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# gen-pr-body.sh — Generate a structured PR body from commit message + diff
+# gen-pr-body.sh - Generate a structured PR body from commit message + diff
 # Usage: bash scripts/gen-pr-body.sh "commit message"
 # Output: PR body markdown (stdout)
 #
@@ -19,13 +19,6 @@ fi
 
 TODAY=$(date +%Y-%m-%d)
 
-# ── Read Memory and Changelog ──────────────────────────────────────────────────
-MEMORY_CONTENT=""
-[ -f "memory/$TODAY.md" ] && MEMORY_CONTENT=$(cat "memory/$TODAY.md")
-
-CHANGELOG_CONTENT=""
-[ -f "CHANGELOG.md" ] && CHANGELOG_CONTENT=$(awk '/\[Unreleased\]/{f=1;next} f && /^## /{exit} f{print}' CHANGELOG.md | awk 'NF')
-
 # ── Collect changed files ──────────────────────────────────────────────────────
 FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || true)
 [ -z "$FILES" ] && FILES=$(git diff --cached --name-only 2>/dev/null || true)
@@ -37,16 +30,10 @@ DIFF_STAT=$(git diff --stat HEAD~1 HEAD 2>/dev/null || git diff --cached --stat 
 # ── AI mode: generate body via Claude CLI ─────────────────────────────────────
 if command -v claude &>/dev/null; then
   PROMPT="Generate a GitHub Pull Request body for the following change.
-Output ONLY the PR body in markdown — no explanation, no code fences around the whole output.
+Output ONLY the PR body in markdown - no explanation, no code fences around the whole output.
 
 Commit message : $COMMIT_MSG
 Date           : $TODAY
-
-Memory Log     :
-$MEMORY_CONTENT
-
-Changelog      :
-$CHANGELOG_CONTENT
 
 Changed files  :
 $FILES
@@ -60,7 +47,7 @@ Use EXACTLY this structure (keep all section headers, fill placeholders):
 [1-3 sentences: what problem does this solve and why now?]
 
 ## What Changed
-[concise bullet list of actual changes — be specific, not generic]
+[concise bullet list of actual changes - be specific, not generic]
 
 ## Test Plan
 - [ ] \`bash scripts/audit.sh\` passes
@@ -93,16 +80,10 @@ fi
 cat <<EOF
 ## Why
 $COMMIT_MSG
-${MEMORY_CONTENT:+
-## Session Memory
-$MEMORY_CONTENT
-}
+
 ## What Changed
 $FILE_LIST
-${CHANGELOG_CONTENT:+
-## Changelog Notes
-$CHANGELOG_CONTENT
-}
+
 ## Test Plan
 - [ ] \`bash scripts/audit.sh\` passes
 - [ ] CHANGELOG.md updated under \`[Unreleased]\`
