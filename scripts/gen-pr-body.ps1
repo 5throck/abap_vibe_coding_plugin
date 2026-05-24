@@ -1,4 +1,4 @@
-﻿param([Parameter(Mandatory)][string]$CommitMsg)
+param([Parameter(Mandatory)][string]$CommitMsg)
 
 # UTF-8 encoding enforcement
 $PSDefaultParameterValues['*:Encoding'] = 'utf8'
@@ -7,16 +7,26 @@ $ErrorActionPreference = 'Stop'
 
 $Today = Get-Date -Format "yyyy-MM-dd"
 
-# ?? Collect changed files ??????????????????????????????????????????????????????
+# ── Read Memory and Changelog ──────────────────────────────────────────────────
+$MemoryContent = ""
+if (Test-Path "memory\$Today.md") { $MemoryContent = Get-Content "memory\$Today.md" -Raw }
+
+$ChangelogContent = ""
+if (Test-Path "CHANGELOG.md") {
+    $cl = Get-Content "CHANGELOG.md" -Raw
+    if ($cl -match '(?m)^## \[Unreleased\]([\s\S]*?)(?=\n## |\z)') { $ChangelogContent = $Matches[1].Trim() }
+}
+
+# ── Collect changed files ──────────────────────────────────────────────────────
 $Files = (git diff --name-only HEAD~1 HEAD 2>$null)
 if (-not $Files) { $Files = (git diff --cached --name-only 2>$null) }
 if (-not $Files) { $Files = (git show --name-only --format="" HEAD 2>$null) }
 
 $FileList = ($Files | Select-Object -First 30 | ForEach-Object { "- $_" }) -join "`n"
 $DiffStat = (git diff --stat HEAD~1 HEAD 2>$null) -join "`n"
-if (-not $DiffStat) { $DiffStat = (git diff --cached --stat 2>$null) -join "`n" }
+if (-not $DiffStat) { $DiffStat = (git diff --cached --stat 2>$null) -join "`n"
 
-# ?? AI mode: generate body via Claude CLI ?????????????????????????????????????
+# ── AI mode: generate body via Claude CLI ─────────────────────────────────────
 $ClaudePath = Get-Command claude -ErrorAction SilentlyContinue
 if ($ClaudePath) {
     $Prompt = @"
@@ -25,6 +35,12 @@ Output ONLY the PR body in markdown - no explanation, no code fences around the 
 
 Commit message : $CommitMsg
 Date           : $Today
+
+Memory Log     :
+$MemoryContent
+
+Changelog      :
+$ChangelogContent
 
 Changed files  :
 $($Files -join "`n")
@@ -72,14 +88,16 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
     }
 }
 
-# ?? Fallback mode: structured template with auto-filled fields ?????????????????
+# ── Fallback mode: structured template with auto-filled fields ─────────────────
 @"
 ## Why
 $CommitMsg
 
+$($MemoryContent ? "## Session Memory`n$MemoryContent`n" : "")
 ## What Changed
 $FileList
 
+$($ChangelogContent ? "## Changelog Notes`n$ChangelogContent`n" : "")
 ## Test Plan
 - [ ] ``bash scripts/audit.sh`` passes
 - [ ] CHANGELOG.md updated under ``[Unreleased]``
@@ -95,4 +113,3 @@ None
 ---
 Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 "@
-

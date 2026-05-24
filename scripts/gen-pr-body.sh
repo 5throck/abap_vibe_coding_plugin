@@ -19,6 +19,13 @@ fi
 
 TODAY=$(date +%Y-%m-%d)
 
+# ── Read Memory and Changelog ──────────────────────────────────────────────────
+MEMORY_CONTENT=""
+[ -f "memory/$TODAY.md" ] && MEMORY_CONTENT=$(cat "memory/$TODAY.md")
+
+CHANGELOG_CONTENT=""
+[ -f "CHANGELOG.md" ] && CHANGELOG_CONTENT=$(awk '/\[Unreleased\]/{f=1;next} f && /^## /{exit} f{print}' CHANGELOG.md | awk 'NF')
+
 # ── Collect changed files ──────────────────────────────────────────────────────
 FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || true)
 [ -z "$FILES" ] && FILES=$(git diff --cached --name-only 2>/dev/null || true)
@@ -34,6 +41,12 @@ Output ONLY the PR body in markdown - no explanation, no code fences around the 
 
 Commit message : $COMMIT_MSG
 Date           : $TODAY
+
+Memory Log     :
+$MEMORY_CONTENT
+
+Changelog      :
+$CHANGELOG_CONTENT
 
 Changed files  :
 $FILES
@@ -80,10 +93,16 @@ fi
 cat <<EOF
 ## Why
 $COMMIT_MSG
-
+${MEMORY_CONTENT:+
+## Session Memory
+$MEMORY_CONTENT
+}
 ## What Changed
 $FILE_LIST
-
+${CHANGELOG_CONTENT:+
+## Changelog Notes
+$CHANGELOG_CONTENT
+}
 ## Test Plan
 - [ ] \`bash scripts/audit.sh\` passes
 - [ ] CHANGELOG.md updated under \`[Unreleased]\`

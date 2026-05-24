@@ -86,7 +86,6 @@ if [ -f "docs/context.md" ]; then
       warn "script parity gap: $sh_file has no matching .ps1"
     fi
   done
-
 else
   warn "docs/context.md not found - skipping project-level checks (workspace root)"
 fi

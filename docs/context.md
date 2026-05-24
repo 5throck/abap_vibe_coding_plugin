@@ -332,8 +332,15 @@ For full project governance and role-based orchestration, refer to [AGENTS.md --
 - Convert every task into a verifiable goal before starting.
 
 ### 5. Response Language
+<<<<<<< HEAD
 - All **conversational** replies --**Korean** by default.
 - All code, config, commit messages, PR titles, branch names, **CHANGELOG.md**, and **memory/` logs --**English only**.
+=======
+- All **conversational** replies —**Korean (—볥럢—** by default.
+- All code, config, commit messages, PR titles, branch names, **CHANGELOG.md**, and **memory/ logs** —**English only**.
+
+---
+>>>>>>> origin/main
 
 ---
 

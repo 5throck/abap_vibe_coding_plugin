@@ -35,7 +35,7 @@ done
 
 pass() { echo -e "\033[32m[PASS]\033[0m $*"; }
 info() { echo -e "\033[36m[INFO]\033[0m $*"; }
-warn() { echo -e "\033[33m[WARN]\033[0m $*"; }
+warn()  { echo -e "\033[33m[WARN]\033[0m $*"; }
 
 # OSI-approved licenses accepted by default
 # Extend this list in docs/context.md if the project requires additional licenses.
@@ -209,7 +209,7 @@ license_audit_python() {
 if [ -f ".env.sample" ]; then
   if [ ! -f ".env" ]; then
     cp .env.sample .env
-    pass ".env created from .env.sample - fill in secrets before running the app"
+    pass ".env created from .env.sample — fill in secrets before running the app"
   else
     info ".env already exists - skipping copy"
   fi
@@ -277,7 +277,7 @@ if [ "$SKIP_INSTALL" = false ]; then
   fi
 
   # ── .NET ──────────────────────────────────────────────────────────────────
-  DOTNET_PROJ=$(find . -maxdepth 3 \( -name "*.csproj" -o -name "*.sln" -o -name "*.fsproj" \) \
+  DOTNET_PROJ=$(find . -maxdepth 3 \( -name "*.csproj" -o -name "*.sln" \) \
     -not -path "./.git/*" 2>/dev/null | head -1)
   if [ -n "$DOTNET_PROJ" ]; then
     if require dotnet "install .NET SDK from https://dotnet.microsoft.com/download"; then
@@ -311,7 +311,7 @@ if [ "$SKIP_INSTALL" = false ]; then
   if [ -f "build.gradle" ] || [ -f "build.gradle.kts" ]; then
     GRADLE_CMD="./gradlew"
     [ ! -f "./gradlew" ] && GRADLE_CMD="gradle"
-    if require "$GRADLE_CMD" "install Gradle from https://gradle.org or: sdk install gradle"; then
+    if require "$GRADLE_CMD" "install Gradle from https://gradlew.org or: sdk install gradle"; then
       info "Gradle project detected - running $GRADLE_CMD dependencies (quiet)"
       "$GRADLE_CMD" dependencies -q 2>/dev/null || "$GRADLE_CMD" dependencies
       pass "Gradle dependencies resolved"

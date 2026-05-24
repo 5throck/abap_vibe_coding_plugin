@@ -10,19 +10,10 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Added
-- **[2026-05-25]**: docs\:\ comprehensive\ documentation\ improvement\ and\ synchronization
+- **[2026-05-25]**: docs: comprehensive documentation improvement and synchronization
 
 ### Fixed
 - **[2026-05-25]**: fix: test changelog and memory automation
-- **[2026-05-25]**: Merge main and resolve conflicts
-- **[2026-05-25]**: chore: add sample env and mcp configuration files
-- **[2026-05-25]**: refactor: apply Hybrid Scripting model, remove utility ts files
-- **[2026-05-25]**: feat: Restructure plugin to Standalone Architecture and sync scripts
-- **[2026-05-25]**: docs: update README with current project state and Bun migration
-- **[2026-05-25]**: feat: migrate plugin scripts to Bun-based TypeScript
-- **[2026-05-25]**: feat: add skills index, dispatch templates, and handoff spec
-- **[2026-05-25]**: refactor: reorganize configuration files into dedicated config/ directory
-- **[2026-05-25]**: feat: add MCP SSoT and update CHANGELOG
 
 ### Added
 - **[2026-05-24]**: `.mcp.json`: Single Source of Truth for MCP configuration (abap, abap-docs, sap-docs)
