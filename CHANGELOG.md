@@ -8,6 +8,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ---
 
 ## [Unreleased]
+- feat: add skills index, dispatch templates, and handoff spec
 - refactor: reorganize configuration files into dedicated config/ directory
 
 ### Added
