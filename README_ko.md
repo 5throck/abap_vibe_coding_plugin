@@ -77,7 +77,7 @@ export SAP_CLIENT=100
 
 **로컬 테스트:**
 ```bash
-cc --plugin-dir /path/to/abap-harness-engineering
+claude --plugin-dir /path/to/abap-harness-engineering
 ```
 
 **마켓플레이스에서 설치:**
@@ -241,9 +241,9 @@ bun scripts/verify-skills.ts
 
 ## 업데이트
 
-플러그인 업데이트 확인:
-```bash
-cc plugin update abap-harness-engineering
+Claude Code에서 플러그인 업데이트 확인:
+```
+설정(Settings) → 플러그인(Plugins) → abap-harness-engineering → 업데이트 확인
 ```
 
 버전 기록: [CHANGELOG.md](CHANGELOG.md)
