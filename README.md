@@ -77,7 +77,9 @@ Or set them in your shell profile / Claude Code environment.
 
 **Local testing:**
 ```bash
-claude --plugin-dir /path/to/abap-harness-engineering
+# Set CLAUDE_PLUGIN_ROOT environment variable to test plugin locally
+export CLAUDE_PLUGIN_ROOT=/path/to/abap-harness-engineering
+# Then run Claude Code CLI from your consumer project directory
 ```
 
 **From Marketplace:**
