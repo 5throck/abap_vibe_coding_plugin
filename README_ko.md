@@ -77,7 +77,9 @@ export SAP_CLIENT=100
 
 **로컬 테스트:**
 ```bash
-cc --plugin-dir /path/to/abap-harness-engineering
+# 로컬에서 플러그인을 테스트하려면 CLAUDE_PLUGIN_ROOT 환경 변수를 설정합니다
+export CLAUDE_PLUGIN_ROOT=/path/to/abap-harness-engineering
+# 그런 다음 소비자 프로젝트 디렉토리에서 Claude Code CLI를 실행합니다
 ```
 
 **마켓플레이스에서 설치:**
@@ -241,9 +243,9 @@ bun scripts/verify-skills.ts
 
 ## 업데이트
 
-플러그인 업데이트 확인:
-```bash
-cc plugin update abap-harness-engineering
+Claude Code에서 플러그인 업데이트 확인:
+```
+설정(Settings) → 플러그인(Plugins) → abap-harness-engineering → 업데이트 확인
 ```
 
 버전 기록: [CHANGELOG.md](CHANGELOG.md)

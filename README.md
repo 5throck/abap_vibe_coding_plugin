@@ -77,7 +77,9 @@ Or set them in your shell profile / Claude Code environment.
 
 **Local testing:**
 ```bash
-cc --plugin-dir /path/to/abap-harness-engineering
+# Set CLAUDE_PLUGIN_ROOT environment variable to test plugin locally
+export CLAUDE_PLUGIN_ROOT=/path/to/abap-harness-engineering
+# Then run Claude Code CLI from your consumer project directory
 ```
 
 **From Marketplace:**
@@ -242,9 +244,9 @@ bun scripts/verify-skills.ts
 
 ## Updates
 
-Check for plugin updates:
-```bash
-cc plugin update abap-harness-engineering
+Check for plugin updates in Claude Code:
+```
+Settings → Plugins → abap-harness-engineering → Check for Updates
 ```
 
 Version history: [CHANGELOG.md](CHANGELOG.md)
