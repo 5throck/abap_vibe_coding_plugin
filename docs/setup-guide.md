@@ -260,8 +260,8 @@ git config core.hooksPath .githooks
 ├── scripts\
 │   ├── vsp-task.ps1           ← Initialize new tasks (Windows)
 │   ├── vsp-task.sh            ← Initialize new tasks (Bash)
-│   ├── vsp-sync.ps1           ← Sync memory & Git (Windows)
-│   ├── vsp-sync.sh            ← Sync memory & Git (Bash)
+│   ├── dev-sync.ps1           ← Full sync pipeline (Windows)
+│   ├── dev-sync.sh            ← Full sync pipeline (Bash)
 │   ├── vsp-audit.ps1          ← Documentation audit script (Windows)
 │   ├── vsp-audit.sh           ← Documentation audit script (Bash)
 │   ├── git-sync.ps1           ← [DEPRECATED] Legacy/simple git helper (Windows)
@@ -301,7 +301,7 @@ git config core.hooksPath .githooks
 ├── scratch/                   ← Temporary ABAP files
 ├── scripts/
 │   ├── vsp-task.sh            ← Initialize new tasks
-│   ├── vsp-sync.sh            ← Sync memory & Git
+│   ├── dev-sync.sh            ← Full sync pipeline
 │   ├── vsp-audit.sh           ← Documentation audit script
 │   └── git-sync.sh            ← [DEPRECATED] Legacy/simple git helper (Bash)
 ├── .env                       ← SAP credentials (create manually — gitignored)
@@ -1316,8 +1316,8 @@ cd ~/abap && claude
 # Check SAP connection
 ./vsp system info
 
-# Standard operational sync & commit (PowerShell - runs audits, memory logs, and git commit)
-powershell -ExecutionPolicy Bypass -File scripts/vsp-sync.ps1 -Message "feat: summary of change"
+# Standard operational sync & commit (PowerShell - runs audit, memory logs, commit, and opens PR)
+powershell -ExecutionPolicy Bypass -File scripts/dev-sync.ps1 "feat: summary of change"
 
 # Run a quick SAP query (outside Claude)
 ./vsp.exe query "SELECT * FROM t000"
@@ -1338,8 +1338,8 @@ cd ~/abap && claude
 # Check SAP connection
 ./vsp system info
 
-# Standard operational sync & commit (runs audits, memory logs, and git commit)
-bash scripts/vsp-sync.sh "feat: summary of change"
+# Standard operational sync & commit (runs audit, memory logs, commit, and opens PR)
+bash scripts/dev-sync.sh "feat: summary of change"
 
 # Run a quick SAP query (outside Claude)
 ./vsp query "SELECT * FROM t000"

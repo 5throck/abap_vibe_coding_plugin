@@ -144,7 +144,7 @@ Versions follow [Semantic Versioning](https://semver.org/).
 - **7 Commands**: triage, new-task, sync, transport, post-write, memlog, celebrate
 - **MCP integration**: vsp (hyperfocused mode), abap-docs, sap-docs
 - **Cross-platform hooks**: PostToolUse sync-md with bash → pwsh → powershell fallback
-- **Scripts**: install-vsp, sync-md, vsp-audit, vsp-sync, vsp-task (`.sh` + `.ps1` pairs)
+- **Scripts**: install-vsp, sync-md, vsp-audit, dev-sync, vsp-task (`.sh` + `.ps1` pairs)
 - **Docs**: abap-dev-rules, plugin-setup, prd-template, security, task-template, testing-guidelines
 - `CHANGELOG.md` (this file)
 
