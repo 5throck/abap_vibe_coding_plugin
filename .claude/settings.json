@@ -35,7 +35,7 @@
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
-        "command": "bash scripts/sync-md.sh"
+        "command": "bash scripts/sync-md.sh 2>/dev/null || pwsh -NonInteractive -File scripts/sync-md.ps1 2>/dev/null || true"
       }
     ]
   },

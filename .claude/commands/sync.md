@@ -21,10 +21,11 @@ If $ARGUMENTS is empty, prompt the user for a commit message before running.
 The script will:
 1. Append a session entry to `memory/YYYY-MM-DD.md`
 2. Update `memory/MEMORY.md` index via `sync-md.sh`
-3. Auto-add `$ARGUMENTS` to `CHANGELOG.md [Unreleased]` if the section has no entries yet
+3. Auto-add `$ARGUMENTS` to `CHANGELOG.md [Unreleased]` if not already present
 4. Run `audit.sh` — must exit 0 before proceeding
 5. Guard against sensitive files (`.pem`, `.key`, `.env`, `credentials.json`, etc.)
-6. Create a new PR branch (if on main/master), commit all staged changes, push, and open a GitHub PR
+6. Create a new PR branch (if on main/master), commit all staged changes, push
+7. Open a GitHub PR via `gh pr create`
 
 If audit fails, fix the reported issue before re-running `/sync`.
 

@@ -1,10 +1,10 @@
 param(
     [string]$Date    = (Get-Date -Format "yyyy-MM-dd"),
-$OutputEncoding = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8;
     [string]$Summary = "update"
 )
 
 # UTF-8 encoding enforcement
+$OutputEncoding = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $PSDefaultParameterValues['*:Encoding'] = 'utf8'
 $ErrorActionPreference = 'Stop'
 
@@ -17,10 +17,12 @@ if (-not (Test-Path $MemFile)) {
 |------|---------|
 "@ | Set-Content $MemFile -Encoding UTF8
 }
-# Dedup: only append if this date is not already present
+# If date already exists, update the summary (idempotent — safe for hook + dev-sync)
 $IndexContent = Get-Content $MemFile -Raw -Encoding UTF8
-if ($IndexContent -notmatch [regex]::Escape("[$Date]")) {
+if ($IndexContent -match [regex]::Escape("[$Date]")) {
+    $EscapedSummary = [regex]::Escape($Summary)
+    $IndexContent = $IndexContent -replace "\| \[$Date\]\($Date\.md\) \|[^|]*\|", "| [$Date]($Date.md) | $Summary |"
+    Set-Content $MemFile $IndexContent -Encoding UTF8
+} else {
     Add-Content $MemFile "| [$Date]($Date.md) | $Summary |" -Encoding UTF8
 }
-
-

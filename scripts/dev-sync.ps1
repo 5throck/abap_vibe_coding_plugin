@@ -59,7 +59,17 @@ if (Test-Path "CHANGELOG.md") {
 .\scripts\audit.ps1
 if ($LASTEXITCODE -ne 0) { exit 1 }
 
-# ── 5. Branch → commit → push → PR ────────────────────────────────────────────
+# ── 5. Guard against committing sensitive files ───────────────────────────────
+$Sensitive = git ls-files --others --exclude-standard 2>$null |
+    Where-Object { $_ -match '\.(pem|key|p12|pfx|jks|keystore)$|^\.env(\.[^sa]|$)|credentials\.json|service.?account\.json|secrets\.ya?ml' }
+if ($Sensitive) {
+    Write-Host "❌ Potentially sensitive untracked files detected - refusing git add -A:" -ForegroundColor Red
+    $Sensitive | ForEach-Object { Write-Host "   $_" }
+    Write-Host "   Stage files explicitly with 'git add <file>' or add them to .gitignore." -ForegroundColor Yellow
+    exit 1
+}
+
+# ── 6. Branch → commit → push → PR ────────────────────────────────────────────
 $CurrentBranch = git rev-parse --abbrev-ref HEAD
 if ($CurrentBranch -eq "main" -or $CurrentBranch -eq "master") {
     $Slug = ($Msg -replace '[^a-z0-9]', '-' -replace '-+', '-').ToLower().TrimEnd('-')
@@ -69,15 +79,6 @@ if ($CurrentBranch -eq "main" -or $CurrentBranch -eq "master") {
 } else {
     $Branch = $CurrentBranch
     Write-Host "ℹ️  Already on branch '$Branch' - committing here without creating a new branch." -ForegroundColor Cyan
-}
-# ── 6. Guard against committing sensitive files ───────────────────────────────
-$Sensitive = git ls-files --others --exclude-standard 2>$null |
-    Where-Object { $_ -match '\.(pem|key|p12|pfx|jks|keystore)$|^\.env(\.[^sa]|$)|credentials\.json|service.?account\.json|secrets\.ya?ml' }
-if ($Sensitive) {
-    Write-Host "❌ Potentially sensitive untracked files detected - refusing git add -A:" -ForegroundColor Red
-    $Sensitive | ForEach-Object { Write-Host "   $_" }
-    Write-Host "   Stage files explicitly with 'git add <file>' or add them to .gitignore." -ForegroundColor Yellow
-    exit 1
 }
 
 git add -A
