@@ -44,7 +44,7 @@ Then verify the expected directory structure exists:
 ```
 agents/           — Agent role definitions (*.md)
 skills/           — Skill definitions (*/SKILL.md)
-scripts/          — Automation scripts (.sh + .ps1 pairs)
+scripts/          — Automation scripts (TypeScript via Bun)
 docs/             — Shared documentation
 deliverables/    — Requirements traceability matrix + templates
 memory/          — Session logs (YYYY-MM-DD.md)
@@ -54,7 +54,7 @@ security/         — Security advisories
 ```
 
 Check for:
-- Missing `.sh` ↔ `.ps1` script pairs in `scripts/`
+- Missing TypeScript scripts in `scripts/` (all utilities should have `.ts` equivalents)
 - Agents listed in `AGENTS.md` but missing `.md` files in `agents/`
 - Skills listed in `skills/SKILLS.md` but missing `SKILL.md` files
 - Stale or orphaned files

@@ -196,11 +196,13 @@ In Claude Code CLI sessions, a `PostToolUse` hook fires after every Write/Edit t
 
 ---
 
-## Hybrid Scripting (Bun & Shell)
+## TypeScript Scripts (Bun)
 
-This project uses a **hybrid scripting approach**:
-1. **Utility Scripts**: Everyday development utilities (like `dev-sync`, `audit`) are implemented in pure **PowerShell (`.ps1`)** and **Bash (`.sh`)** for cross-platform ease of use without external dependencies.
-2. **Agent Orchestration**: Complex multi-agent workflow coordination and orchestration logic are implemented in **TypeScript (`.ts`)** and executed via **Bun**.
+This project uses **TypeScript via Bun** as the single source of truth for all utility and orchestration scripts:
+
+1. **Utility Scripts**: `sync-md.ts`, `audit.ts`, `dev-sync.ts`, `setup.ts`, `vsp-task.ts`, `vsp-publish.ts` — cross-platform via Bun runtime.
+2. **Agent Orchestration**: Multi-agent workflow coordination (`dispatch.ts`, `dispatch-parallel.ts`, `dispatch-serial.ts`).
+3. **Bootstrap Scripts**: `install-bun.sh/.ps1` and `install-vsp.sh/.ps1` remain as native shell scripts (run before Bun is installed).
 
 See `scripts/README.md` for complete documentation.
 

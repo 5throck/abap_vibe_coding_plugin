@@ -196,19 +196,12 @@ gemini auth login
 gemini --version
 ```
 
-### 3-D. Automation Scripts (Bash & PowerShell)
+### 3-D. Automation Scripts (Bun / TypeScript)
 
-This project uses automation scripts for task initialization and repository synchronization.
+This project uses TypeScript automation scripts executed via the **Bun** runtime for task initialization and repository synchronization. A few bootstrap scripts (`install-bun`, `install-vsp`) remain as shell scripts since they must run before Bun is installed.
 
-- **Windows**: Requires **PowerShell 7+** (pwsh).
-  - Download: [PowerShell Releases](https://github.com/PowerShell/PowerShell/releases/latest)
-- **macOS/Linux**: Requires **Bash** (v4+) and standard utilities (`awk`, `sed`).
-
-Verify on Windows:
-```bash
-pwsh --version
-# Expected: PowerShell 7.x.x
-```
+- **Bun**: Required for all utility scripts (`sync-md.ts`, `audit.ts`, `dev-sync.ts`, etc.).
+  - Install: [bun.sh](https://bun.sh) or use `scripts/install-bun.sh` / `scripts/install-bun.ps1`
 
 ---
 

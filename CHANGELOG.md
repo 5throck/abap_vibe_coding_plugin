@@ -29,9 +29,21 @@ Versions follow [Semantic Versioning](https://semver.org/).
 - **[2026-07-08]**: `.claude/commands/sync.md`: Added Pre-PR Security Gate
 - **[2026-07-08]**: Synced 8 agent files from upstream (pm, dba, handoff-spec, read-only-analyst, security-monitor, test-runner)
 - **[2026-07-08]**: `scripts/audit.sh` + `audit.ps1`: CONSTITUTION.md check downgraded to WARN for distributable plugins
+- **[2026-07-08]**: `scripts/sync-md.ts`, `scripts/audit.ts`, `scripts/setup.ts`, `scripts/vsp-publish.ts`: New TypeScript implementations (Bun runtime, single source of truth)
+- **[2026-07-08]**: `scripts/dev-sync.ts`: Updated to call .ts scripts directly; removed sh/ps1 fallback paths
+- **[2026-07-08]**: `.githooks/pre-commit`, `.githooks/pre-push`: Migrated from `audit.sh` to `bun scripts/audit.ts`
 
-### Added
-- **[2026-05-25]**: docs: comprehensive documentation improvement and synchronization
+### Removed
+- **[2026-07-08]**: 16 shell script files deleted: `audit.sh/.ps1`, `dev-sync.sh/.ps1`, `git-sync.sh/.ps1`, `setup.sh/.ps1`, `sync-md.sh/.ps1`, `vsp-audit.sh/.ps1`, `vsp-publish.sh/.ps1`, `vsp-task.sh/.ps1`
+- **[2026-07-08]**: `hooks/hooks.json`, `.codex/hooks.json`: Removed duplicate PostToolUse hook definitions (consolidated to `.claude/settings.json`)
+- **[2026-07-08]**: `scripts/gen-pr-body.sh/.ps1`, `scripts/health-check.sh`, `scripts/sync-mcp.sh`: Removed obsolete scripts
+
+### Changed
+- **[2026-07-08]**: **Scripting model**: Migrated from hybrid sh/ps1 + ts to **TypeScript (Bun) as single source of truth**. Only `install-bun.sh/.ps1` and `install-vsp.sh/.ps1` remain as shell bootstrap scripts.
+- **[2026-07-08]**: `.claude/settings.json` PostToolUse hook: `bash scripts/sync-md.sh` → `bun scripts/sync-md.ts`
+- **[2026-07-08]**: All documentation references updated: CLAUDE.md, GEMINI.md, README.md, README_ko.md, docs/context.md, docs/plugin-setup.md, docs/setup-guide.md, docs/co-abap.context.md, docs/antigravity-setup.md, agents/pm.md, skills/abap-dev/SKILL.md, all commands/*.md
+- **[2026-07-08]**: `scripts/README.md`, `scripts/README_ko.md`: Rewritten to reflect TypeScript-only model
+- **[2026-07-08]**: `scripts/package.json`: Added npm scripts for `sync-md`, `audit`, `sync`, `setup`, `task`, `publish`
 
 ### Fixed
 - **[2026-05-25]**: fix: test changelog and memory automation
