@@ -1,8 +1,16 @@
 #!/usr/bin/env bun
 /**
- * dev-sync.ts - Full pipeline: memlog → sync-md → changelog → audit → commit → PR
+ * dev-sync.ts - Full pipeline: memlog → sync-md → changelog → commit → PR
  * Cross-platform TypeScript implementation (via Bun runtime).
  * Single Source of Truth — replaces dev-sync.sh / dev-sync.ps1.
+ *
+ * Pipeline (6 stages):
+ *   1. Write daily session log to memory/YYYY-MM-DD.md
+ *   2. Update MEMORY.md index via sync-md.ts
+ *   3. Auto-add entry to CHANGELOG.md [Unreleased]
+ *   4. Guard against sensitive files (untracked + staged)
+ *   5. Branch / commit / push (audit runs via pre-commit hook)
+ *   6. Open GitHub PR via gh CLI
  *
  * Usage:
  *   bun scripts/dev-sync.ts "feat: description"
@@ -148,11 +156,10 @@ if (existsSync(changelogPath)) {
   }
 }
 
-// ── 4. Audit gate (pre-commit hook runs audit.ts on commit — skip here) ──────
-// NOTE: audit.ts runs via .githooks/pre-commit during `git commit`.
-// Skipping here avoids redundant double execution.
+// ── 4. Guard against committing sensitive files ────────────────────────────
+// NOTE: audit.ts runs via .githooks/pre-commit during `git commit` (step 5).
 
-// ── 5. Guard against committing sensitive files (untracked) ──────────────────
+// 4-A. Check untracked files
 const untrackedFiles = run("git ls-files --others --exclude-standard")
   .split("\n")
   .filter(Boolean);
@@ -164,7 +171,7 @@ if (sensitive.length > 0) {
   process.exit(1);
 }
 
-// ── 6. Branch → commit → push ──────────────────────────────────────────────
+// ── 5. Branch → commit → push ──────────────────────────────────────────────
 let currentBranch = runOrFail("git rev-parse --abbrev-ref HEAD");
 let branch: string;
 
@@ -177,10 +184,17 @@ if (currentBranch === "main" || currentBranch === "master") {
   console.log(`ℹ️  Already on branch '${branch}' - committing here without creating a new branch.`);
 }
 
-runOrFail('git add -A');
+runSafeOrFail("git", ["add", "-A"]);
 
-// ── 6-B. Guard against sensitive files in staged set (not just untracked) ──
+// ── 4-B. Guard against sensitive files in staged set (not just untracked) ──
 const stagedFiles = run("git diff --cached --name-only").split("\n").filter(Boolean);
+
+// Nothing to commit — exit cleanly (no changes since last commit)
+if (stagedFiles.length === 0) {
+  console.log("ℹ️  No changes to commit. Working tree is clean.");
+  process.exit(0);
+}
+
 const stagedSensitive = stagedFiles.filter(isSensitive);
 if (stagedSensitive.length > 0) {
   // Unstage sensitive files before aborting (shell-safe arg array)
@@ -194,7 +208,7 @@ if (stagedSensitive.length > 0) {
 const commitBody = `${MSG}\n\n${CO_AUTHOR}`;
 runSafeOrFail("git", ["commit", "-m", commitBody]);
 
-// ── 7. Push (with pre-PR security gate for public repos) ──────────────────
+// ── 5-C. Push (with pre-PR security gate for public repos) ────────────────
 // Pre-PR Security Gate — check if repo is public before pushing
 const isPrivate = run("gh repo view --json isPrivate -q '.isPrivate' 2>/dev/null");
 if (isPrivate === "false") {
@@ -228,13 +242,21 @@ try {
   process.exit(1);
 }
 
-// ── 8. Open PR (graceful degradation if gh CLI not available) ────────────
+// ── 6. Open PR (graceful degradation if gh CLI not available) ────────────
 const templatePath = path.join(projectRoot, ".github", "pull_request_template.md");
 const hasGh = run("which gh || where gh 2>/dev/null") !== "";
 if (!hasGh) {
   console.warn("⚠️  GitHub CLI (gh) not found — skipping PR creation.");
   console.warn("   Create a PR manually at your repository's URL.");
   console.log(`✅ Sync complete. Branch '${branch}' pushed. Create PR manually.`);
+  process.exit(0);
+}
+
+// Check if a PR already exists for this branch
+const existingPr = runSafe("gh", ["pr", "list", "--head", branch, "--json", "number,title", "--jq", ".[0].number"]);
+if (existingPr) {
+  console.log(`ℹ️  PR #${existingPr} already exists for branch '${branch}' — skipping PR creation.`);
+  console.log(`   Pushed additional commit to existing PR.`);
   process.exit(0);
 }
 
