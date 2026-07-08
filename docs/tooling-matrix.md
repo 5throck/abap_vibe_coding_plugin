@@ -38,7 +38,18 @@ Agents must choose the appropriate tool for each task type. All tools share the 
 | Claude Code Desktop App | —| Known issue —run Post-Write chain manually |
 | Gemini CLI | —| Disabled —run Post-Write chain manually |
 | Antigravity | —| No hook support in VS Code extension |
-| Codex | —| Via `.codex/hooks.json` |
+| Codex | —| Via `.codex/config.toml` skills path only (no slash commands) |
+
+### Slash Commands by Environment
+
+| Command | Claude Code | Gemini CLI | Antigravity (Codex) |
+|---------|:-----------:|:----------:|:-------------------:|
+| `/sync` | ✅ `.claude/commands/sync.md` | ✅ `.gemini/commands/sync.md` | N/A — use `bun scripts/dev-sync.ts` manually |
+| `/project-review` | ✅ `.claude/commands/project-review.md` | ✅ `.gemini/commands/project-review.md` | N/A — use `bun scripts/audit.ts` manually |
+| `/meeting` | ✅ `.claude/commands/meeting.md` | ✅ `.gemini/commands/meeting.md` | N/A — read `skills/meeting-facilitation/SKILL.md` |
+| `/new-task`, `/triage`, `/transport`, `/post-write`, `/memlog`, `/celebrate` | ✅ `.claude/commands/` | N/A (not registered) | N/A |
+
+> **Antigravity/Codex**: Does not support native slash commands. Commands are available as Markdown instructions in `.gemini/commands/` (read and execute via terminal), or as skills in `skills/` (accessed via `.codex/config.toml` skills path).
 
 ---
 

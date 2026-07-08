@@ -36,7 +36,7 @@ PM-led workspace health audit. Systematically scans the project structure, docum
 Run the documentation audit via terminal:
 
 ```bash
-bun scripts/audit.ts
+bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/audit.ts"
 ```
 
 Then verify the expected directory structure exists:
@@ -74,6 +74,9 @@ Check for:
 - `AGENTS.md` agent count matches files in `agents/`
 - No broken internal links
 
+**CHANGELOG.md**:
+- `[Unreleased]` section exists and is not empty, OR all entries have been released
+
 ### Phase 3: Platform Parity
 
 Verify configuration consistency across all supported platforms:
@@ -83,7 +86,7 @@ Verify configuration consistency across all supported platforms:
 | MCP servers (`abap`, `abap-docs`, `sap-docs`) | `.claude/settings.json` | `.gemini/settings.json` | `.codex/config.toml` |
 | SAP_ALLOWED_PACKAGES value matches | ✅ | ✅ | ✅ |
 | Skills directory configured | — | `.gemini/settings.json` | `.codex/config.toml` |
-| PostToolUse hook defined | `.claude/settings.json` | N/A (manual) | `.codex/hooks.json` |
+| PostToolUse hook defined | `.claude/settings.json` | N/A (manual) | N/A |
 | Slash commands available | `.claude/commands/` | `.gemini/commands/` | N/A |
 
 **Critical parity rules:**
@@ -141,7 +144,7 @@ Output prioritized remediation plan:
 ### Next Steps
 1. [Immediate] Fix P1: ...
 2. [High] Fix P2: ...
-3. Batch P3-P5 into: bun scripts/dev-sync.ts "chore: project review fixes"
+3. Batch P3-P5 into: bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/dev-sync.ts" "chore: project review fixes"
 
 Report archived: memory/YYYY-MM-DD-project-review.md
 ```

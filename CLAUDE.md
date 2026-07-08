@@ -60,7 +60,7 @@ When this plugin is installed in a consumer project:
 
 - `.claude/settings.json` —shared team permissions (committed to repo; note that `.claude/` is a hidden dot-folder and may not show in standard listing tools by default)
 - `.claude/settings.local.json` —personal write permissions + git operations (gitignored)
-- `.claude/commands/` —slash commands (`/sync`, `/memlog`, `/new-task`, `/triage`, `/transport`, `/post-write`, `/celebrate`)
+- `.claude/commands/` —slash commands (`/sync`, `/memlog`, `/new-task`, `/triage`, `/transport`, `/post-write`, `/celebrate`, `/project-review`, `/meeting`)
 
 Both files are loaded automatically. `enableAllProjectMcpServers: true` is set in the local file to activate the abap MCP server.
 

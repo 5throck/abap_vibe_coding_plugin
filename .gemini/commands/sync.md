@@ -27,7 +27,7 @@ Sync today's development session to Git: run the documentation audit, update the
 Run the following command via terminal:
 
 ```bash
-bun scripts/dev-sync.ts "$ARGUMENTS"
+bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/dev-sync.ts" "$ARGUMENTS"
 ```
 
 `$ARGUMENTS` should be a conventional commit message (e.g. `feat: add ZCL_MY_CLASS`).
@@ -55,7 +55,7 @@ Before pushing/creating PR, check if the repo is public:
 gh repo view --json isPrivate -q '.isPrivate' 2>/dev/null
 ```
 
-If the result is `false` (public repo): read existing advisories from `security/` directory (read-only check).
+If the result is `false` (public repo): run `bun scripts/audit.ts` as a read-only check, then read existing advisories from `security/` directory.
 
 - If CRITICAL advisories are found: show the warning and **pause** — let the user decide whether to proceed or stop.
 - If no CRITICAL advisories: continue with push and PR.
