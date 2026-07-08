@@ -11,9 +11,9 @@
  * @module dev-sync
  */
 
-import { execSync, ExecSyncOptions } from "node:child_process";
+import { execSync, execFileSync, ExecSyncOptions, SpawnSyncOptions } from "node:child_process";
 import path from "node:path";
-import { existsSync, readFileSync, writeFileSync, appendFileSync, mkdirSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync, appendFileSync, mkdirSync, readdirSync } from "node:fs";
 
 // ── Parse arguments ───────────────────────────────────────────────────────────
 const DRY_RUN = process.argv[2] === "--check";
@@ -33,9 +33,11 @@ const SENSITIVE_PATTERNS: RegExp[] = [
 const scriptDir = path.dirname(import.meta.path);
 const projectRoot = path.resolve(scriptDir, "..");
 
+const BASE_OPTS: ExecSyncOptions = { encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"], cwd: projectRoot };
+
 function run(cmd: string, opts?: ExecSyncOptions): string {
   try {
-    return execSync(cmd, { encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"], cwd: projectRoot, ...opts }).trim();
+    return execSync(cmd, { ...BASE_OPTS, ...opts }).trim();
   } catch {
     return "";
   }
@@ -43,6 +45,25 @@ function run(cmd: string, opts?: ExecSyncOptions): string {
 
 function runOrFail(cmd: string, opts?: ExecSyncOptions): string {
   return execSync(cmd, { encoding: "utf-8", stdio: "pipe", cwd: projectRoot, ...opts }).trim();
+}
+
+/**
+ * Shell-safe execution — uses execFileSync with argument array to prevent
+ * shell injection. All user-controlled inputs (MSG, branch, etc.) must
+ * pass through this function instead of template-literal execSync.
+ */
+function runSafe(cmd: string, args: string[], opts?: SpawnSyncOptions): string {
+  try {
+    const result = execFileSync(cmd, args, { encoding: "utf-8", stdio: "pipe", cwd: projectRoot, ...opts });
+    return (result as string).trim();
+  } catch {
+    return "";
+  }
+}
+
+function runSafeOrFail(cmd: string, args: string[], opts?: SpawnSyncOptions): string {
+  const result = execFileSync(cmd, args, { encoding: "utf-8", stdio: "pipe", cwd: projectRoot, ...opts });
+  return (result as string).trim();
 }
 
 function today(): string {
@@ -67,11 +88,6 @@ function slugify(msg: string, maxLen = 40): string {
 
 function isSensitive(filename: string): boolean {
   return SENSITIVE_PATTERNS.some((pattern) => pattern.test(filename));
-}
-
-function die(msg: string): never {
-  console.error(msg);
-  process.exit(1);
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -101,7 +117,7 @@ appendFileSync(memoryFile, entry, "utf-8");
 // ── 2. Update MEMORY.md index ─────────────────────────────────────────────────
 const syncMdTs = path.join(scriptDir, "sync-md.ts");
 if (existsSync(syncMdTs)) {
-  runOrFail(`bun "${syncMdTs}" "${DATE}" "${MSG}"`);
+  runSafeOrFail("bun", [syncMdTs, DATE, MSG]);
 } else {
   console.warn("⚠️  sync-md.ts not found — skipping MEMORY.md update");
 }
@@ -110,7 +126,7 @@ if (existsSync(syncMdTs)) {
 const changelogPath = path.join(projectRoot, "CHANGELOG.md");
 if (existsSync(changelogPath)) {
   const content = readFileSync(changelogPath, "utf-8");
-  const unreleasedMatch = content.match(/## \[Unreleased\]([\s\S]*?)(?=\n## |\z)/);
+  const unreleasedMatch = content.match(/## \[Unreleased\]([\s\S]*?)(?=\n## |$)/);
   if (unreleasedMatch) {
     const section = unreleasedMatch[1];
     if (!section.includes(MSG)) {
@@ -125,15 +141,11 @@ if (existsSync(changelogPath)) {
   }
 }
 
-// ── 4. Audit gate ──────────────────────────────────────────────────────────────
-const auditTs = path.join(scriptDir, "audit.ts");
-if (existsSync(auditTs)) {
-  runOrFail(`bun "${auditTs}"`);
-} else {
-  console.warn("⚠️  audit.ts not found — skipping audit gate");
-}
+// ── 4. Audit gate (pre-commit hook runs audit.ts on commit — skip here) ──────
+// NOTE: audit.ts runs via .githooks/pre-commit during `git commit`.
+// Skipping here avoids redundant double execution.
 
-// ── 5. Guard against committing sensitive files ────────────────────────────────
+// ── 5. Guard against committing sensitive files (untracked) ──────────────────
 const untrackedFiles = run("git ls-files --others --exclude-standard")
   .split("\n")
   .filter(Boolean);
@@ -145,27 +157,82 @@ if (sensitive.length > 0) {
   process.exit(1);
 }
 
-// ── 6. Branch → commit → push ────────────────────────────────────────────────
+// ── 6. Branch → commit → push ──────────────────────────────────────────────
 let currentBranch = runOrFail("git rev-parse --abbrev-ref HEAD");
 let branch: string;
 
 if (currentBranch === "main" || currentBranch === "master") {
   const ts = new Date().toISOString().replace(/[-T:]/g, "").slice(0, 15);
   branch = `pr/${ts}-${slugify(MSG)}`;
-  runOrFail(`git checkout -b "${branch}"`);
+  runSafeOrFail("git", ["checkout", "-b", branch]);
 } else {
   branch = currentBranch;
   console.log(`ℹ️  Already on branch '${branch}' - committing here without creating a new branch.`);
 }
 
 runOrFail('git add -A');
-runOrFail(`git commit -m "${MSG}\\n\\n${CO_AUTHOR}"`);
-runOrFail(`git push -u origin "${branch}"`);
 
-// ── 7. Open PR ──────────────────────────────────────────────────────────────
+// ── 6-B. Guard against sensitive files in staged set (not just untracked) ──
+const stagedFiles = run("git diff --cached --name-only").split("\n").filter(Boolean);
+const stagedSensitive = stagedFiles.filter(isSensitive);
+if (stagedSensitive.length > 0) {
+  // Unstage sensitive files before aborting
+  run("git reset HEAD -- " + stagedSensitive.map(f => `"${f}"`).join(" "));
+  console.error("❌ Potentially sensitive staged files detected — unstaged:");
+  stagedSensitive.forEach((f) => console.error(`   ${f}`));
+  console.error("   Stage files explicitly with 'git add <file>' or add them to .gitignore.");
+  process.exit(1);
+}
+
+const commitBody = `${MSG}\n\n${CO_AUTHOR}`;
+runSafeOrFail("git", ["commit", "-m", commitBody]);
+
+// ── 7. Push (with pre-PR security gate for public repos) ──────────────────
+// Pre-PR Security Gate — check if repo is public before pushing
+const isPrivate = run("gh repo view --json isPrivate -q '.isPrivate' 2>/dev/null");
+if (isPrivate === "false") {
+  console.warn("⚠️  This is a PUBLIC repository.");
+  console.warn("   Checking for sensitive content in staged files...");
+  // Read security advisories if they exist
+  const securityDir = path.join(projectRoot, "security");
+  if (existsSync(securityDir)) {
+    const securityFiles = readdirSync(securityDir).filter(f => f.endsWith(".md"));
+    if (securityFiles.length > 0) {
+      console.warn("   ⚠️  Security advisories found in security/:");
+      securityFiles.forEach(f => console.warn(`     - security/${f}`));
+      console.warn("   Review these advisories before proceeding.");
+    }
+  }
+  console.warn("   Press Ctrl+C to abort, or wait 5 seconds to continue...");
+  runSafe("sleep", ["5"]);
+}
+
+// Push with error handling for missing remote
+try {
+  runSafeOrFail("git", ["push", "-u", "origin", branch]);
+} catch (e) {
+  const remotes = run("git remote");
+  if (!remotes) {
+    console.error("❌ No git remote configured. Add one with: git remote add origin <url>");
+  } else {
+    console.error(`❌ Push failed. Remote 'origin' may not exist. Available remotes: ${remotes}`);
+  }
+  console.error("   Your commit is saved locally. Push manually when ready.");
+  process.exit(1);
+}
+
+// ── 8. Open PR (graceful degradation if gh CLI not available) ────────────
 const templatePath = path.join(projectRoot, ".github", "pull_request_template.md");
+const hasGh = run("which gh || where gh 2>/dev/null") !== "";
+if (!hasGh) {
+  console.warn("⚠️  GitHub CLI (gh) not found — skipping PR creation.");
+  console.warn("   Create a PR manually at your repository's URL.");
+  console.log(`✅ Sync complete. Branch '${branch}' pushed. Create PR manually.`);
+  process.exit(0);
+}
+
 if (existsSync(templatePath)) {
-  runOrFail(`gh pr create --title "${MSG}" --body-file "${templatePath}"`);
+  runSafeOrFail("gh", ["pr", "create", "--title", MSG, "--body-file", templatePath]);
 } else {
-  runOrFail(`gh pr create --title "${MSG}" --fill`);
+  runSafeOrFail("gh", ["pr", "create", "--title", MSG, "--fill"]);
 }
