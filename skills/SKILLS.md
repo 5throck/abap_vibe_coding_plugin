@@ -36,14 +36,11 @@ Auto-generated index of all available skills in the `skills/` directory for the 
 | `changelog` | Add entry to CHANGELOG.md [Unreleased] | After completing changes |
 | `memlog` | Append session entry to memory/YYYY-MM-DD.md | During/after session |
 | `new-task` | Create task file from template | New task start |
-| `new-project` | Scaffold new project structure | New project start |
 | `post-write` | Run Post-Write QA chain | After ABAP writes |
 | `sync` | Full sync pipeline (memlog → changelog → audit → commit → PR) | Session end |
 | `transport` | Manage SAP Transport Requests | Transport operations |
 | `triage` | Auto-classify and dispatch for SAP requests | New SAP task |
-| `verify` | Verify code changes by running the app | Testing changes |
 | `celebrate` | Celebrate successful task completion | After task completion |
-| `project-review` | Workspace health audit with prioritized findings | Project governance |
 
 ## Skill Loading
 

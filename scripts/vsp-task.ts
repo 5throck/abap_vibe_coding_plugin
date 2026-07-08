@@ -1,23 +1,55 @@
 #!/usr/bin/env bun
-// vsp-task.ts — Create a new task file in scratch/tasks/
-// Usage: bun scripts/vsp-task.ts "task-name"
+/**
+ * vsp-task.ts - Create a new task file in scratch/tasks/
+ * Usage:
+ *   bun scripts/vsp-task.ts [task-name]
+ *   bun scripts/vsp-task.ts --check          # dry-run validation
+ *
+ * Creates a new task file from docs/task-template.md (or a minimal inline template).
+ *
+ * @module vsp-task
+ */
 
-const args = process.argv.slice(2);
-const name = args[0] ?? "new-task";
+import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
+import path from "node:path";
 
-const now = new Date();
-const date = now.toISOString().split('T')[0];
-const time = now.toISOString().replace('T', ' ').slice(0, 19);
+// ── Parse arguments ───────────────────────────────────────────────────────────
+const NAME = process.argv[2] || "new-task";
+const DRY_RUN = NAME === "--check";
 
-const scriptDir = import.meta.dir;
-const scratchDir = `${scriptDir}/../scratch/tasks`;
-const templateFile = `${scriptDir}/../docs/task-template.md`;
+// ── Resolve paths ──────────────────────────────────────────────────────────────
+const scriptDir = path.dirname(import.meta.path);
+const projectRoot = path.resolve(scriptDir, "..");
+const scratchDir = path.join(projectRoot, "scratch", "tasks");
+const templateFile = path.join(projectRoot, "docs", "task-template.md");
 
-// Create scratch dir if it doesn't exist
-await Bun.mkdir(scratchDir, { recursive: true });
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function today(): string {
+  return new Date().toISOString().slice(0, 10);
+}
 
-// Inline template fallback
-const defaultTemplate = `# Task — <!-- date and time -->
+function now(): string {
+  return new Date().toISOString().replace("T", " ").slice(0, 19);
+}
+
+function nextSeq(): number {
+  const date = today();
+  mkdirSync(scratchDir, { recursive: true });
+
+  if (!existsSync(scratchDir)) return 1;
+
+  const files = readdirSync(scratchDir)
+    .filter((f) => f.startsWith(`task-${date}-`) && f.endsWith(".md"))
+    .map((f) => {
+      const match = f.match(/task-\d{4}-\d{2}-\d{2}-(\d+)\.md$/);
+      return match ? parseInt(match[1], 10) : 0;
+    })
+    .filter((n) => n > 0);
+
+  return files.length > 0 ? Math.max(...files) + 1 : 1;
+}
+
+const MINIMAL_TEMPLATE = `# Task — <!-- date and time -->
 
 ## 0. Request
 
@@ -45,39 +77,33 @@ const defaultTemplate = `# Task — <!-- date and time -->
 <!-- Memory log entry, transport number, git commit -->
 `;
 
-// Find next sequence number
-let nextSeq = 1;
-const existingFiles = [...new Bun.Glob(`task-${date}-*.md`).scanSync({ cwd: scratchDir })];
-if (existingFiles.length > 0) {
-  const maxSeq = existingFiles
-    .map(f => f.replace(`task-${date}-`, '').replace('.md', ''))
-    .map(Number)
-    .filter(n => !isNaN(n))
-    .reduce((max, n) => Math.max(max, n), 0);
-  nextSeq = maxSeq + 1;
+// ── Dry-run ────────────────────────────────────────────────────────────────────
+if (DRY_RUN) {
+  console.log("✅ vsp-task.ts: syntax OK (dry-run mode)");
+  process.exit(0);
 }
 
-const seqStr = nextSeq.toString().padStart(3, '0');
-const targetFileName = `task-${date}-${seqStr}.md`;
-const targetFilePath = `${scratchDir}/${targetFileName}`;
+// ── Main ─────────────────────────────────────────────────────────────────────
+const DATE = today();
+const TIME = now();
+const seq = String(nextSeq()).padStart(3, "0");
+const targetFileName = `task-${DATE}-${seq}.md`;
+const targetPath = path.join(scratchDir, targetFileName);
 
-// Get template content
 let templateContent: string;
-if (await Bun.file(templateFile).exists()) {
-  templateContent = await Bun.file(templateFile).text();
+
+if (existsSync(templateFile)) {
+  templateContent = readFileSync(templateFile, "utf-8")
+    .replace(/<!-- date and time -->/g, TIME)
+    .replace(/<!-- paste original user request verbatim -->/g, `Request for: ${NAME}`)
+    .replace(/\]\(\.\.\/skills\//g, "](../../skills/");
 } else {
-  console.warn("Warning: task-template.md not found. Using minimal template.");
-  templateContent = defaultTemplate;
+  console.warn("⚠️  task-template.md not found. Using minimal template.");
+  templateContent = MINIMAL_TEMPLATE
+    .replace(/<!-- date and time -->/g, TIME)
+    .replace(/<!-- paste original user request verbatim -->/g, `Request for: ${NAME}`);
 }
 
-// Substitute placeholders
-let content = templateContent
-  .replace(/<!-- date and time -->/g, time)
-  .replace(/<!-- paste original user request verbatim -->/g, `Request for: ${name}`)
-  .replace(/](\.\.\/skills\//g, '](../../skills/');
-
-// Write task file
-await Bun.write(targetFilePath, content);
-
+writeFileSync(targetPath, templateContent, "utf-8");
 console.log(`Created new task: ${targetFileName}`);
-console.log(`Path: ${targetFilePath}`);
+console.log(`Path: ${targetPath}`);

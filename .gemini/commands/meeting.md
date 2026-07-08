@@ -231,8 +231,8 @@ Where Platform = `Claude` / `Antigravity` / `Both` / `L0-only`
 ```
 
 **After writing the file**, run the appropriate sync command:
-- **Bash**: `bun scripts/sync-md.ts "YYYY-MM-DD" "[TOPIC]" 2>/dev/null || true`
-- **PowerShell**: `bun scripts/sync-md.ts "YYYY-MM-DD" "[TOPIC]" 2>$null`
+- **Bash**: `bash scripts/sync-md.sh "YYYY-MM-DD" "[TOPIC]" 2>/dev/null || true`
+- **PowerShell**: `.\scripts\sync-md.ps1 "YYYY-MM-DD" "[TOPIC]" 2>$null`
 
 If the sync command fails or is unavailable, continue - file archiving is the critical step.
 
