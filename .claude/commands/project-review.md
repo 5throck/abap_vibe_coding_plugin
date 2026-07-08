@@ -71,7 +71,7 @@ Verify configuration consistency across all supported platforms:
 | MCP servers (`abap`, `abap-docs`, `sap-docs`) | `.claude/settings.json` | `.gemini/settings.json` | `.codex/config.toml` |
 | SAP_ALLOWED_PACKAGES value matches | ✅ | ✅ | ✅ |
 | Skills directory configured | — | `.gemini/settings.json` | `.codex/config.toml` |
-| PostToolUse hook defined | `.claude/settings.json` | N/A (manual) | `.codex/hooks.json` |
+| PostToolUse hook defined | `.claude/settings.json` | N/A (manual) | N/A |
 | Slash commands available | `.claude/commands/` | `.gemini/commands/` | N/A |
 
 **Critical parity rules:**

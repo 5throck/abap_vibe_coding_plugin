@@ -116,7 +116,7 @@ After changes are verified, summarize outcomes in `memory/YYYY-MM-DD.md`.
 
 ### 2. Executing Custom Commands
 Unlike Claude Code, Gemini does not natively register local custom slash commands from `.gemini/commands/` or `.claude/commands/`. Instead:
-- Automation workflows like `/sync` or `/memlog` are simulated or executed directly as project scripts (e.g., executing `bun scripts/dev-sync.ts` via terminal tools).
+- Automation workflows like `/sync`, `/memlog`, `/project-review`, or `/meeting` are simulated or executed directly as project scripts (e.g., executing `bun scripts/dev-sync.ts` via terminal tools).
 - System-provided slash commands (like `/goal`, `/schedule`, `/browser`, `/grill-me`) can be recommended to the user.
 
 ### 3. Coexistence, Precedence & Migration of .claude
