@@ -9,6 +9,10 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- **[2026-07-08]**: chore: update memory log
+
+
 ### Added
 - **[2026-07-08]**: Cross-platform skills (sync, project-review, meeting) for Claude, Gemini, and Antigravity
 - **[2026-07-08]**: `.claude/commands/project-review.md`: 6-phase PM-led workspace audit command
