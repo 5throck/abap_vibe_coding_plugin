@@ -10,8 +10,8 @@
  * @module vsp-publish
  */
 
-import { execSync, ExecSyncOptions } from "node:child_process";
-import { existsSync, readFileSync, mkdirSync, cpSync, readdirSync, statSync } from "node:fs";
+import { execSync, execFileSync, ExecSyncOptions, SpawnSyncOptions } from "node:child_process";
+import { existsSync, readFileSync, mkdirSync, cpSync, readdirSync, statSync, rmSync } from "node:fs";
 import { createHash } from "node:crypto";
 import path from "node:path";
 
@@ -35,6 +35,24 @@ function run(cmd: string, opts?: ExecSyncOptions): string {
 
 function runOrFail(cmd: string, opts?: ExecSyncOptions): string {
   return execSync(cmd, { encoding: "utf-8", stdio: "pipe", cwd: sourceDir, ...opts }).trim();
+}
+
+/**
+ * Shell-safe execution — uses execFileSync with argument array.
+ * Prevents shell injection for user-controlled inputs.
+ */
+function runSafe(cmd: string, args: string[], opts?: SpawnSyncOptions): string {
+  try {
+    const result = execFileSync(cmd, args, { encoding: "utf-8", stdio: "pipe", cwd: sourceDir, ...opts });
+    return (result as string).trim();
+  } catch {
+    return "";
+  }
+}
+
+function runSafeOrFail(cmd: string, args: string[], opts?: SpawnSyncOptions): string {
+  const result = execFileSync(cmd, args, { encoding: "utf-8", stdio: "pipe", cwd: sourceDir, ...opts });
+  return (result as string).trim();
 }
 
 function md5File(filePath: string): string {
@@ -107,7 +125,7 @@ for (const { src, tgt } of SYNC_FOLDERS) {
 
   // Clean target directory first to prevent orphaned files
   if (existsSync(tgtPath)) {
-    run(`rm -rf "${tgtPath}"`);
+    rmSync(tgtPath, { recursive: true, force: true });
   }
   mkdirSync(tgtPath, { recursive: true });
 
@@ -196,16 +214,16 @@ if (verifyFailed) {
 // 5. Commit and Push inside the Target Repository
 if (COMMIT_MESSAGE) {
   console.log("Staging and committing in target plugin repository...");
-  run(`cd "${targetDir}" && git add -A`);
+  runSafe("git", ["add", "-A"], { cwd: targetDir });
 
   const status = run(`cd "${targetDir}" && git status --porcelain`);
   if (!status) {
     console.log("No changes detected in plugin repository. Distribution up to date.");
   } else {
-    runOrFail(`cd "${targetDir}" && git commit -m "${COMMIT_MESSAGE}"`);
-    const branch = runOrFail(`cd "${targetDir}" && git rev-parse --abbrev-ref HEAD`);
+    runSafeOrFail("git", ["commit", "-m", COMMIT_MESSAGE], { cwd: targetDir });
+    const branch = runSafeOrFail("git", ["rev-parse", "--abbrev-ref", "HEAD"], { cwd: targetDir });
     console.log(`Pushing to remote origin ${branch}...`);
-    runOrFail(`cd "${targetDir}" && git push origin "${branch}"`);
+    runSafeOrFail("git", ["push", "origin", branch], { cwd: targetDir });
     console.log("Distribution successfully pushed!");
   }
 }

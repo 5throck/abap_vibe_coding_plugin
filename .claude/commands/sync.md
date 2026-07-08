@@ -22,12 +22,12 @@ The script will:
 1. Append a session entry to `memory/YYYY-MM-DD.md`
 2. Update `memory/MEMORY.md` index via `sync-md.ts`
 3. Auto-add `$ARGUMENTS` to `CHANGELOG.md [Unreleased]` if not already present
-4. Run `audit.ts` — must exit 0 before proceeding
-5. Guard against sensitive files (`.pem`, `.key`, `.env`, `credentials.json`, etc.)
-6. Create a new PR branch (if on main/master), commit all staged changes, push
-7. Open a GitHub PR via `gh pr create`
+4. Guard against sensitive files (untracked + staged: `.pem`, `.key`, `.env`, `credentials.json`, etc.)
+5. Create a new PR branch (if on main/master), commit all staged changes, push
+6. Open a GitHub PR via `gh pr create`
 
-If audit fails, fix the reported issue before re-running `/sync`.
+> **Note**: `audit.ts` runs via the pre-commit hook during `git commit`.
+> If audit fails, fix the reported issue before re-running `/sync`.
 
 ## Pre-PR Security Gate (public repos only)
 
