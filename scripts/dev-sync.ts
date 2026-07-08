@@ -2,7 +2,7 @@
 /**
  * dev-sync.ts - Full pipeline: memlog → sync-md → changelog → audit → commit → PR
  * Cross-platform TypeScript implementation (via Bun runtime).
- * Mirrors dev-sync.sh / dev-sync.ps1 exactly.
+ * Single Source of Truth — replaces dev-sync.sh / dev-sync.ps1.
  *
  * Usage:
  *   bun scripts/dev-sync.ts "feat: description"

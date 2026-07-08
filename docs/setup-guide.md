@@ -258,14 +258,13 @@ git config core.hooksPath .githooks
 ├── memory\                    ← Date-stamped development logs
 ├── scratch\                   ← Temporary ABAP files
 ├── scripts\
-│   ├── vsp-task.ps1           ← Initialize new tasks (Windows)
-│   ├── vsp-task.sh            ← Initialize new tasks (Bash)
-│   ├── dev-sync.ps1           ← Full sync pipeline (Windows)
-│   ├── dev-sync.sh            ← Full sync pipeline (Bash)
-│   ├── vsp-audit.ps1          ← Documentation audit script (Windows)
-│   ├── vsp-audit.sh           ← Documentation audit script (Bash)
-│   ├── git-sync.ps1           ← [DEPRECATED] Legacy/simple git helper (Windows)
-│   └── git-sync.sh            ← [DEPRECATED] Legacy/simple git helper (Bash)
+│   ├── vsp-task.ts            ← Initialize new tasks
+│   ├── dev-sync.ts            ← Full sync pipeline
+│   ├── audit.ts               ← Documentation integrity audit
+│   ├── sync-md.ts             ← Documentation synchronization (PostToolUse hook)
+│   ├── setup.ts               ← Project setup automation
+│   ├── install-bun.sh/.ps1    ← Bootstrap: install Bun runtime
+│   └── install-vsp.sh/.ps1    ← Bootstrap: install vsp binary
 ├── .env                       ← SAP credentials (create manually — gitignored)
 ├── .mcp.json                  ← MCP server config for Claude Code CLI (create manually — gitignored)
 ├── .gitignore
@@ -300,10 +299,13 @@ git config core.hooksPath .githooks
 ├── memory/                    ← Date-stamped development logs
 ├── scratch/                   ← Temporary ABAP files
 ├── scripts/
-│   ├── vsp-task.sh            ← Initialize new tasks
-│   ├── dev-sync.sh            ← Full sync pipeline
-│   ├── vsp-audit.sh           ← Documentation audit script
-│   └── git-sync.sh            ← [DEPRECATED] Legacy/simple git helper (Bash)
+│   ├── vsp-task.ts            ← Initialize new tasks
+│   ├── dev-sync.ts            ← Full sync pipeline
+│   ├── audit.ts               ← Documentation integrity audit
+│   ├── sync-md.ts             ← Documentation synchronization (PostToolUse hook)
+│   ├── setup.ts               ← Project setup automation
+│   ├── install-bun.sh         ← Bootstrap: install Bun runtime
+│   └── install-vsp.sh         ← Bootstrap: install vsp binary
 ├── .env                       ← SAP credentials (create manually — gitignored)
 ├── .mcp.json                  ← MCP server config for Claude Code CLI (create manually — gitignored)
 ├── .gitignore
@@ -566,7 +568,7 @@ This file is committed and shared. Current content:
         "hooks": [
           {
             "type": "command",
-            "command": "bash scripts/sync-md.sh"
+            "command": "bun scripts/sync-md.ts"
           }
         ]
       }
@@ -579,7 +581,7 @@ This sets up:
 - **Read-only MCP tools auto-approved** (GetSource, RunQuery, GrepPackages, etc.)
 - **`abap-docs` / `sap-docs` tools auto-approved** (wildcard covers all tools from each server)
 - **Claude Preview tools auto-approved** (screenshot, snapshot, logs)
-- **PostToolUse hooks**: runs `sync-md.sh` after every Write/Edit (cross-platform wrapper — works on Windows Git Bash, macOS, and Linux) to perform local documentation and path link audits.
+- **PostToolUse hooks**: runs `bun scripts/sync-md.ts` after every Write/Edit (cross-platform via Bun) to perform local documentation and path link audits.
   > [!IMPORTANT]
   > **Local Document Audit vs. SAP Quality Chain**: The `PostToolUse` hook ONLY performs local markdown and path validation. It does **not** execute the SAP/ABAP quality chain (`SyntaxCheck` ➔ `RunUnitTests` ➔ `RunATCCheck`) which requires SAP communication and must be run manually via `/post-write <ObjectName>` (in Claude CLI) or individual tool executions (in Antigravity / Gemini CLI / Desktop App).
 
@@ -761,7 +763,7 @@ For complete, step-by-step instructions, including absolute path configurations 
 |---------|:---------------:|:-----------:|
 | **Config Location** | Project-level (`.mcp.json`) | VS Code User Settings (`settings.json`) |
 | **Path Style** | Relative (`./vsp.exe`) | Absolute (`C:\Users\<username>\abap\vsp.exe`) |
-| **PostToolUse Hook** | ✅ Supported (`sync-md.sh`) | ❌ Not supported (Manual execution) |
+| **PostToolUse Hook** | ✅ Supported (`bun scripts/sync-md.ts`) | ❌ Not supported (Manual execution) |
 | **Usage Focus** | Multi-agent orchestration (PM) | Visual editing & interactive development |
 | Git commit / PR | ✅ | ⚠️ |
 
@@ -1127,7 +1129,7 @@ Run a SyntaxCheck on ZPROG_SBOOK_QUERY
 ### Checkpoint 7 — Documentation & Path Audit Automation
 
 In a Claude Code CLI session, edit any `.md` file (or make a Write/Edit tool call) and check the terminal:
-✅ The `PostToolUse` hook automatically fires and executes `bash scripts/sync-md.sh` to run the documentation and path audit, ensuring cross-platform link integrity in real-time. (Note: Git auto-commits are disabled in CLI sessions; all changes remain staged or unstaged for manual commit via `/sync` or standard git commands.)
+✅ The `PostToolUse` hook automatically fires and executes `bun scripts/sync-md.ts` to run the documentation and path audit, ensuring cross-platform link integrity in real-time. (Note: Git auto-commits are disabled in CLI sessions; all changes remain staged or unstaged for manual commit via `/sync` or standard git commands.)
 
 ---
 
@@ -1175,19 +1177,16 @@ In a Claude Code CLI session, edit any `.md` file (or make a Write/Edit tool cal
 **Windows** (PowerShell):
 ```powershell
 # 1. Test the script manually (run from repo root)
-powershell -ExecutionPolicy Bypass -File scripts\sync-md.ps1
+bun scripts/sync-md.ts
 
-# 2. Check PowerShell execution policy
-Get-ExecutionPolicy
-
-# 3. Verify hook config
+# 2. Verify hook config
 cat .claude/settings.json
 ```
 
 **macOS/Linux**:
 ```bash
 # 1. Test the script manually
-bash ~/abap/scripts/sync-md.sh
+bun scripts/sync-md.ts
 
 # 2. Verify hook config
 cat .claude/settings.json
@@ -1316,8 +1315,8 @@ cd ~/abap && claude
 # Check SAP connection
 ./vsp system info
 
-# Standard operational sync & commit (PowerShell - runs audit, memory logs, commit, and opens PR)
-powershell -ExecutionPolicy Bypass -File scripts/dev-sync.ps1 "feat: summary of change"
+# Standard operational sync & commit (runs audit, memory logs, commit, and opens PR)
+bun scripts/dev-sync.ts "feat: summary of change"
 
 # Run a quick SAP query (outside Claude)
 ./vsp.exe query "SELECT * FROM t000"
@@ -1339,7 +1338,7 @@ cd ~/abap && claude
 ./vsp system info
 
 # Standard operational sync & commit (runs audit, memory logs, commit, and opens PR)
-bash scripts/dev-sync.sh "feat: summary of change"
+bun scripts/dev-sync.ts "feat: summary of change"
 
 # Run a quick SAP query (outside Claude)
 ./vsp query "SELECT * FROM t000"

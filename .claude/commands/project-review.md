@@ -18,7 +18,7 @@ PM-led workspace health audit. Systematically scans the project structure, docum
 Run the documentation audit:
 
 ```bash
-bash "${CLAUDE_PLUGIN_ROOT:-.}/scripts/audit.sh"
+bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/audit.ts"
 ```
 
 Then verify the expected directory structure exists:
