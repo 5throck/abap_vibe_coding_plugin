@@ -17,7 +17,12 @@ import { existsSync, readFileSync, writeFileSync, appendFileSync, mkdirSync, rea
 
 // ── Parse arguments ───────────────────────────────────────────────────────────
 const DRY_RUN = process.argv[2] === "--check";
-const MSG = DRY_RUN ? "chore: update" : (process.argv[2] || "chore: update");
+const MSG = DRY_RUN ? "chore: update" : (process.argv[2] || "");
+if (!DRY_RUN && !MSG) {
+  console.error("Usage: bun scripts/dev-sync.ts \"<conventional-commit-message>\"");
+  console.error("Example: bun scripts/dev-sync.ts \"feat: add ZCL_MY_CLASS\"");
+  process.exit(1);
+}
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 const CO_AUTHOR = "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>";
@@ -86,8 +91,10 @@ function slugify(msg: string, maxLen = 40): string {
     .slice(0, maxLen);
 }
 
-function isSensitive(filename: string): boolean {
-  return SENSITIVE_PATTERNS.some((pattern) => pattern.test(filename));
+function isSensitive(filePath: string): boolean {
+  // Extract basename to handle nested paths like config/.env
+  const basename = path.basename(filePath);
+  return SENSITIVE_PATTERNS.some((pattern) => pattern.test(basename));
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -176,8 +183,8 @@ runOrFail('git add -A');
 const stagedFiles = run("git diff --cached --name-only").split("\n").filter(Boolean);
 const stagedSensitive = stagedFiles.filter(isSensitive);
 if (stagedSensitive.length > 0) {
-  // Unstage sensitive files before aborting
-  run("git reset HEAD -- " + stagedSensitive.map(f => `"${f}"`).join(" "));
+  // Unstage sensitive files before aborting (shell-safe arg array)
+  runSafe("git", ["reset", "HEAD", "--", ...stagedSensitive]);
   console.error("❌ Potentially sensitive staged files detected — unstaged:");
   stagedSensitive.forEach((f) => console.error(`   ${f}`));
   console.error("   Stage files explicitly with 'git add <file>' or add them to .gitignore.");

@@ -35,7 +35,7 @@ If `$ARGUMENTS` is empty, prompt the user for a commit message before running.
 
 ## Pipeline Steps
 
-The script performs the following 7-stage pipeline:
+The script performs the following 6-stage pipeline:
 
 1. **Write daily session log** — Appends entry to `memory/YYYY-MM-DD.md` with file list
 2. **Update MEMORY.md index** — Calls `scripts/sync-md.ts` to update the central index
