@@ -28,7 +28,7 @@ At the start of every Claude Code session, run this checklist:
 
 Both the CLI and the Desktop App share the same configuration files and MCP server setup. Key differences, especially regarding hook behavior and UI features, are detailed in [docs/tooling-matrix.md](docs/tooling-matrix.md).
 
-> **Hook limitation**: `PostToolUse` hooks configured in `.claude/settings.json` do **not** fire in the Desktop App. After any `WriteSource` / `EditSource`, run the Post-Write Mandatory Chain manually (see [skills/post-write-chain/SKILL.md](skills/post-write-chain/SKILL.md)) and sync via `scripts/dev-sync.sh` or `scripts/dev-sync.ps1`.
+> **Hook limitation**: `PostToolUse` hooks configured in `.claude/settings.json` do **not** fire in the Desktop App. After any `WriteSource` / `EditSource`, run the Post-Write Mandatory Chain manually (see [skills/post-write-chain/SKILL.md](skills/post-write-chain/SKILL.md)) and sync via `bun scripts/dev-sync.ts`.
 
 > **Linux developers**: Use CLI only —the Desktop App is not available on Linux.
 
@@ -69,7 +69,7 @@ Both files are loaded automatically. `enableAllProjectMcpServers: true` is set i
 
 ## Hooks
 
-A `PostToolUse` hook fires after every `Write` or `Edit` tool call and runs `scripts/sync-md.sh` (cross-platform wrapper). This hook is defined in `.claude/settings.json`.
+A `PostToolUse` hook fires after every `Write` or `Edit` tool call and runs `scripts/sync-md.ts` (cross-platform via Bun). This hook is defined in `.claude/settings.json`.
 
 | Environment | Hook fires? | Notes |
 |-------------|:-----------:|-------|
@@ -78,7 +78,7 @@ A `PostToolUse` hook fires after every `Write` or `Edit` tool call and runs `scr
 | Gemini CLI | —| Automated hooks disabled —run Post-Write chain manually |
 | Antigravity | —| No hook support in VS Code extension |
 
-`sync-md.sh` updates the `memory/MEMORY.md` index after every edit, ensuring session logs stay discoverable. It accepts optional `$DATE` and `$SUMMARY` arguments (defaults to today's date and `"update"`).
+`sync-md.ts` updates the `memory/MEMORY.md` index after every edit, ensuring session logs stay discoverable. It accepts optional `$DATE` and `$SUMMARY` arguments (defaults to today's date and `"update"`).
 
 
 ### Desktop App Manual Post-Write Chain
@@ -86,11 +86,11 @@ A `PostToolUse` hook fires after every `Write` or `Edit` tool call and runs `scr
 When using Claude Code Desktop App, PostToolUse hooks do not fire. After any `WriteSource` or `EditSource`, run this chain manually:
 
 ```
-1. bash scripts/sync-md.sh          # update memory index
+1. bun scripts/sync-md.ts           # update memory index
 2. SyntaxCheck(<object_url>)        # verify ABAP syntax
 3. RunUnitTests(<object_url>)       # run unit tests
 4. RunATCCheck(<object_url>)        # ATC quality check
-5. bash scripts/dev-sync.sh "fix: description"    # full sync: audit → commit → PR
+5. bun scripts/dev-sync.ts "fix: description"     # full sync: audit → commit → PR
 ```
 
 See `skills/desktop-app-fallback/SKILL.md` for the complete fallback workflow.

@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "VSP Harness Engineering Scripts - Hybrid Orchestration",
   "scripts": {
+    "sync-md": "bun scripts/sync-md.ts",
+    "audit": "bun scripts/audit.ts",
+    "sync": "bun scripts/dev-sync.ts",
+    "setup": "bun scripts/setup.ts",
+    "task": "bun scripts/vsp-task.ts",
+    "publish": "bun scripts/vsp-publish.ts",
     "verify-skills": "bun scripts/verify-skills.ts",
     "agent:create": "bun scripts/agent-create.ts",
     "agent:list": "bun scripts/agent-list.ts",

@@ -99,14 +99,11 @@ const entry = `${separator}## ${MSG}\n- **Files**: ${fileList}\n- **Purpose**: \
 appendFileSync(memoryFile, entry, "utf-8");
 
 // ── 2. Update MEMORY.md index ─────────────────────────────────────────────────
-const syncMdSh = path.join(scriptDir, "sync-md.sh");
-const syncMdPs1 = path.join(scriptDir, "sync-md.ps1");
-if (existsSync(syncMdSh)) {
-  runOrFail(`bash "${syncMdSh}" "${DATE}" "${MSG}"`);
-} else if (existsSync(syncMdPs1)) {
-  runOrFail(`pwsh -NonInteractive -File "${syncMdPs1}" -Date "${DATE}" -Summary "${MSG}"`);
+const syncMdTs = path.join(scriptDir, "sync-md.ts");
+if (existsSync(syncMdTs)) {
+  runOrFail(`bun "${syncMdTs}" "${DATE}" "${MSG}"`);
 } else {
-  console.warn("⚠️  sync-md.sh/ps1 not found — skipping MEMORY.md update");
+  console.warn("⚠️  sync-md.ts not found — skipping MEMORY.md update");
 }
 
 // ── 3. Auto-add to CHANGELOG.md [Unreleased] if not already present ────────────
@@ -129,12 +126,11 @@ if (existsSync(changelogPath)) {
 }
 
 // ── 4. Audit gate ──────────────────────────────────────────────────────────────
-const auditSh = path.join(scriptDir, "audit.sh");
-const auditPs1 = path.join(scriptDir, "audit.ps1");
-if (existsSync(auditSh)) {
-  runOrFail(`bash "${auditSh}"`);
-} else if (existsSync(auditPs1)) {
-  runOrFail(`pwsh -NonInteractive -File "${auditPs1}"`);
+const auditTs = path.join(scriptDir, "audit.ts");
+if (existsSync(auditTs)) {
+  runOrFail(`bun "${auditTs}"`);
+} else {
+  console.warn("⚠️  audit.ts not found — skipping audit gate");
 }
 
 // ── 5. Guard against committing sensitive files ────────────────────────────────

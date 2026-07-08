@@ -45,7 +45,7 @@ if echo "$STAGED" | grep -qE "^\.env$|^\.env\.[^s]|/\.env$|/\.env\.[^s]"; then
 fi
 
 # ── 3. Documentation audit ────────────────────────────────────────────────────
-bash scripts/audit.sh || exit 1
+bun scripts/audit.ts || exit 1
 
 # ── 4. Secret scan ────────────────────────────────────────────────────────────
 echo ""
