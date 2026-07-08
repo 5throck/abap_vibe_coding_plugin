@@ -43,7 +43,7 @@ The script performs the following 7-stage pipeline:
 4. **Audit gate** — Runs `scripts/audit.sh` (aborts if audit fails)
 5. **Sensitive file guard** — Blocks if untracked `.pem`, `.key`, `.env`, `credentials.json`, etc. detected
 6. **Branch / Commit / Push** — Creates PR branch if on main/master, stages all files, commits, pushes
-7. **Generate PR** — Uses `scripts/gen-pr-body.sh` or `.github/pull_request_template.md` to open a PR
+7. **Open PR** — Uses `.github/pull_request_template.md` or `gh pr create --fill` to open a PR
 
 If audit fails, fix the reported issue before re-running the pipeline.
 

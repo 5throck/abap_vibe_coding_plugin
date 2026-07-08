@@ -14,7 +14,10 @@ All utility scripts have both `.sh` and `.ps1` versions for cross-platform compa
 | `audit.sh` / `audit.ps1` | Documentation and file integrity audit |
 | `dev-sync.sh` / `dev-sync.ps1` | Full sync pipeline (memlog → changelog → audit → commit → PR) |
 | `sync-md.sh` / `sync-md.ps1` | Update memory/MEMORY.md index |
-| `gen-pr-body.sh` / `gen-pr-body.ps1` | Generate PR body from changes |
+| `vsp-task.sh` / `vsp-task.ps1` | Initialize new tasks |
+| `vsp-audit.sh` / `vsp-audit.ps1` | Documentation audit (legacy alias for audit.sh/.ps1) |
+| `vsp-publish.sh` / `vsp-publish.ps1` | Publish plugin assets to consumer repo |
+| `git-sync.sh` / `git-sync.ps1` | [DEPRECATED] Legacy git helper |
 
 ### TypeScript (Bun) Scripts
 

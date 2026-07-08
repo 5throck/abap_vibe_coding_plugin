@@ -182,7 +182,7 @@ Full behavioral rules, tool contracts, and output formats live in the linked `ag
 
 6.  **Finalization, Sync & Reporting (PM)**:
     *   **Memory Logging**: Record key decisions and issues in `memory/YYYY-MM-DD.md`.
-    *   **Git Sync**: Execute `vsp-sync` to commit artifacts and update index.
+    *   **Git Sync**: Execute `dev-sync` to commit artifacts, update index, and open a PR.
     *   **Final Report**: PM summarizes the outcome and test results for the user.
 
 ### 📦 Requirements-Driven Deliverables Workflow (Stage 1 to 5)
