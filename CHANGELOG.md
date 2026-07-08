@@ -1,4 +1,4 @@
-﻿# Changelog
+# Changelog
 
 All notable changes to **abap-harness-engineering** are documented here.
 
@@ -8,6 +8,27 @@ Versions follow [Semantic Versioning](https://semver.org/).
 ---
 
 ## [Unreleased]
+
+### Added
+- **[2026-07-08]**: Cross-platform skills (sync, project-review, meeting) for Claude, Gemini, and Antigravity
+- **[2026-07-08]**: `.claude/commands/project-review.md`: 6-phase PM-led workspace audit command
+- **[2026-07-08]**: `.gemini/commands/sync.md`, `.gemini/commands/project-review.md`, `.gemini/commands/meeting.md`
+- **[2026-07-08]**: `.codex/config.toml` + `.codex/hooks.json`: Codex platform configuration
+- **[2026-07-08]**: `skills/project-review/SKILL.md` registration stub
+- **[2026-07-08]**: `skills/meeting-facilitation/SKILL.md` registration stub
+- **[2026-07-08]**: `agents/handoff-spec_ko.md`: Korean translation of agent handoff spec
+- **[2026-07-08]**: `deliverables/` templates (10 files): SRS, Technical Design, Implementation Plan, QA Report, etc.
+- **[2026-07-08]**: `docs/co-abap.context.md`: ABAP-specific configuration layer
+- **[2026-07-08]**: `scripts/agent-create.ts`, `agent-delete.ts`, `agent-list.ts`, `agent-verify.ts`: Agent CRUD CLI
+
+### Changed
+- **[2026-07-08]**: `AGENTS.md`: Expanded to 505 lines with 6-Phase Workflow, Deliverables Pipeline, PM Dispatch Protocol
+- **[2026-07-08]**: `CLAUDE.md`: Added CLI vs Desktop App section, 3-Tier Model Mapping, plugin Setup guide
+- **[2026-07-08]**: `GEMINI.md`: Added recommended mode, custom commands, coexistence/migration notes
+- **[2026-07-08]**: `.claude/settings.json`: Fixed `SAP_ALLOWED_PACKAGES`, added hooks and `enableAllProjectMcpServers`
+- **[2026-07-08]**: `.claude/commands/sync.md`: Added Pre-PR Security Gate
+- **[2026-07-08]**: Synced 8 agent files from upstream (pm, dba, handoff-spec, read-only-analyst, security-monitor, test-runner)
+- **[2026-07-08]**: `scripts/audit.sh` + `audit.ps1`: CONSTITUTION.md check downgraded to WARN for distributable plugins
 
 ### Added
 - **[2026-05-25]**: docs: comprehensive documentation improvement and synchronization

@@ -1,10 +1,8 @@
 # CLAUDE.md
 
-Claude Code configuration for the **abap-harness-engineering** plugin —an AI Harness Engineering framework for SAP ABAP development.
+**Claude Code (CLI & Desktop App)** configuration for the vsp/SAP ABAP Harness Engineering project.
 
-> **Doc intent:** This file is Claude Code-specific. Shared project context (architecture, agents, skills, workflows) lives in [https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md](https://github.com/5throck/abap_vibe_coding/blob/main/docs/context.md). Agent roles live in [https://github.com/5throck/abap_vibe_coding/blob/main/AGENTS.md](https://github.com/5throck/abap_vibe_coding/blob/main/AGENTS.md) (see parent project).
-
-Parent project: https://github.com/5throck/abap_vibe_coding
+> **Doc intent:** This file is Claude Code-specific. Shared project context (build, codebase map, ABAP rules, Harness workflow) lives in [docs/context.md](docs/context.md). Agent roles live in [AGENTS.md](AGENTS.md). Per-session skills live in [skills/abap-dev/SKILL.md](skills/abap-dev/SKILL.md).
 
 ---
 
@@ -16,105 +14,112 @@ At the start of every Claude Code session, run this checklist:
 ```
 0. git config core.hooksPath .githooks         # activate hooks (run once per clone)
 1. Read docs/context.md                        # full architecture map, ABAP rules, workflow
-2. Read AGENTS.md                              # plugin agent roster
+2. Read AGENTS.md                              # canonical agent roster
 3. Read memory/MEMORY.md                       # recent session history (skip if absent)
-4. Load skills/abap-dev/SKILL.md               # SAP dev workflows
-5. Load skills/post-write-chain/SKILL.md       # mandatory QA chain after any write
+4. Read skills/abap-dev/SKILL.md               # SAP development workflows
+5. Read skills/post-write-chain/SKILL.md       # mandatory QA chain after any write
 ```
 
 ---
+
+---
+
+## Claude Code: CLI vs Desktop App
+
+Both the CLI and the Desktop App share the same configuration files and MCP server setup. Key differences, especially regarding hook behavior and UI features, are detailed in [docs/tooling-matrix.md](docs/tooling-matrix.md).
+
+> **Hook limitation**: `PostToolUse` hooks configured in `.claude/settings.json` do **not** fire in the Desktop App. After any `WriteSource` / `EditSource`, run the Post-Write Mandatory Chain manually (see [skills/post-write-chain/SKILL.md](skills/post-write-chain/SKILL.md)) and sync via `scripts/vsp-sync.sh` or `scripts/vsp-sync.ps1`.
+
+> **Linux developers**: Use CLI only —the Desktop App is not available on Linux.
+
+> **Recommended split**: Use CLI for automated ABAP workflows (hook-driven, multi-agent orchestration). Use Desktop App for visual diff review, PR monitoring, and parallel sessions.
+
+---
+
+
 
 ## Setup
 
-1. **Install the vsp binary** (in the consumer project root)
-   ```bash
-   bash scripts/install-vsp.sh
-   ```
+> **Parent project**: [abap_vibe_coding](https://github.com/5throck/abap_vibe_coding)
 
-2. **Configure SAP credentials**
+1. **Install vsp binary**: Download from [vsp releases](https://github.com/5throck/vsp/releases) and place in your project root.
+2. **Configure SAP credentials**: Copy `.env.sample` to `.env` and fill in your SAP connection details.
+3. **Enable MCP servers**: Ensure `enableAllProjectMcpServers: true` is set in `.claude/settings.local.json`.
+4. **Activate hooks**: Run `git config core.hooksPath .githooks` (once per clone).
 
-   See **[config/README.md](../config/README.md)** for detailed setup instructions.
-
-   **Marketplace install (recommended)**: Claude Code prompts for SAP credentials when you enable the plugin (`/plugin enable abap-harness-engineering`). Credentials are passed securely via `userConfig` —no file needed.
-
-   **Manual / standalone install**: Copy the sample and edit it:
-   ```bash
-   cp config/mcp.json.sample .mcp.json
-   cp config/env.sample .env
-   ```
-   Edit `.env` with your SAP credentials and configure `.mcp.json` for your platform. These files are gitignored —never commit them.
-
-3. **Enable the MCP server** in `.claude/settings.local.json` (in the consumer project root):
-   ```json
-   { "enableAllProjectMcpServers": true }
-   ```
-   > **Note —two MCP config files**: `plugin.json` contains `mcpServers` with `userConfig` substitution for marketplace installs. `.mcp.json` is a standalone fallback for direct development use (no userConfig, reads SAP credentials from environment variables or the file itself). The plugin runtime uses `plugin.json`; `.mcp.json` is only needed for manual testing outside the plugin lifecycle.
-
-## Consumer Project Integration
+### Consumer Project Integration
 
 When this plugin is installed in a consumer project:
-- **Marketplace install**: SAP credentials are supplied via the `userConfig` prompts at enable time and injected into the `abap` MCP server automatically. No `.mcp.json` is needed.
-- **Manual install**: The configuration is read from the **consumer project's root `.mcp.json`**, not the plugin directory. Make sure `.mcp.json` is placed in your target project.
-- **Hooks**: The plugin's `hooks/hooks.json` will automatically fire in the consumer project's CLI sessions. (CLI sessions only; Desktop App users must run `/post-write` manually.) The underlying hook scripts execute with a cross-platform fallback sequence (`bash` —`pwsh` —`powershell`) to ensure seamless execution on Windows environments. (Note: These automatic hooks rely on the `CLAUDE_PLUGIN_ROOT` environment variable being populated by the plugin runtime. For direct manual testing or execution outside the hook lifecycle, execute `scripts/sync-md.sh` or `scripts/sync-md.ps1` directly from your workspace root.)
+- **Marketplace install**: SAP credentials are configured via `userConfig` in `.claude-plugin/plugin.json`
+- **Manual install**: Copy `.mcp.json.sample` to your project root and configure manually
+- **Hooks**: PostToolUse hooks fire in Claude Code CLI only (not Desktop App)
 
 ---
 
----
+## Claude Code Settings
 
-## Component Overview
+- `.claude/settings.json` —shared team permissions (committed to repo; note that `.claude/` is a hidden dot-folder and may not show in standard listing tools by default)
+- `.claude/settings.local.json` —personal write permissions + git operations (gitignored)
+- `.claude/commands/` —slash commands (`/sync`, `/memlog`, `/new-task`, `/triage`, `/transport`, `/post-write`, `/celebrate`)
 
-| Type | Count | Location |
-|------|------:|---------|
-| Commands | 7 | `commands/` |
-| Agents | 19 | `agents/` |
-| Skills | 8 | `skills/*/SKILL.md` |
-| Hooks | 1 | `hooks/hooks.json` |
+Both files are loaded automatically. `enableAllProjectMcpServers: true` is set in the local file to activate the abap MCP server.
 
-**Commands**: celebrate, memlog, new-task, post-write, sync, transport, triage
-
-**Agents**: architect, co-analyst, code-writer, dba, devops-admin, fi-analyst, fiori-developer, form-expert, gui-scripter, interface-expert, le-analyst, mm-analyst, pm, pp-analyst, read-only-analyst, sap-investigator, schema-inspector, sd-analyst, test-runner
-
-**Skills**: abap-dev, post-write-chain, sap-co, sap-fi, sap-le, sap-mm, sap-pp, sap-sd
 
 ---
 
-## Key Workflows
+## Hooks
+
+A `PostToolUse` hook fires after every `Write` or `Edit` tool call and runs `scripts/sync-md.sh` (cross-platform wrapper). This hook is defined in `.claude/settings.json`.
+
+| Environment | Hook fires? | Notes |
+|-------------|:-----------:|-------|
+| Claude Code CLI | —| Automatic on every WriteSource/EditSource |
+| Claude Code Desktop App | —| Known issue —run Post-Write chain manually |
+| Gemini CLI | —| Automated hooks disabled —run Post-Write chain manually |
+| Antigravity | —| No hook support in VS Code extension |
+
+`sync-md.sh` detects the platform (Windows vs Unix) and delegates to `audit.ps1` or `audit.sh` to perform an immediate documentation and path audit after every edit. This ensures cross-platform integrity is maintained in real-time.
+
+
+### Desktop App Manual Post-Write Chain
+
+When using Claude Code Desktop App, PostToolUse hooks do not fire. After any `WriteSource` or `EditSource`, run this chain manually:
 
 ```
-/triage
-  ??Phase 1 parallel agents (sap-investigator, read-only-analyst, schema-inspector)
-  ??architect (technical design)
-  ??code-writer (implementation)
-  ??/post-write (quality gate: SyntaxCheck ??RunUnitTests ??RunATCCheck)
-  ??/transport (create/release CTS transport)
-  ??/sync (commit and push)
+1. bash scripts/sync-md.sh          # documentation audit
+2. SyntaxCheck(<object_url>)        # verify ABAP syntax
+3. RunUnitTests(<object_url>)       # run unit tests
+4. RunATCCheck(<object_url>)        # ATC quality check
+5. bash scripts/vsp-sync.sh -m "fix: description"  # sync & commit
 ```
+
+See `skills/desktop-app-fallback/SKILL.md` for the complete fallback workflow.
+
 
 ---
 
-## Important: Desktop App Hook Limitation
+*Last Updated: 2026-07-08*
 
-**PostToolUse hooks do NOT fire in Claude Code Desktop App.**
-
-After any `WriteSource` or `EditSource` call in the Desktop App, run the quality gate manually:
-
-```
-/post-write
-```
-
-This runs SyntaxCheck —RunUnitTests —RunATCCheck. Skipping it risks committing broken code.
-
-In the CLI, the hook fires automatically via `hooks/hooks.json`.
-
----
-
----
 
 ### Optimal Interaction Guidelines
 - **XML Tagging**: Utilize XML tags like `<thought>`, `<plan>`, and `<execution>` to structure complex reasoning and plans before generating final responses.
 - **Tone**: Maintain an objective, highly analytical tone. Focus on systematic execution.
 
----
+## Subagent Dispatch & 3-Tier Model Mapping
 
-*Last Updated: 2026-05-24*
+To fully leverage the 3-tier cost optimization strategy during execution plan creation and subagent dispatch, you must explicitly set the `model` parameter in `Agent()` calls using the correct short alias. 
 
+**Registry Model ID to Short Alias Translation:**
+- **High-tier (Design/Planning)**: Registry ID `claude-opus-*` → `model = "opus"`
+- **Medium-tier (Review/QA)**: Registry ID `claude-sonnet-*` → `model = "sonnet"`
+- **Low-tier (Execution/Coding)**: Registry ID `claude-haiku-*` → `model = "haiku"`
+
+**Example `Agent()` Call:**
+```javascript
+Agent(
+  model = "haiku", // Use short alias: opus, sonnet, or haiku
+  description = "Code-writer for serial implementation",
+  prompt = "..."
+)
+```
+When dispatching subagents defined in `agents/*.md`, translate their configured tier into the corresponding short alias above.

@@ -1,4 +1,5 @@
-﻿param([string]$Msg = "chore: update")
+param([string]$Msg = "chore: update")
+$OutputEncoding = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8;
 
 # UTF-8 encoding enforcement
 $PSDefaultParameterValues['*:Encoding'] = 'utf8'
@@ -83,17 +84,9 @@ git add -A
 git commit -m "$Msg`n`nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
 git push -u origin $Branch
 
-# ── 7. Generate PR body and open PR ───────────────────────────────────────────
-$PrBody = ""
-if (Test-Path "scripts\gen-pr-body.ps1") {
-    try { $PrBody = & .\scripts\gen-pr-body.ps1 $Msg 2>$null } catch {}
-}
-
-if ($PrBody) {
-    gh pr create --title $Msg --body $PrBody
-} elseif (Test-Path ".github\pull_request_template.md") {
-    $prBody = Get-Content ".github\pull_request_template.md" -Raw -Encoding UTF8
-    gh pr create --title $Msg --body $prBody
+# ── 7. Open PR ──────────────────────────────────────────────────────────────
+if (Test-Path ".github\pull_request_template.md") {
+    gh pr create --title $Msg --body-file .github/pull_request_template.md
 } else {
     gh pr create --fill
 }
