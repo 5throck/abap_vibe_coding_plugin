@@ -49,12 +49,12 @@ Agents must choose the appropriate tool for each task type. All tools share the 
 | `/meeting` | ✅ `.claude/commands/meeting.md` | ✅ `.gemini/commands/meeting.md` | ✅ `skills/meeting-facilitation/SKILL.md` |
 | `/new-task`, `/triage`, `/transport`, `/post-write`, `/memlog`, `/celebrate` | ✅ `.claude/commands/` | N/A (not registered) | N/A |
 
-> **Claude Code**: Native slash commands registered from `.claude/commands/`.
-> **Gemini CLI**: Reads `.gemini/commands/` Markdown files and executes via terminal tools.
-> **Antigravity/Codex**: Discovers skills from `skills/*/SKILL.md` via `.codex/config.toml` skills path. For commands requiring script execution (sync, project-review), use `bun scripts/*.ts` manually.
+> **Claude Code**: Native slash commands registered from `.claude/commands/`. Platform overrides in `.claude/skills/*/SKILL.md`.
+> **Gemini CLI**: Reads `.gemini/commands/` Markdown files and executes via terminal tools. Platform overrides in `.gemini/skills/*/SKILL.md`.
+> **Antigravity/Codex**: Discovers skills from `.agents/skills/*/SKILL.md` via `.agents/skills.json` resolution. SessionStart hook auto-configures git hooks via `.codex/hooks.json`.
 
 ---
 
-*Last Updated: 2026-07-08*
+*Last Updated: 2026-07-09*
 
 

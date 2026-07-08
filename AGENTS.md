@@ -373,7 +373,7 @@ If the cross-module analysis reveals conflicting ACs (e.g., SD wants field X, FI
 
 ---
 
-*Last Updated: 2026-07-08 (rev 2)*
+*Last Updated: 2026-07-09 (rev 3 — 3-layer skill architecture)*
 
 
 ## Universal Baseline Behaviors
@@ -420,6 +420,56 @@ if (!result.success) {
   process.exit(1);
 }
 ```
+
+---
+
+## Skills (Cross-Platform)
+
+Skills are reusable process definitions available across Claude Code, Gemini CLI, and Antigravity/Codex.
+They follow a **3-layer architecture** inspired by the co-architect pattern:
+
+### Layer Architecture
+
+| Layer | Directory | Scope | Purpose |
+|-------|-----------|-------|---------|
+| **L0 — Source of Truth** | `skills/*/SKILL.md` | Common | Canonical skill definition shared by all platforms |
+| **L1 — Platform Overrides** | `.claude/skills/*/SKILL.md`, `.gemini/skills/*/SKILL.md` | Platform | Platform-specific behavior, delegates to commands or adapts execution |
+| **L2 — Antigravity/Codex** | `.agents/skills/*/SKILL.md` | Common | Copies of L0 for Antigravity/Codex resolution via `.agents/skills.json` |
+
+### Skill Registry
+
+| Skill | L0 | Claude (L1) | Gemini (L1) | Antigravity (L2) | Description |
+|-------|----|-------------|-------------|-------------------|-------------|
+| `sync` | `skills/sync/SKILL.md` | `.claude/skills/sync/SKILL.md` | `.gemini/skills/sync/SKILL.md` | `.agents/skills/sync/SKILL.md` | 6-stage sync pipeline (memlog → changelog → PR) |
+| `project-review` | `skills/project-review/SKILL.md` | — | — | `.agents/skills/project-review/SKILL.md` | 5-phase parallel project review |
+| `meeting-facilitation` | `skills/meeting-facilitation/SKILL.md` | — | — | `.agents/skills/meeting-facilitation/SKILL.md` | Structured multi-agent meeting |
+| `meeting` | — | `.claude/skills/meeting/SKILL.md` | `.gemini/skills/meeting/SKILL.md` | `.agents/skills/meeting/SKILL.md` | Shortcut alias → meeting-facilitation |
+
+> **Note**: Claude and Gemini also have command files (`.claude/commands/sync.md`, `.gemini/commands/sync.md`) which contain the detailed execution steps. L1 SKILL.md files delegate to these commands.
+
+### Antigravity/Codex Resolution
+
+Antigravity discovers skills via `.agents/skills.json`:
+
+```json
+{
+  "entries": [
+    { "path": "skills" },
+    { "path": "../skills" }
+  ]
+}
+```
+
+The `SessionStart` hook in `.codex/hooks.json` auto-configures git hooks on session start.
+
+### Existing ABAP Skills (L0 only)
+
+| Skill | File | Trigger |
+|-------|------|---------|
+| `abap-dev` | [`skills/abap-dev/SKILL.md`](skills/abap-dev/SKILL.md) | Any ABAP development session |
+| `post-write-chain` | [`skills/post-write-chain/SKILL.md`](skills/post-write-chain/SKILL.md) | After any WriteSource / EditSource |
+| `desktop-app-fallback` | [`skills/desktop-app-fallback/SKILL.md`](skills/desktop-app-fallback/SKILL.md) | Desktop App manual QA |
+| `source-command-celebrate` | [`skills/source-command-celebrate/SKILL.md`](skills/source-command-celebrate/SKILL.md) | After task completion |
 
 ---
 
@@ -473,7 +523,7 @@ if (!result.success) {
 
 ### Skill Auto-Discovery
 
-Skills are automatically discovered from `skills/` directory with metadata extraction:
+Skills are automatically discovered from the 3-layer architecture (L0 `skills/` → L1 `.claude/skills/`/`.gemini/skills/` → L2 `.agents/skills/`) with metadata extraction:
 
 - **Frontmatter extraction** - Parses name, description, and metadata.type
 - **Trigger detection** - Extracts trigger phrases from skill content
