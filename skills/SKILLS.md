@@ -22,6 +22,13 @@ Auto-generated index of all available skills in the `skills/` directory for the 
 | `sap-pp` | Production Planning module context | PP tasks (BOM, routing) |
 | `sap-sd` | Sales & Distribution module context | SD tasks (sales orders, billing) |
 
+## Process Skills
+
+| Skill | Description | Trigger |
+|-------|-------------|---------|
+| `meeting-facilitation` | Structured multi-agent meeting orchestration | `/meeting` command |
+| `project-review` | PM-led workspace health audit and findings report | `/project-review` command |
+
 ## Utility Skills (Commands)
 
 | Skill | Description | Trigger |
@@ -31,11 +38,12 @@ Auto-generated index of all available skills in the `skills/` directory for the 
 | `new-task` | Create task file from template | New task start |
 | `new-project` | Scaffold new project structure | New project start |
 | `post-write` | Run Post-Write QA chain | After ABAP writes |
-| `sync` | Full sync pipeline (memlog → changelog → audit → commit) | Session end |
+| `sync` | Full sync pipeline (memlog → changelog → audit → commit → PR) | Session end |
 | `transport` | Manage SAP Transport Requests | Transport operations |
 | `triage` | Auto-classify and dispatch for SAP requests | New SAP task |
 | `verify` | Verify code changes by running the app | Testing changes |
 | `celebrate` | Celebrate successful task completion | After task completion |
+| `project-review` | Workspace health audit with prioritized findings | Project governance |
 
 ## Skill Loading
 
@@ -44,9 +52,10 @@ Skills are auto-discovered from the `skills/` directory at session start.
 To add a new skill:
 1. Create `skills/<skill-name>/SKILL.md`
 2. Add frontmatter with `name`, `description`, `metadata.type`
-3. Skill will be automatically discovered
+3. Add corresponding command files in `.claude/commands/` and `.gemini/commands/`
+4. Skill will be automatically discovered
 
 ---
 
-*Generated: 2026-05-25*
+*Generated: 2026-07-08*
 *Source: abap-harness-engineering plugin*

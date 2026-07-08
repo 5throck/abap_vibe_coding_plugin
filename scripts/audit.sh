@@ -20,12 +20,11 @@ else
   ((errors++)) || true
 fi
 
-# 2. CONSTITUTION.md must be accessible (workspace root OR one level up for project dirs)
+# 2. CONSTITUTION.md (optional for distributable plugin packages)
 if [ -f "CONSTITUTION.md" ] || [ -f "../CONSTITUTION.md" ]; then
   green "CONSTITUTION.md accessible"
 else
-  red  "CONSTITUTION.md not found (expected at ./ or ../)"
-  ((errors++)) || true
+  warn "CONSTITUTION.md not found (optional for distributable plugins)"
 fi
 
 # ── Project-level checks (skip at workspace root where docs/context.md is absent) ──

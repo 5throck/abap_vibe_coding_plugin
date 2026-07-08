@@ -1,19 +1,30 @@
-Run the full project sync pipeline.
+---
+name: sync
+description: Sync today's development session to Git — run the documentation audit, update the memory index, and commit all changes with a conventional commit message.
+argument-hint: "<conventional-commit-message>"
+allowed-tools: ["Bash"]
+---
 
-Arguments: $ARGUMENTS
+# Sync
 
-Execute the following bash command exactly as written:
+Sync today's development session to Git: run the documentation audit, update the memory index, and commit all changes.
+
+Run:
 
 ```bash
-bash scripts/dev-sync.sh "$ARGUMENTS"
+bash "${CLAUDE_PLUGIN_ROOT:-.}/scripts/dev-sync.sh" "$ARGUMENTS"
 ```
 
-The pipeline will:
+$ARGUMENTS should be a conventional commit message (e.g. `feat: add ZCL_MY_CLASS`).
+If $ARGUMENTS is empty, prompt the user for a commit message before running.
+
+The script will:
 1. Append a session entry to `memory/YYYY-MM-DD.md`
 2. Update `memory/MEMORY.md` index via `sync-md.sh`
 3. Auto-add `$ARGUMENTS` to `CHANGELOG.md [Unreleased]` if the section has no entries yet
 4. Run `audit.sh` — must exit 0 before proceeding
-5. Create a new PR branch, commit all staged changes, push, and open a GitHub PR
+5. Guard against sensitive files (`.pem`, `.key`, `.env`, `credentials.json`, etc.)
+6. Create a new PR branch (if on main/master), commit all staged changes, push, and open a GitHub PR
 
 If audit fails, fix the reported issue before re-running `/sync`.
 
