@@ -195,11 +195,13 @@ Write/Edit 툴 호출 이후 `PostToolUse` 훅이 실행되어 `scripts/sync-md.
 
 ---
 
-## 하이브리드 스크립팅 (Bun & Shell)
+## TypeScript 스크립트 (Bun)
 
-이 프로젝트는 **하이브리드 스크립팅 방식**을 사용합니다:
-1. **유틸리티 스크립트**: 일상적인 개발 유틸리티(`dev-sync`, `audit` 등)는 외부 의존성 없이 교차 플랫폼에서 쉽게 사용할 수 있도록 **PowerShell(`.ps1`)** 및 **Bash(`.sh`)**로 구현됩니다.
-2. **에이전트 오케스트레이션**: 복잡한 다중 에이전트 워크플로우 조정 및 오케스트레이션 로직은 **TypeScript(`.ts`)**로 구현되며 **Bun**을 통해 실행됩니다.
+이 프로젝트는 모든 유틸리티 및 오케스트레이션 스크립트에 **Bun을 통한 TypeScript**를 Single Source of Truth로 사용합니다:
+
+1. **유틸리티 스크립트**: `sync-md.ts`, `audit.ts`, `dev-sync.ts`, `setup.ts`, `vsp-task.ts`, `vsp-publish.ts` — Bun 런타임을 통한 크로스 플랫폼 지원.
+2. **에이전트 오케스트레이션**: 다중 에이전트 워크플로우 조정 (`dispatch.ts`, `dispatch-parallel.ts`, `dispatch-serial.ts`).
+3. **부트스트랩 스크립트**: `install-bun.sh/.ps1`과 `install-vsp.sh/.ps1`은 Bun 설치 전에 실행되어야 하므로 셸 스크립트로 유지됩니다.
 
 자세한 내용은 `scripts/README.md`를 참조하세요.
 
@@ -292,4 +294,4 @@ AGPL v3 - 자세한 내용은 [LICENSE](./LICENSE)를 참조하세요.
 
 ---
 
-*최종 업데이트: 2026-05-25*
+*최종 업데이트: 2026-07-08*
