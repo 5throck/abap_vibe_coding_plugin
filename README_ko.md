@@ -189,9 +189,9 @@ Phase 4:            /post-write -> /transport release -> /sync
 
 ## 훅(Hooks)
 
-Write/Edit 툴 호출 이후 `PostToolUse` 훅이 실행되어 `scripts/sync-md.sh`로 문서 감사를 수행합니다.
+Write/Edit 툴 호출 이후 `PostToolUse` 훅이 실행되어 `scripts/sync-md.ts`로 문서 감사를 수행합니다.
 
-> **참고**: Claude Code Desktop App에서는 훅이 실행되지 않습니다. Desktop 세션에서 ABAP 쓰기 작업 후에는 `/post-write`를 수동으로 실행하세요. 또한 자동 훅은 플러그인 런타임에서 로드하는 `CLAUDE_PLUGIN_ROOT` 환경 변수에 의존하므로, 훅 라이프사이클 외부에서 직접 수동 테스트하려면 작업 디렉토리 루트에서 `scripts/sync-md.sh` 또는 `scripts/sync-md.ps1`을 직접 실행하십시오.
+> **참고**: Claude Code Desktop App에서는 훅이 실행되지 않습니다. Desktop 세션에서 ABAP 쓰기 작업 후에는 `/post-write`를 수동으로 실행하세요. 또한 자동 훅은 플러그인 런타임에서 로드하는 `CLAUDE_PLUGIN_ROOT` 환경 변수에 의존하므로, 훅 라이프사이클 외부에서 직접 수동 테스트하려면 `bun scripts/sync-md.ts`를 직접 실행하십시오.
 
 ---
 
@@ -218,9 +218,10 @@ curl -fsSL https://bun.sh/install | bash
 ### 사용법
 
 ```bash
-# 일상적인 유틸리티 스크립트 (의존성 없음)
-.\scripts\dev-sync.ps1 "feat: description"   # Windows
-bash scripts/dev-sync.sh "feat: description" # macOS/Linux
+# 유틸리티 스크립트 (TypeScript via Bun)
+bun scripts/dev-sync.ts "feat: description"
+bun scripts/audit.ts
+bun scripts/sync-md.ts
 
 # 에이전트 오케스트레이션 스크립트 (Bun 필요)
 bun scripts/dispatch.ts parallel

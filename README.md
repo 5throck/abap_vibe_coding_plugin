@@ -190,9 +190,9 @@ In addition to the `vsp` server, the provided MCP configuration sample includes 
 
 ## Hooks
 
-In Claude Code CLI sessions, a `PostToolUse` hook fires after every Write/Edit tool call and runs `scripts/sync-md.sh` for documentation audit.
+In Claude Code CLI sessions, a `PostToolUse` hook fires after every Write/Edit tool call and runs `scripts/sync-md.ts` for documentation audit.
 
-> **Note**: Hooks do not fire in Claude Code Desktop App. Run `/post-write` manually after each ABAP write in Desktop sessions. Also, note that automatic hooks rely on the `CLAUDE_PLUGIN_ROOT` environment variable being populated by the plugin runtime. For direct manual testing or execution outside the hook lifecycle, execute `scripts/sync-md.sh` or `scripts/sync-md.ps1` directly from your workspace root.
+> **Note**: Hooks do not fire in Claude Code Desktop App. Run `/post-write` manually after each ABAP write in Desktop sessions. Also, note that automatic hooks rely on the `CLAUDE_PLUGIN_ROOT` environment variable being populated by the plugin runtime. For direct manual testing or execution outside the hook lifecycle, execute `bun scripts/sync-md.ts` directly from your workspace root.
 
 ---
 
@@ -219,11 +219,12 @@ curl -fsSL https://bun.sh/install | bash
 ### Usage
 
 ```bash
-# Everyday Utility Scripts (No dependencies)
-.\scripts\dev-sync.ps1 "feat: description"   # Windows
-bash scripts/dev-sync.sh "feat: description" # macOS/Linux
+# Utility Scripts (TypeScript via Bun)
+bun scripts/dev-sync.ts "feat: description"
+bun scripts/audit.ts
+bun scripts/sync-md.ts
 
-# Agent Orchestration Scripts (Requires Bun)
+# Agent Orchestration Scripts
 bun scripts/dispatch.ts parallel
 bun scripts/verify-skills.ts
 ```
@@ -292,4 +293,4 @@ AGPL v3 - see [LICENSE](./LICENSE) for details.
 
 ---
 
-*Last Updated: 2026-05-25*
+*Last Updated: 2026-07-08*

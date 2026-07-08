@@ -36,7 +36,7 @@ PM-led workspace health audit. Systematically scans the project structure, docum
 Run the documentation audit via terminal:
 
 ```bash
-bash scripts/audit.sh
+bun scripts/audit.ts
 ```
 
 Then verify the expected directory structure exists:
@@ -141,7 +141,7 @@ Output prioritized remediation plan:
 ### Next Steps
 1. [Immediate] Fix P1: ...
 2. [High] Fix P2: ...
-3. Batch P3-P5 into: bash scripts/dev-sync.sh "chore: project review fixes"
+3. Batch P3-P5 into: bun scripts/dev-sync.ts "chore: project review fixes"
 
 Report archived: memory/YYYY-MM-DD-project-review.md
 ```

@@ -64,8 +64,8 @@ Standard directory layout for all projects in this workspace:
 | `CLAUDE.md` | Claude Code-specific configuration |
 | `GEMINI.md` | Gemini CLI-specific configuration |
 | `CHANGELOG.md` | User-visible change history |
-| `scripts/dev-sync.sh/.ps1` | Full sync pipeline |
-| `scripts/audit.sh/.ps1` | Documentation integrity audit |
+| `scripts/dev-sync.ts` | Full sync pipeline |
+| `scripts/audit.ts` | Documentation integrity audit |
 | `memory/MEMORY.md` | Session log index |
 | `.env.sample` | Required environment variable template |
 
