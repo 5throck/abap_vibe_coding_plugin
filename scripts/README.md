@@ -26,6 +26,7 @@ Complex orchestration and automation scripts:
 | Script | Purpose |
 |--------|---------|
 | `verify-skills.ts` | Verify all skills in `skills/` are loadable |
+| `dev-sync.ts` | Full sync pipeline (Bun cross-platform, 7-step) |
 | `agent-create.ts` | Create new agent definition files |
 | `agent-list.ts` | List all agents with metadata |
 | `agent-delete.ts` | Delete agent files |\n| `agent-verify.ts` | Verify agent/documentation synchronization |

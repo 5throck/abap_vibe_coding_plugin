@@ -26,6 +26,7 @@
 | 스크립트 | 목적 |
 |---------|------|
 | `verify-skills.ts` | `skills/` 디렉토리의 모든 스킬이 로드 가능한지 확인 |
+| `dev-sync.ts` | 전체 동기화 파이프라인 (Bun 크로스 플랫폼, 7단계) |
 | `agent-create.ts` | 새 에이전트 정의 파일 생성 |
 | `agent-list.ts` | 메타데이터와 함께 모든 에이전트 나열 |
 | `agent-delete.ts` | 에이전트 파일 삭제 |
