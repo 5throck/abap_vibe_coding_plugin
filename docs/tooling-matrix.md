@@ -44,12 +44,14 @@ Agents must choose the appropriate tool for each task type. All tools share the 
 
 | Command | Claude Code | Gemini CLI | Antigravity (Codex) |
 |---------|:-----------:|:----------:|:-------------------:|
-| `/sync` | ✅ `.claude/commands/sync.md` | ✅ `.gemini/commands/sync.md` | N/A — use `bun scripts/dev-sync.ts` manually |
-| `/project-review` | ✅ `.claude/commands/project-review.md` | ✅ `.gemini/commands/project-review.md` | N/A — use `bun scripts/audit.ts` manually |
-| `/meeting` | ✅ `.claude/commands/meeting.md` | ✅ `.gemini/commands/meeting.md` | N/A — read `skills/meeting-facilitation/SKILL.md` |
+| `/sync` | ✅ `.claude/commands/sync.md` | ✅ `.gemini/commands/sync.md` | ✅ `skills/sync/SKILL.md` |
+| `/project-review` | ✅ `.claude/commands/project-review.md` | ✅ `.gemini/commands/project-review.md` | ✅ `skills/project-review/SKILL.md` |
+| `/meeting` | ✅ `.claude/commands/meeting.md` | ✅ `.gemini/commands/meeting.md` | ✅ `skills/meeting-facilitation/SKILL.md` |
 | `/new-task`, `/triage`, `/transport`, `/post-write`, `/memlog`, `/celebrate` | ✅ `.claude/commands/` | N/A (not registered) | N/A |
 
-> **Antigravity/Codex**: Does not support native slash commands. Commands are available as Markdown instructions in `.gemini/commands/` (read and execute via terminal), or as skills in `skills/` (accessed via `.codex/config.toml` skills path).
+> **Claude Code**: Native slash commands registered from `.claude/commands/`.
+> **Gemini CLI**: Reads `.gemini/commands/` Markdown files and executes via terminal tools.
+> **Antigravity/Codex**: Discovers skills from `skills/*/SKILL.md` via `.codex/config.toml` skills path. For commands requiring script execution (sync, project-review), use `bun scripts/*.ts` manually.
 
 ---
 

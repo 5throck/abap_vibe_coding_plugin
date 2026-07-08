@@ -231,7 +231,7 @@ Where Platform = `Claude` / `Antigravity` / `Both` / `L0-only`
 ```
 
 **After writing the file**, run the sync command:
-- `bun scripts/sync-md.ts "YYYY-MM-DD" "[TOPIC]" 2>/dev/null || true`
+- `bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/sync-md.ts" "YYYY-MM-DD" "[TOPIC]" 2>/dev/null || true`
 
 If the sync command fails or is unavailable, continue - file archiving is the critical step.
 
