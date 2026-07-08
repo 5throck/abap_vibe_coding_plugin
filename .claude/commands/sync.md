@@ -15,19 +15,22 @@ Run:
 bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/dev-sync.ts" "$ARGUMENTS"
 ```
 
-$ARGUMENTS should be a conventional commit message (e.g. `feat: add ZCL_MY_CLASS`).
-If $ARGUMENTS is empty, prompt the user for a commit message before running.
+`$ARGUMENTS` should be a conventional commit message (e.g. `feat: add ZCL_MY_CLASS`).
+If `$ARGUMENTS` is empty, prompt the user for a commit message before running.
 
-The script will:
-1. Append a session entry to `memory/YYYY-MM-DD.md`
-2. Update `memory/MEMORY.md` index via `sync-md.ts`
-3. Auto-add `$ARGUMENTS` to `CHANGELOG.md [Unreleased]` if not already present
-4. Guard against sensitive files (untracked + staged: `.pem`, `.key`, `.env`, `credentials.json`, etc.)
-5. Create a new PR branch (if on main/master), commit all staged changes, push
-6. Open a GitHub PR via `gh pr create`
+## Pipeline Steps
 
-> **Note**: `audit.ts` runs via the pre-commit hook during `git commit`.
-> If audit fails, fix the reported issue before re-running `/sync`.
+The script performs the following 6-stage pipeline:
+
+1. **Write daily session log** — Appends entry to `memory/YYYY-MM-DD.md` with file list
+2. **Update MEMORY.md index** — Calls `scripts/sync-md.ts` to update the central index
+3. **Auto-add CHANGELOG entry** — Appends `$ARGUMENTS` under `[Unreleased]` if not already present
+4. **Sensitive file guard** — Blocks if untracked or staged `.pem`, `.key`, `.env`, `credentials.json`, etc. detected
+5. **Branch / Commit / Push** — Creates PR branch if on main/master, stages all files, commits, pushes
+   - `audit.ts` runs automatically via pre-commit hook during `git commit`
+6. **Open PR** — Uses `.github/pull_request_template.md` or `gh pr create --fill` to open a PR
+
+If audit fails, fix the reported issue before re-running `/sync`.
 
 ## Pre-PR Security Gate (public repos only)
 
@@ -37,7 +40,7 @@ Before pushing/creating PR, check if the repo is public:
 gh repo view --json isPrivate -q '.isPrivate' 2>/dev/null
 ```
 
-If the result is `false` (public repo): run `/security-check --pr` (read-only advisory check).
+If the result is `false` (public repo): check for existing advisories in `security/` directory, then pause for user confirmation.
 
 - If CRITICAL advisories are found: show the warning and **pause** — let the user decide whether to proceed or stop.
 - If no CRITICAL advisories: continue with push and PR.
