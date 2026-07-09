@@ -3,6 +3,11 @@ name: desktop-app-fallback
 description: Manual Post-Write QA chain for Claude Code Desktop App (hooks don't fire)
 metadata:
   type: task
+  triggers:
+    - desktop app
+    - manual QA
+    - hooks not firing
+    - Claude Desktop
 ---
 
 # Desktop App Post-Write Fallback

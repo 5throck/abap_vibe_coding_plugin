@@ -2,6 +2,18 @@
 name: SAP SD Module — Sales & Distribution
 description: Use when working on SD module tasks — sales orders, deliveries, billing, pricing, or order-to-cash processes. Provides process flows, key table relationships, common query patterns, field notes, SAP quirks, and standard BAPIs for the SD module.
 version: 1.0.0
+metadata:
+  type: domain
+  triggers:
+    - sales order
+    - delivery
+    - billing
+    - pricing
+    - SD
+    - VA01
+    - VL01N
+    - VF01
+    - order-to-cash
 ---
 
 # SD Analyst Context — Sales & Distribution
