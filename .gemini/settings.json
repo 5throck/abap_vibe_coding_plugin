@@ -5,7 +5,7 @@
       "args": ["--mode", "hyperfocused"],
       "env": {
         "SAP_MODE": "hyperfocused",
-        "SAP_ALLOWED_PACKAGES": "Z*,,,",
+        "SAP_ALLOWED_PACKAGES": "Z*,$TMP,$ZADT_VSP,$VSP_ADT",
         "SAP_FEATURE_ABAPGIT": "on",
         "SAP_FEATURE_TRANSPORT": "on",
         "SAP_FEATURE_UI5": "on",
@@ -22,7 +22,7 @@
     },
     "codegraph": {
       "command": "npx",
-      "args": ["-y", "@colbymchenry/codegraph", "serve"]
+      "args": ["@colbymchenry/codegraph@0.9.7", "serve"]
     }
   }
 }

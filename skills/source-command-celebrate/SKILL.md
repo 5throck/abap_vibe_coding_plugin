@@ -1,6 +1,13 @@
 ---
-name: "source-command-celebrate"
-description: "Celebrate the successful completion of a task to boost team morale."
+name: source-command-celebrate
+description: Celebrate the successful completion of a task to boost team morale.
+metadata:
+  type: task
+  triggers:
+    - task complete
+    - success
+    - celebration
+    - celebrate
 ---
 
 # source-command-celebrate

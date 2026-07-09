@@ -42,7 +42,7 @@ Standard directory layout for all projects in this workspace:
 <project-root>/
 ├── agents/          # 20 AI agent role definitions (+ 2 handoff-spec docs)
 ├── deliverables/    # Global index & per-requirement folder logs (srs, design, implementation, QA)
-├── skills/          # 11 skill files (abap-dev, post-write-chain, meeting-facilitation, sap-*)
+├── skills/          # 13 skill files (abap-dev, post-write-chain, meeting-facilitation, project-review, sync, sap-*)
 ├── scripts/         # dev-sync, audit, sync-md automation
 ├── memory/          # session logs (YYYY-MM-DD.md)
 ├── scratch/tasks/   # per-task work files (task-YYYY-MM-DD-NNN.md)
@@ -165,7 +165,7 @@ Key rules:
 All agents must follow this file routing policy. **Creating `.md` files at the project root is prohibited** unless they are standard root files.
 
 ### Standard Root Files (allowed at root)
-`README.md`, `CHANGELOG.md`, `AGENTS.md`, `SECURITY.md`, `workspace standards`, `CLAUDE.md`, `GEMINI.md`
+`README.md`, `CHANGELOG.md`, `AGENTS.md`, `SECURITY.md`, `CLAUDE.md`, `GEMINI.md`
 
 ### File Type Routing
 | File Type | Default Location |
@@ -266,13 +266,7 @@ This workspace follows explicit lifecycle management practices for Agents, Skill
 ### Common Principles
 
 - **Agent / Skill / Script** each have explicit lifecycle states (active, deprecated, retired/archived)
-- Full lifecycle rules are defined in the workspace `workspace standards` section files
-- Audit commands exist for each domain: `agent-lifecycle-audit.ts`, `skill-lifecycle-audit.ts`, `verify-scripts.ts`
-
-For full lifecycle procedures:
-- **Agent Lifecycle**: See `workspace standards` → [§5.6 Agent Lifecycle Management](../../workspace standards#agent-lifecycle-management)
-- **Skill Lifecycle**: See `workspace standards` → [§6 Skill Lifecycle Management](../../workspace standards#skills)
-- **Script Lifecycle**: See `workspace standards` → [§6.5 Script Lifecycle Management](../../workspace standards#script-lifecycle-management)
+- Audit commands exist for each domain: `scripts/agent-verify.ts`, `scripts/verify-skills.ts`
 
 ---
 

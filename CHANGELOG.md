@@ -9,6 +9,10 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- **[2026-07-09]**: fix: critical gemini blockers and platform parity improvements from project review
+
+
 ### Changed
 - **[2026-07-08]**: chore: update memory log for PR #66 merge
 

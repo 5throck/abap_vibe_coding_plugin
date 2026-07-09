@@ -62,3 +62,15 @@ If the result is `false` (public repo): check for existing advisories in `securi
 - If no CRITICAL advisories: continue with push and PR.
 
 For private repos: skip this gate entirely.
+
+### Options
+
+| Flag | Description |
+|------|-------------|
+| `--check` | Dry-run mode — validates script syntax only, no git changes |
+
+### Graceful Degradation
+
+- **No `gh` CLI**: PR creation is skipped; branch, commit, and push still proceed
+- **No git remote**: Push and PR steps are skipped; local commit still proceeds
+- **Existing PR for branch**: Skips duplicate PR creation (detects via `gh pr list --head <branch>`)

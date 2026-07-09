@@ -22,7 +22,7 @@ Gemini/Antigravity platform override for the `sync` skill.
 > Read `.gemini/commands/sync.md` to understand the pipeline, then execute via terminal tools:
 
 ```bash
-bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/dev-sync.ts "$ARGUMENTS"
+bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/dev-sync.ts" "$ARGUMENTS"
 ```
 
 See `.gemini/commands/sync.md` for full pipeline documentation.

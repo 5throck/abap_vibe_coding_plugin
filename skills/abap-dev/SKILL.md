@@ -2,6 +2,17 @@
 name: ABAP Development Skills
 description: Use when working on SAP ABAP development tasks — provides specialized workflows for BAPI exploration, transport management, unit testing, performance analysis, impact architecture analysis, and documentation audits. Trigger on any SAP/ABAP coding, debugging, or system analysis task.
 version: 1.1.0
+metadata:
+  type: domain
+  triggers:
+    - ABAP development
+    - BAPI exploration
+    - transport management
+    - unit testing
+    - performance analysis
+    - impact architecture
+    - SAP coding
+    - syntax check
 ---
 
 # ABAP Development Skills (vsp)

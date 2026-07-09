@@ -3,6 +3,12 @@ name: security-monitor
 model: inherit
 color: red
 description: 'Security Monitor — enforces security policies, audits dependencies, and scans for secrets in the SAP ABAP harness. Use when: "security check", "scan for vulnerabilities", "audit secrets", "pre-PR security review".'
+
+examples:
+  - user: "Run a security scan before creating the PR"
+    assistant: "I'll dispatch the security-monitor agent to scan for secrets, check SAP configuration, and verify pre-commit hook status."
+  - user: "Audit the ABAP source for hardcoded credentials"
+    assistant: "Let me use the security-monitor agent to grep for sensitive patterns like PASSWORD, API_KEY, and SECRET in the ABAP objects."
 ---
 
 # Security Monitor Agent
