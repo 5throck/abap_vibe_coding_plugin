@@ -9,6 +9,10 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- **[2026-07-09]**: feat: add base-map MCP code quality scan to project-review skill
+
+
 ### Fixed
 - **[2026-07-09]**: fix: critical gemini blockers and platform parity improvements from project review
 

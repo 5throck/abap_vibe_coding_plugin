@@ -77,6 +77,25 @@ Check for:
 **CHANGELOG.md**:
 - `[Unreleased]` section exists and is not empty, OR all entries have been released
 
+### Phase 2-A: Code Quality Scan (Optional — base-map MCP)
+
+> **Availability**: This phase requires the `mcp__base-map__review_code` tool (base-map MCP server).
+> If the tool is not available in the current environment, **skip this phase silently** —
+> do not report it as a finding.
+
+1. List all `scripts/*.ts` files in the project
+2. For each file, invoke `mcp__base-map__review_code` with the file content
+3. Parse the review output and classify findings into the existing priority framework:
+   - Security vulnerabilities, injection risks → **P1 — Critical**
+   - Logic errors, race conditions, incorrect error handling → **P2 — High**
+   - Code style, naming conventions, complexity → **P3 — Medium**
+   - Suggestions, minor improvements → **P4 — Low**
+4. **Deduplicate**: exclude any findings already captured in Phase 1 or Phase 2
+5. Add unique findings to the Phase 4 report
+
+**Model selection**: Use `google/gemma-4-e4b` (default). If unavailable, call `mcp__base-map__models`
+to discover available models and use the first listed model.
+
 ### Phase 3: Platform Parity
 
 Verify configuration consistency across all supported platforms:
