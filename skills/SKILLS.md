@@ -10,6 +10,8 @@ Auto-generated index of all available skills in the `skills/` directory for the 
 | `post-write-chain` | Mandatory QA chain after any WriteSource/EditSource | process | After write operations |
 | `desktop-app-fallback` | Manual Post-Write QA for Desktop App | task | Desktop App usage |
 | `source-command-celebrate` | Celebration for successful task completion | task | After task completion |
+| `dump-monitor` | ABAP short-dump monitoring and triage routing | core | System health check |
+| `performance-tuning` | Standardized performance analysis for slow ABAP/SQL | core | Performance investigation |
 
 ## Module-Specific Skills
 
@@ -45,5 +47,5 @@ To add a new skill:
 
 ---
 
-*Generated: 2026-07-09*
+*Generated: 2026-07-11*
 *Source: abap-harness-engineering plugin*

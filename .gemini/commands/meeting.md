@@ -7,7 +7,7 @@ description: >
   multi-agent discussions, or facilitating collaborative problem-solving sessions.
 owner: pm
 version: 1.4.0
-last_reviewed: 2026-06-05
+last_reviewed: 2026-07-08
 metadata:
   type: process
   triggers:
@@ -230,8 +230,9 @@ Where Platform = `Claude` / `Antigravity` / `Both` / `L0-only`
 |---|-----------|--------------|
 ```
 
-**After writing the file**, run the sync command:
-- `bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/sync-md.ts" "YYYY-MM-DD" "[TOPIC]" 2>/dev/null || true`
+**After writing the file**, run the appropriate sync command:
+- **Bash**: `bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/sync-md.ts" "YYYY-MM-DD" "[TOPIC]" 2>/dev/null || true`
+- **PowerShell**: `bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/sync-md.ts" "YYYY-MM-DD" "[TOPIC]" 2>$null`
 
 If the sync command fails or is unavailable, continue - file archiving is the critical step.
 

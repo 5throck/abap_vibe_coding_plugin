@@ -1,24 +1,22 @@
-Create a new task tracking entry in memory for the current session.
+---
+name: new-task
+description: Create a new task file in scratch/tasks/ from the task template for tracking ABAP development work.
+argument-hint: "[task-name]"
+allowed-tools: ["Bash"]
+---
 
-Arguments: $ARGUMENTS
+# New Task
 
-Steps:
-1. Determine today's date in YYYY-MM-DD format.
-2. Ensure `memory/` directory exists.
-3. Append the following block to `memory/YYYY-MM-DD.md` (create if missing):
-   ```markdown
-   ## Task: $ARGUMENTS
+Create a new task file in scratch/tasks/ from the task template.
 
-   **Status**: in_progress
-   **Started**: YYYY-MM-DD
+Run:
+```bash
+bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/vsp-task.ts" "$ARGUMENTS"
+```
 
-   ### Plan
-   - [ ] (fill in steps)
+If $ARGUMENTS is empty, use "new-task" as the default name.
 
-   ### Notes
-   -
-   ```
-4. Confirm: "📋 Task created: $ARGUMENTS"
-
-This command creates a lightweight in-session task record in the daily memory log.
-For multi-session task tracking, use the TaskCreate tool directly.
+After the script runs:
+1. Display the full path of the created file
+2. Show the user the task template structure so they can fill in the request details
+3. Remind them to paste the original user request into the "Request" section

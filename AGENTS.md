@@ -178,11 +178,11 @@ Full behavioral rules, tool contracts, and output formats live in the linked `ag
 
 5.  **Implementation & Verification Chain (Assigned Agents)**:
     *   Implementation is delegated to `code-writer` and verification to `test-runner`.
-    *   **Mandatory Chain**: Must pass `SyntaxCheck` → `RunUnitTests` → `RunATCCheck` (Zero P1 findings).
+    *   **Mandatory Chain**: Must pass `SyntaxCheck` → `RunUnitTests` → `GetCodeCoverage` (≥70% new objects) → `RunATCCheck` (Zero P1 findings).
 
 6.  **Finalization, Sync & Reporting (PM)**:
     *   **Memory Logging**: Record key decisions and issues in `memory/YYYY-MM-DD.md`.
-    *   **Git Sync**: Execute `dev-sync` to commit artifacts, update index, and open a PR.
+    *   **Git Sync**: Execute `/sync` (full pipeline: memlog → changelog → audit → commit → push → PR).
     *   **Final Report**: PM summarizes the outcome and test results for the user.
 
 ### 📦 Requirements-Driven Deliverables Workflow (Stage 1 to 5)
@@ -214,7 +214,7 @@ All software requirements and implementation logs must be structured and stored 
 #### **Stage 4: Quality Gate Verification (`04_qa_report.md`)**
 *   **Responsible Agent**: **QA Engineer** (`test-runner`).
 *   **Deliverable**: `/deliverables/REQ-NNN-[slug]/04_qa_report.md`.
-*   **Scope**: Run the mandatory QA chain (`SyntaxCheck` -> `RunUnitTests` -> `RunATCCheck`). Record raw logs, code coverage percentages, and enforce zero Priority-1 findings. Mark as **[QUALITY GATE STATUS: PASSED]**.
+*   **Scope**: Run the mandatory QA chain (`SyntaxCheck` -> `RunUnitTests` -> `GetCodeCoverage` -> `RunATCCheck`). Record raw logs, code coverage percentages (70% threshold — see [skills/post-write-chain/SKILL.md](../skills/post-write-chain/SKILL.md)), and enforce zero Priority-1 findings. Mark as **[QUALITY GATE STATUS: PASSED]**.
 
 #### **Stage 5: Governance & Release**
 *   **Responsible Agent**: **PM** & **DevOps/Admin**.
@@ -312,7 +312,7 @@ Use this matrix to resolve ambiguity when multiple agents could handle a request
 | Design the DB/CDS schema (ERD, normalization, indexing) | `dba` | `architect` |
 | Design the implementation pattern (A/B/C) and execution plan | `architect` | `dba` |
 | Write or modify ABAP source code | `code-writer` | `architect` |
-| Run SyntaxCheck → RunUnitTests → RunATCCheck | `test-runner` | `code-writer` |
+| Run SyntaxCheck → RunUnitTests → GetCodeCoverage → RunATCCheck | `test-runner` | `code-writer` |
 | Create / release a Transport Request | `devops-admin` | `code-writer` |
 | Design OData / RFC / IDoc interfaces | `interface-expert` | `architect` |
 | Design Fiori / UI5 screens | `fiori-developer` | `interface-expert` |
@@ -373,7 +373,7 @@ If the cross-module analysis reveals conflicting ACs (e.g., SD wants field X, FI
 
 ---
 
-*Last Updated: 2026-07-09 (rev 3 — 3-layer skill architecture)*
+*Last Updated: 2026-07-11 (rev 3)*
 
 
 ## Universal Baseline Behaviors
@@ -420,56 +420,6 @@ if (!result.success) {
   process.exit(1);
 }
 ```
-
----
-
-## Skills (Cross-Platform)
-
-Skills are reusable process definitions available across Claude Code, Gemini CLI, and Antigravity/Codex.
-They follow a **3-layer architecture** inspired by the co-architect pattern:
-
-### Layer Architecture
-
-| Layer | Directory | Scope | Purpose |
-|-------|-----------|-------|---------|
-| **L0 — Source of Truth** | `skills/*/SKILL.md` | Common | Canonical skill definition shared by all platforms |
-| **L1 — Platform Overrides** | `.claude/skills/*/SKILL.md`, `.gemini/skills/*/SKILL.md` | Platform | Platform-specific behavior, delegates to commands or adapts execution |
-| **L2 — Antigravity/Codex** | `.agents/skills/*/SKILL.md` | Common | Copies of L0 for Antigravity/Codex resolution via `.agents/skills.json` |
-
-### Skill Registry
-
-| Skill | L0 | Claude (L1) | Gemini (L1) | Antigravity (L2) | Description |
-|-------|----|-------------|-------------|-------------------|-------------|
-| `sync` | `skills/sync/SKILL.md` | `.claude/skills/sync/SKILL.md` | `.gemini/skills/sync/SKILL.md` | `.agents/skills/sync/SKILL.md` | 6-stage sync pipeline (memlog → changelog → PR) |
-| `project-review` | `skills/project-review/SKILL.md` | — | — | `.agents/skills/project-review/SKILL.md` | 5-phase parallel project review |
-| `meeting-facilitation` | `skills/meeting-facilitation/SKILL.md` | — | — | `.agents/skills/meeting-facilitation/SKILL.md` | Structured multi-agent meeting |
-| `meeting` | — | `.claude/skills/meeting/SKILL.md` | `.gemini/skills/meeting/SKILL.md` | `.agents/skills/meeting/SKILL.md` | Shortcut alias → meeting-facilitation |
-
-> **Note**: Claude and Gemini also have command files (`.claude/commands/sync.md`, `.gemini/commands/sync.md`) which contain the detailed execution steps. L1 SKILL.md files delegate to these commands.
-
-### Antigravity/Codex Resolution
-
-Antigravity discovers skills via `.agents/skills.json`:
-
-```json
-{
-  "entries": [
-    { "path": "skills" },
-    { "path": "../skills" }
-  ]
-}
-```
-
-The `SessionStart` hook in `.codex/hooks.json` auto-configures git hooks on session start.
-
-### Existing ABAP Skills (L0 only)
-
-| Skill | File | Trigger |
-|-------|------|---------|
-| `abap-dev` | [`skills/abap-dev/SKILL.md`](skills/abap-dev/SKILL.md) | Any ABAP development session |
-| `post-write-chain` | [`skills/post-write-chain/SKILL.md`](skills/post-write-chain/SKILL.md) | After any WriteSource / EditSource |
-| `desktop-app-fallback` | [`skills/desktop-app-fallback/SKILL.md`](skills/desktop-app-fallback/SKILL.md) | Desktop App manual QA |
-| `source-command-celebrate` | [`skills/source-command-celebrate/SKILL.md`](skills/source-command-celebrate/SKILL.md) | After task completion |
 
 ---
 
@@ -523,7 +473,7 @@ if (!result.success) {
 
 ### Skill Auto-Discovery
 
-Skills are automatically discovered from the 3-layer architecture (L0 `skills/` → L1 `.claude/skills/`/`.gemini/skills/` → L2 `.agents/skills/`) with metadata extraction:
+Skills are automatically discovered from `skills/` directory with metadata extraction:
 
 - **Frontmatter extraction** - Parses name, description, and metadata.type
 - **Trigger detection** - Extracts trigger phrases from skill content

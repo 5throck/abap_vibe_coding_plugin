@@ -1,29 +1,29 @@
 ---
 name: meeting
 status: active
-scope: gemini
+scope: common
 description: >
-  Gemini/Antigravity platform-specific meeting skill. Delegates to .gemini/commands/meeting.md.
+  Shortcut alias for the meeting-facilitation skill. Facilitates structured multi-agent
+  meetings for collaborative decision-making and problem resolution.
 owner: pm
-version: 1.0.0
-last_reviewed: 2026-07-08
+version: 1.1.0
+last_reviewed: 2026-07-09
 metadata:
   type: process
-  platform: gemini
   triggers:
     - meeting
     - agent discussion
     - collaborative decision
+    - multi-agent coordination
+    - facilitate meeting
 ---
 
-Gemini/Antigravity platform override for the `meeting` skill.
+Shortcut skill for `meeting-facilitation`. Run via the platform-specific command:
 
-> **Gemini CLI**: Custom slash commands are not natively registered from `.gemini/commands/`.
-> Read `.gemini/commands/meeting.md` to understand the process, then execute via terminal tools:
+| Platform | Command |
+|----------|---------|
+| Claude Code | `/meeting "topic" --agents agent1,agent2 --rounds 2 --dialogue` |
+| Gemini CLI | Read `.gemini/commands/meeting.md` and follow the full procedure |
+| Antigravity | Read `.gemini/commands/meeting.md` and follow the full procedure |
 
-```bash
-bun "${CLAUDE_PLUGIN_ROOT:-.}/scripts/sync-md.ts"
-```
-
-See `.gemini/commands/meeting.md` for full process documentation.
-See `skills/meeting-facilitation/SKILL.md` for the cross-platform reference.
+Full skill definition: `skills/meeting-facilitation/SKILL.md`

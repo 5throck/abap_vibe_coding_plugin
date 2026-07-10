@@ -9,6 +9,14 @@ Versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- **[2026-07-10]**: docs: update README skill count after parent sync (15 skills)
+
+
+### Changed
+- **[2026-07-10]**: chore: sync skills/agents/docs from abap_vibe_coding parent project
+
+
 ### Added
 - **[2026-07-09]**: feat: add base-map MCP code quality scan to project-review skill
 

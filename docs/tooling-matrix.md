@@ -20,6 +20,8 @@ Agents must choose the appropriate tool for each task type. All tools share the 
 | ABAP object browse / edit | 🚨 Terminal only | —Visual diff + inline review | —File explorer + diff view | 🚨 Terminal only |
 | MCP read/query (GetSource, RunQuery, GrepObjects) | —| —Identical result | —Identical result | —Identical result |
 | Git commit / PR | —`commit-commands` skills | —PR monitoring + CI status | 🚨 Extension terminal only | —Bash tools |
+| Custom commands | —18 slash commands | —18 slash commands | ⚠️ Emulated via `.gemini/commands/` | ⚠️ Emulated via `.gemini/commands/` |
+| Skill discovery | `.claude/skills/` + `skills/` | `.claude/skills/` + `skills/` | `.gemini/skills/` + `.agents/skills/` + `skills/` | `.gemini/skills/` + `skills/` |
 | Web research | —| —| —| —Native capability |
 | Parallel sessions (visual worktrees) | —| —Automatic | —| —|
 | Computer use (GUI automation) | —| —Win/macOS | —| —|
@@ -38,23 +40,10 @@ Agents must choose the appropriate tool for each task type. All tools share the 
 | Claude Code Desktop App | —| Known issue —run Post-Write chain manually |
 | Gemini CLI | —| Disabled —run Post-Write chain manually |
 | Antigravity | —| No hook support in VS Code extension |
-| Codex | —| Via `.codex/config.toml` skills path only (no slash commands) |
-
-### Slash Commands by Environment
-
-| Command | Claude Code | Gemini CLI | Antigravity (Codex) |
-|---------|:-----------:|:----------:|:-------------------:|
-| `/sync` | ✅ `.claude/commands/sync.md` | ✅ `.gemini/commands/sync.md` | ✅ `skills/sync/SKILL.md` |
-| `/project-review` | ✅ `.claude/commands/project-review.md` | ✅ `.gemini/commands/project-review.md` | ✅ `skills/project-review/SKILL.md` |
-| `/meeting` | ✅ `.claude/commands/meeting.md` | ✅ `.gemini/commands/meeting.md` | ✅ `skills/meeting-facilitation/SKILL.md` |
-| `/new-task`, `/triage`, `/transport`, `/post-write`, `/memlog`, `/celebrate` | ✅ `.claude/commands/` | N/A (not registered) | N/A |
-
-> **Claude Code**: Native slash commands registered from `.claude/commands/`. Platform overrides in `.claude/skills/*/SKILL.md`.
-> **Gemini CLI**: Reads `.gemini/commands/` Markdown files and executes via terminal tools. Platform overrides in `.gemini/skills/*/SKILL.md`.
-> **Antigravity/Codex**: Discovers skills from `.agents/skills/*/SKILL.md` via `.agents/skills.json` resolution. SessionStart hook auto-configures git hooks via `.codex/hooks.json`.
+| Codex | —| Via `.codex/hooks.json` |
 
 ---
 
-*Last Updated: 2026-07-09*
+*Last Updated: 2026-07-11*
 
 

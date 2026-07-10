@@ -1,18 +1,44 @@
-Append a session summary entry to today's memory log file.
+---
+name: memlog
+description: Open or create today's memory log file and display its current contents so the agent can append a new development entry.
+argument-hint: "[object-name]"
+allowed-tools: ["Read", "Write", "Bash"]
+---
 
-Arguments: $ARGUMENTS
+# Memory Log
 
-Steps:
+Open (or create) today's memory log file and display its current contents so the agent can append a new entry.
+
+## Steps
+
 1. Determine today's date in YYYY-MM-DD format.
-2. Ensure `memory/` directory exists.
-3. Append the following to `memory/YYYY-MM-DD.md` (create if missing):
-   ```
-   ## Session — $ARGUMENTS
-   ```
-   If $ARGUMENTS is empty, use `## Session — update` as the heading.
-4. Update `memory/MEMORY.md` index by appending a row:
-   `| [YYYY-MM-DD](YYYY-MM-DD.md) | $ARGUMENTS |`
-   (Create MEMORY.md with header row if it does not exist.)
-5. Confirm: "📝 Session logged to memory/YYYY-MM-DD.md"
+2. Check whether `memory/YYYY-MM-DD.md` already exists.
+   - If it **exists**: display its current content so the user can see what has already been logged today.
+   - If it **does not exist**: create it with the header below, then display it.
 
-Note: `/sync` already runs memlog automatically. Use `/memlog` only when you want to log a session entry without triggering a full sync.
+```markdown
+# Development Log — YYYY-MM-DD
+
+---
+
+```
+
+3. Remind the agent to append a new entry using the standard format:
+
+```markdown
+## <Object Name> (<Object Type>)
+- **Package**: <package>
+- **ADT URL**: /sap/bc/adt/...
+- **Purpose**: <one-line summary>
+- **Decisions**: <key technical decisions>
+- **Issues**: <symptom → root cause → resolution>
+- **MCP/Config changes**: <if any>
+```
+
+4. After appending, remind the user to run `/sync` to commit the log to Git.
+
+## Notes
+
+- $ARGUMENTS (if provided) is treated as the object name for the log entry header.
+- All memory files must be written in **English**.
+- The MEMORY.md index is updated automatically by the sync script.
