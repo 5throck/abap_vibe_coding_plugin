@@ -107,13 +107,53 @@ You can trigger these by asking Antigravity directly, or by switching to Claude 
 For Git commit and memory sync, use the terminal manually:
 
 ```bash
-# Cross-platform (Bun)
 bun scripts/dev-sync.ts "feat: summary of change"
 ```
 
 ---
 
-## 6. Platform Comparison
+## 6. Custom Commands & Skills
+
+Antigravity shares `.gemini/commands/` for slash command definitions and discovers skills from `skills/` (primary source) and its `.claude/skills/`, `.gemini/skills/`, `.agents/skills/` mirrors. The three core process skills are:
+
+### `/sync` — Full Project Sync Pipeline
+
+```bash
+bun scripts/dev-sync.ts "feat: summary of change"
+```
+
+The script handles: memory log → CHANGELOG → audit → sensitive guard → commit/push/PR.
+
+> Antigravity does not auto-register slash commands. Ask Antigravity to run the above script, or paste the command directly.
+
+### `/project-review` — Comprehensive Project Review
+
+Read `skills/project-review/SKILL.md` and follow the 5-step procedure:
+1. Detect project context (scan `agents/` for available agents)
+2. Generate execution plan (map agents to review domains)
+3. **Antigravity uses `/meeting` dialogue mode** — agents speak in turn sequentially (no parallel dispatch)
+4. Synthesize results into prioritized tables (Critical/High/Moderate/Low)
+5. Generate action items with owner, deliverable, priority
+
+> **Antigravity limitation**: Cannot dispatch agents in parallel like Claude Code. Uses inline sequential dialogue via `/meeting` instead.
+
+### `/meeting` — Multi-Agent Meeting Facilitation
+
+```bash
+/meeting "meeting topic" --agents agent1,agent2 --rounds 2 --language ko --dialogue
+```
+
+Full 8-step framework: define parameters → detect agents → open structure → conduct rounds → synthesize → archive transcript → close meeting → optional task conversion.
+
+Read the complete procedure in `.gemini/commands/meeting.md`.
+
+### Skill Distribution
+
+Skills live in `skills/` and are mirrored to `.claude/skills/`, `.gemini/skills/`, and `.agents/skills/` for platform-specific loading. Unlike the parent workspace, this plugin does not (yet) have an automated `sync-skills.ts` distribution script — mirror changes manually when editing a skill.
+
+---
+
+## 7. Platform Comparison
 
 | Capability | Claude Code CLI | Claude Code App | Gemini CLI | Antigravity |
 |------------|:---------------:|:---------------:|:----------:|:-----------:|
@@ -121,8 +161,10 @@ bun scripts/dev-sync.ts "feat: summary of change"
 | PostToolUse hook | ✅ | ❌ | ❌ | ❌ |
 | Post-Write chain | Automatic | Manual (`/post-write`) | Manual | Manual |
 | Git commit | `/sync` | `/sync` | Manual | Manual |
+| Custom commands | ✅ (18 commands) | ✅ (18 commands) | ⚠️ Emulated | ⚠️ Emulated |
+| Parallel agent dispatch | ✅ `Agent` tool | ✅ `Agent` tool | ❌ Sequential | ❌ Sequential |
 | Project-level config | ✅ `.mcp.json` | ✅ `.mcp.json` | ✅ `.gemini/settings.json` | ✅ `.gemini/settings.json` |
 
 ---
 
-*Last Updated: 2026-07-08*
+*Last Updated: 2026-07-11*

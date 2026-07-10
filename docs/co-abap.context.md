@@ -77,7 +77,7 @@ Required env keys (see `.env.sample`):
 |-------|------|------|--------|
 | Architect | `agents/architect.md` | Technical Execution Lead — pattern selection, execution sequencing | active |
 | ABAP Developer | `agents/code-writer.md` | ABAP implementation via WriteSource/EditSource | active |
-| QA Engineer | `agents/test-runner.md` | SyntaxCheck → RunUnitTests → RunATCCheck | active |
+| QA Engineer | `agents/test-runner.md` | SyntaxCheck → RunUnitTests → GetCodeCoverage → RunATCCheck | active |
 | DBA | `agents/dba.md` | Table/CDS/index design, SQL performance tuning | active |
 | DevOps/Admin | `agents/devops-admin.md` | Transport management, infrastructure install | active |
 | Interface Expert | `agents/interface-expert.md` | OData/RFC/IDoc interface design | active |
@@ -87,24 +87,34 @@ Required env keys (see `.env.sample`):
 | GUI Scripter | `agents/gui-scripter.md` | BDC / VBS automation (last resort) | active |
 | Intelligence Investigator | `agents/sap-investigator.md` | Codebase pattern scan, historical design extraction | active |
 
-> Lifecycle management: `bun scripts/agent-lifecycle-audit.ts`
+> Lifecycle management: `bun scripts/agent-verify.ts` (agent ↔ documentation sync check)
 > After any agent change, update AGENTS.md and this table.
 
 ---
 
 ## Skills
 
-<!-- Add/remove rows as skills are introduced or retired via lifecycle management. -->
+<!-- Auto-discovered from skills/ — see skills/SKILLS.md for the generated index. -->
 <!-- Status: active | deprecated | experimental -->
 
 | Skill | Directory | Purpose | Status |
 |-------|-----------|---------|--------|
 | ABAP Development | `skills/abap-dev/` | Core SAP ABAP development workflow | active |
+| Desktop App Fallback | `skills/desktop-app-fallback/` | Manual post-write QA for Claude Code Desktop App | active |
+| Meeting Facilitation | `skills/meeting-facilitation/` | Structured multi-agent meetings for decisions | active |
 | Post-Write Chain | `skills/post-write-chain/` | Mandatory QA chain after WriteSource/EditSource | active |
-| SAP Tools | `skills/sap-tools/` | SAP utility skills | active |
-| Meeting Facilitation | `skills/meeting-facilitation/` | Meeting notes and action items | active |
+| Project Review | `skills/project-review/` | PM-led workspace health audit and findings report | active |
+| SAP CO — Controlling | `skills/sap-co/` | CO module: cost centers, internal orders, CO-PA | active |
+| SAP FI — Financial Accounting | `skills/sap-fi/` | FI module: journal entries, GL, AR/AP, fixed assets | active |
+| SAP LE — Logistics Execution | `skills/sap-le/` | LE module: shipping, transport, warehouse management | active |
+| SAP MM — Materials Management | `skills/sap-mm/` | MM module: purchasing, goods receipt, material master | active |
+| SAP PP — Production Planning | `skills/sap-pp/` | PP module: BOM, routing, production orders, MRP | active |
+| SAP SD — Sales & Distribution | `skills/sap-sd/` | SD module: sales orders, deliveries, billing, pricing | active |
+| Source Command: Celebrate | `skills/source-command-celebrate/` | Celebrate task completion for team morale | active |
+| Sync | `skills/sync/` | Full project sync pipeline (memlog → changelog → audit → commit → push → PR) | active |
 
-> Lifecycle management: `bun scripts/skill-lifecycle-audit.ts`
+> Lifecycle management: `bun scripts/verify-skills.ts`
+> Skills are also mirrored to `.claude/skills/`, `.gemini/skills/`, and `.agents/skills/` for platform-specific loading.
 
 ---
 
@@ -112,15 +122,23 @@ Required env keys (see `.env.sample`):
 
 | Script | Purpose | Status |
 |--------|---------|--------|
-| `dev-sync.ts` | Full sync pipeline (memlog → audit → commit → PR) | active |
+| `dev-sync.ts` | Full sync pipeline (memlog → changelog → audit → commit → PR) | active |
 | `audit.ts` | Documentation integrity audit | active |
+| `sync-md.ts` | Update `memory/MEMORY.md` index | active |
+| `verify-skills.ts` | Skill auto-discovery and index generation | active |
+| `agent-verify.ts` | Agent file ↔ documentation synchronization check | active |
+| `agent-create.ts` | Create new agent files from template | active |
+| `agent-list.ts` | List all agents with metadata | active |
+| `agent-delete.ts` | Delete agent files | active |
 | `dispatch.ts` | Main CLI dispatcher with parallel/serial modes | active |
 | `dispatch-parallel.ts` | Parallel agent dispatcher for read-only tasks | active |
 | `dispatch-serial.ts` | Serial pipeline executor for write operations | active |
 | `retry-handler.ts` | Error recovery with 3-retry limit and exponential backoff | active |
-| `verify-skills.ts` | Skill auto-discovery and index generation | active |
+| `vsp-task.ts` | Create task files from `docs/task-template.md` | active |
+| `setup.ts` | Post-scaffold environment setup (deps, license audit, `.env`, initial commit) | active |
+| `vsp-publish.ts` | Sanitizes and copies core framework assets to the plugin repository | active |
 
-> **Scripting Note**: All utility scripts (dev-sync, audit, sync-md, vsp-task, setup) are TypeScript (.ts) and run via `bun scripts/<name>.ts`. Bootstrap scripts (install-bun.sh/.ps1, install-vsp.sh/.ps1) remain as native shell pairs.
+> **Scripting Note**: All utility scripts (dev-sync, audit, sync-md, vsp-task, setup, verify-skills) are TypeScript (.ts) and run via `bun scripts/<name>.ts`. Bootstrap scripts (`install-bun.sh/.ps1`, `install-vsp.sh/.ps1`) remain as native shell pairs — no cross-platform Bun equivalent is planned for these bootstrap-only scripts.
 
 ---
 
@@ -131,13 +149,13 @@ Required env keys (see `.env.sample`):
 /triage <request>          # PM classifies — creates task file — parallel research
 
 # 2. After implementation
-/post-write                # SyntaxCheck → RunUnitTests → RunATCCheck
+/post-write                # SyntaxCheck → RunUnitTests → GetCodeCoverage → RunATCCheck
 /transport                 # Create/release CTS transport
 
 # 3. Sync to Git
 /sync "feat: description"  # memlog → changelog → audit → commit → PR
 
-# Manual equivalents (bash)
+# Manual equivalent
 bun scripts/dev-sync.ts "feat: description"
 ```
 
@@ -195,14 +213,15 @@ See `.mcp.json` for the complete server list.
 | `scratch/tasks/` | Active task handoff files (created by `/new-task`) | Yes |
 | `scratch/stable/` | Exported ABAP sources kept for reference (read-only snapshots) | Yes |
 | `scratch/temp/` | Throwaway work files — not committed | No |
-| `.agents/` | Claude Code plugin runtime cache (auto-generated by Desktop App) | No |
+| `.agents/skills/` | Skill mirror for Claude Agent SDK-based tools — kept in sync with `skills/` | Yes |
+| `.agents/` (other) | Claude Code plugin runtime cache (auto-generated by Desktop App) | No |
 | `.claude/worktrees/` | Parallel session worktrees (auto-managed by Desktop App) | No |
 
 ### ABAP Development Rules
 - **Naming**: `ZCL_` (class), `ZIF_` (interface), `ZPROG_` (program).
 - **Isolation**: All local `.abap` files must be created ONLY in the `scratch/` directory.
 - **Write Operations**: Use `EditSource` for small changes. Always run `SyntaxCheck` before `WriteSource`.
-- **QA Chain**: After any logic change or edit, the `Post-Write Mandatory Chain` MUST be executed (`SyntaxCheck` → `RunUnitTests` → `RunATCCheck`). Priority 1 findings block deployment. See [skills/post-write-chain/SKILL.md — Post-Write Mandatory Chain](../skills/post-write-chain/SKILL.md) for details. **Note**: If your environment (e.g., Gemini CLI, Claude Desktop App) does not support automatic PostToolUse hooks, you MUST execute this chain manually.
+- **QA Chain**: After any logic change or edit, the `Post-Write Mandatory Chain` MUST be executed (`SyntaxCheck` → `RunUnitTests` → `GetCodeCoverage` → `RunATCCheck`). Priority 1 findings block deployment; coverage below 70% on new objects blocks proceeding to ATC unless waived. See [skills/post-write-chain/SKILL.md — Post-Write Mandatory Chain](../skills/post-write-chain/SKILL.md) for details. **Note**: If your environment (e.g., Gemini CLI, Claude Desktop App) does not support automatic PostToolUse hooks, you MUST execute this chain manually.
 - **Final Audit**: Before any sync/commit, run the `sap:documentation-audit` skill.
 
 ### ABAP SQL Reference (All Agents)
@@ -236,7 +255,7 @@ For full project governance and role-based orchestration, refer to [AGENTS.md �
 
 ```powershell
 # 1. Initialize Task
-bun scripts/vsp-task.ts --name "Task Description"
+bun scripts/vsp-task.ts "Task Description"
 
 # 2. Execution (Research -> Implementation -> Verification)
 # Use specialized skills from skills/abap-dev/SKILL.md

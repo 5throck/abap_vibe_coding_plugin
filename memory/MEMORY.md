@@ -7,3 +7,4 @@
 | [2026-05-24](2026-05-24.md) | revert: restore codegraph MCP config to global .mcp.json |
 | [2026-07-08](2026-07-08.md) | chore: update memory log for PR #66 merge |
 | [2026-07-09](2026-07-09.md) | feat: add base-map MCP code quality scan to project-review skill |
+| [2026-07-10](2026-07-10.md) | chore: sync skills/agents/docs from abap_vibe_coding parent project |
