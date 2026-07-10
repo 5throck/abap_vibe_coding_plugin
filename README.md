@@ -4,7 +4,7 @@
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code-Plugin-blue)](https://claude.com/claude-code)
 [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-green)](https://modelcontextprotocol.io)
 
-A Claude Code plugin providing a complete **AI Harness Engineering** framework for SAP ABAP development. Includes 20 specialized agents, 9 skills, 7 commands, and MCP integration via the `vsp` server.
+A Claude Code plugin providing a complete **AI Harness Engineering** framework for SAP ABAP development. Includes 20 specialized agents, 15 skills, 7 commands, and MCP integration via the `vsp` server.
 
 > **What is Harness Engineering?**
 > A methodology where specialized AI agents collaborate within a structured environment - ensuring AI-driven SAP development is predictable, governed, and auditable. The PM-led governance model mirrors a real software engineering team: business analysts define requirements, architects design the solution, developers implement it, and QA verifies it. See the [reference implementation](https://github.com/5throck/abap_vibe_coding).
@@ -14,7 +14,7 @@ A Claude Code plugin providing a complete **AI Harness Engineering** framework f
 ## Features
 
 - **20 Agents**: Global PM, technical architect, code writer, DBA, interface expert, DevOps/admin, Fiori developer, form expert, GUI scripter, security monitor, business analysts (SD/MM/FI/CO/PP/LE), QA runner, schema inspector, SAP investigator, read-only analyst
-- **9 Skills**: ABAP development workflows, post-write quality gate, desktop app fallback, and 6 SAP ERP module knowledge bases (SD, MM, FI, CO, PP, LE)
+- **15 Skills**: ABAP development workflows, post-write quality gate, desktop app fallback, dump monitoring, performance tuning, meeting facilitation, project review, session celebration, dev-sync pipeline, and 6 SAP ERP module knowledge bases (SD, MM, FI, CO, PP, LE)
 - **7 Commands**: `/triage`, `/transport`, `/post-write`, `/sync`, `/new-task`, `/memlog`, `/celebrate`
 - **MCP Integration**: `vsp` server for full SAP ADT access in hyperfocused mode
 - **Bun Scripts**: Cross-platform TypeScript scripts (~50ms startup, single-source maintenance)
@@ -295,4 +295,4 @@ AGPL v3 - see [LICENSE](./LICENSE) for details.
 
 ---
 
-*Last Updated: 2026-07-08*
+*Last Updated: 2026-07-11*
